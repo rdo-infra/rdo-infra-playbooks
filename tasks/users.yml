@@ -24,13 +24,13 @@
     name: "{{ item.value.name }}"
     append: "yes"
     groups: "{{ rdo_admin_group }}"
-  with_dict: rdo_admin_users
+  with_dict: "{{ rdo_admin_users }}"
 
 - name: Setup authorized keys for admin users
   authorized_key:
     user: "{{ item.value.name }}"
     key: "{{ item.value.ssh_key }}"
-  with_dict: rdo_admin_users
+  with_dict: "{{ rdo_admin_users }}"
 
 - name: Setup passwordless sudo for admin users
   lineinfile:
