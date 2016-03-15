@@ -1,0 +1,66 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+# SSH deserves a special treatment since it is changed in this role
+# These tasks are to attempt and make the role idempotent.
+
+- name: Check if we're using the default SSH port
+  wait_for:
+    port: "{{ rdo_default_ssh_port }}"
+    state: "started"
+    host: "{{ inventory_hostname }}"
+    connect_timeout: "5"
+    timeout: "10"
+  delegate_to: "localhost"
+  ignore_errors: "yes"
+  register: "default_ssh"
+
+- name: Set inventory host port to default
+  set_fact:
+    ansible_ssh_port: "{{ rdo_default_ssh_port }}"
+  when: default_ssh|succeeded
+  register: ssh_port_set
+
+- name: Check if we're using the configured SSH port
+  wait_for:
+    port: "{{ rdo_configured_ssh_port }}"
+    state: "started"
+    host: "{{ inventory_hostname }}"
+    connect_timeout: "5"
+    timeout: "10"
+  delegate_to: "localhost"
+  ignore_errors: "yes"
+  register: "configured_ssh"
+  when: default_ssh|failed
+
+- name: Set inventory host port to configured
+  set_fact:
+    ansible_ssh_port: "{{ rdo_configured_ssh_port }}"
+  when: configured_ssh|succeeded
+  register: ssh_port_set
+
+# If the SSH port is neither the default or the configured, give up.
+- name: Fail if SSH port was not auto-detected (unknown)
+  vars:
+    - default: "{{ rdo_default_ssh_port }}"
+    - configured: "{{ rdo_configured_ssh_port }}"
+  fail:
+    msg: "The SSH port is neither {{ default }} or {{ configured }}."
+  when: ssh_port_set is undefined
+
+- name: Confirm host connection
+  ping:
+  when: ssh_port_set

@@ -14,6 +14,7 @@
 #   under the License.
 #
 
+- include: ssh.yml
 - include: packages.yml
-- include: config.yml
 - include: users.yml
+- include: config.yml
