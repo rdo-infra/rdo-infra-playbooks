@@ -17,6 +17,10 @@
 rdo_base_packages:
   - libselinux-python
   - policycoreutils-python
+  - wget
+  - screen
+  - redhat-lsb-core
+  - deltarpm
 
 rdo_debug_packages:
   - net-tools

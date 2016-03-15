@@ -15,7 +15,7 @@
 #
 
 - name: Install base packages
-  yum:
+  package:
     name: "{{ item }}"
     state: "present"
   with_items: rdo_base_packages
@@ -23,7 +23,7 @@
   delay: "20"
 
 - name: Install debug packages
-  yum:
+  package:
     name: "{{ item }}"
     state: "present"
   with_items: rdo_debug_packages
