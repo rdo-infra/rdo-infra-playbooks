@@ -16,20 +16,21 @@
 
 - name: Setup admin group
   group:
-    name: "{{ admin_group }}"
+    name: "{{ rdo_admin_group }}"
     state: "present"
 
 - name: Setup admin users
   user:
     name: "{{ item.value.name }}"
     append: "yes"
-    groups: "{{ admin_group }}"
-  with_dict: admin_users
+    groups: "{{ rdo_admin_group }}"
+  with_dict: rdo_admin_users
 
 - name: Setup authorized keys for admin users
   authorized_key:
     user: "{{ item.value.name }}"
     key: "{{ item.value.ssh_key }}"
+  with_dict: rdo_admin_users
 
 - name: Setup passwordless sudo for admin users
   lineinfile:
@@ -37,6 +38,6 @@
     mode: "0440"
     owner: "root"
     group: "root"
-    regexp: "^%{{ admin_group }}"
-    line: "%{{ admin_group }} ALL=(ALL) NOPASSWD: ALL"
+    regexp: "^%{{ rdo_admin_group }}"
+    line: "%{{ rdo_admin_group }} ALL=(ALL) NOPASSWD: ALL"
     validate: "/usr/sbin/visudo -cf %s"
