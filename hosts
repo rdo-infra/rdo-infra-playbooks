@@ -1,0 +1,8 @@
+[localhost]
+127.0.0.1 ansible_connection=local
+
+[master]
+master.monitoring.rdoproject.org ansible_port=3300 ansible_user=centos ansible_host=46.231.133.98
+
+[client]
+trunk.rdoproject.org ansible_port=3300 ansible_user=centos ansible_host=46.231.133.114
