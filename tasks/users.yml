@@ -35,6 +35,7 @@
 - name: Setup passwordless sudo for admin users
   lineinfile:
     dest: "/etc/sudoers.d/91-rdo-admin"
+    create: "yes"
     mode: "0440"
     owner: "root"
     group: "root"

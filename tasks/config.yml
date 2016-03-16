@@ -19,20 +19,6 @@
     policy: "targeted"
     state: "enforcing"
 
-- name: Setup alternate SSH port
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    regexp: "^Port"
-    line: "Port {{ rdo_ssh_port }}"
-  notify: "Restart sshd"
-
-- name: Setup selinux for alternate SSH port
-  seport:
-    ports: "{{ rdo_ssh_port }}"
-    proto: "tcp"
-    setype: "ssh_port_t"
-    state: "present"
-
 - name: Install motd
   template:
     src: "templates/motd.j2"
@@ -47,8 +33,9 @@
 - name: Setup RFC3339 bash history timestamps
   lineinfile:
     dest: "/etc/profile.d/bash-history-timestamps.sh"
+    create: "yes"
     regexp: "^export"
-    line: 'export HISTTIMEFORMAT="%Y-%m-%dT%T%z'
+    line: 'export HISTTIMEFORMAT="%Y-%m-%dT%T%z"'
     mode: "0644"
     owner: "root"
     group: "root"
