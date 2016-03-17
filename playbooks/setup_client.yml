@@ -15,7 +15,7 @@
 #
 
 - name: Setup sensu client server basics
-  hosts: master
+  hosts: client
   user: "centos"
   become: "yes"
   become_user: "root"
