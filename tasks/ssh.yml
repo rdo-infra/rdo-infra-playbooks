@@ -34,9 +34,3 @@
 - name: Ensure we use the configured SSH port for the remainder of the role
   set_fact:
     ansible_port: "{{ configured_port }}"
-
-# Gather facts should be set to false when running this role since it will
-# fail if the Ansible SSH port is not set correctly.
-# We run setup to gather facts here once the SSH port is set up.
-- name: Run deferred setup to gather facts
-  setup:
