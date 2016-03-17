@@ -14,6 +14,7 @@
 #   under the License.
 #
 
+discover_ssh: "true"
 manage_ssh: "true"
 manage_users: "true"
 
