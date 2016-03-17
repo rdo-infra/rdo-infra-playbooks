@@ -14,6 +14,9 @@
 #   under the License.
 #
 
+manage_ssh: "true"
+manage_users: "true"
+
 rdo_base_packages:
   - libselinux-python
   - policycoreutils-python
@@ -30,7 +33,6 @@ rdo_debug_packages:
   - psmisc
 
 rdo_admin_group: "rdo-admin"
-
 rdo_admin_users:
   dmsimard:
     name: "dmsimard"

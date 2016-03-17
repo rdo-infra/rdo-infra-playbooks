@@ -14,7 +14,10 @@
 #   under the License.
 #
 
+- include: ssh_discover.yml
 - include: ssh.yml
+  when: manage_ssh == "true"
 - include: packages.yml
 - include: users.yml
+  when: manage_users == "true"
 - include: config.yml
