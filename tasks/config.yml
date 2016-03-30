@@ -30,7 +30,7 @@
     dest: "/etc/profile.d/bash-history-timestamps.sh"
     create: "yes"
     regexp: "^export"
-    line: 'export HISTTIMEFORMAT="%Y-%m-%dT%T%z"'
+    line: 'export HISTTIMEFORMAT="%Y-%m-%dT%T%z "'
     mode: "0644"
     owner: "root"
     group: "root"
