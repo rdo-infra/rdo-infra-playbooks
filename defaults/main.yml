@@ -51,3 +51,7 @@ rdo_admin_users:
     name: "mscherer"
     ssh_key: |
       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCoL3LW9x+/dO1M26tQeFDjbUdvV4fjPNKwJ1QvN/zZyXhmFqa0Zq+l77jPsPdZRL7hXHkbX+psr0R4D/ZRM7NjPwHOK0CObhyOqHQe+qGJh8+1GMSS8i+uJFe6xLDkk/ZS6DPrhVRNgLVp50o90awR/r0SykktVhphC0p7Vgt1uns9E9EWCKvPPA8s5yQBCaUad0aXP8diFERxyQrW6tLsl3pV8ELjma8morGN8PykOEjGCVUseD/pCljKCqvz5q8sjW+f3JiF9qxIPpGuka5o7mx0Xg86UxJ+N6FfvNfrXP917LJpqNMwoO5Qv7aWIr4JIFoFe3kocte5h5Jg5v+V
+  amoralej:
+    name: "amoralej"
+    ssh_key: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzSWK0/apjniWnXflcSQE+XNFDc4bWvgWnhhXj++Woc9/O7w/TrPh+3GPh7YUaNX01DVB6YgXevGTN3qm1abrKDDhlUKfuI3HTACnrd8eZQhcoyJ/SQUspbnrbQXFDU9QEmPcvZqHXtkt0Y0ihfN04Y3ba1iYkHfysFqxMvJiwYzdOcV8JD5kULkvd5hXYRxj/rSHl1k83XwKwL6adtabhgzSrsxYhCJ0LzecGN+3l3vZvhkfzV6m8YgGFMS9UpXsLzk1rbwKr8zVnj4sTgk817kGqnyrEkbCYFfiOduDnkvTSY34bJ3+LW7dsgwOiKi9KyIFt9YqVYqnIR5xovMF1
