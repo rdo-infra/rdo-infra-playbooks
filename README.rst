@@ -6,7 +6,7 @@ Usage
 =====
 - Pull required roles::
 
-    ansible-galaxy install -r requirements.yml
+    ansible-galaxy install -r ansible-role-requirements.yml
 
 - Setup config.yml (private credentials, etc.)
 - Setup master: ``ansible-playbook -i hosts playbooks/setup_master.yml``
