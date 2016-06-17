@@ -1,15 +1,19 @@
-rdo-monitoring
-==============
-Playbooks to configure Sensu monitoring components across RDO Infrastructure servers
+rdo-infra-playbooks
+===================
+Playbooks to configure servers involved in the delivery of RDO.
 
-Usage
-=====
+Dependencies
+============
 - Pull required roles::
 
     ansible-galaxy install -r ansible-role-requirements.yml
 
 - Setup config.yml (private credentials, etc.)
-- Setup master: ``ansible-playbook -i hosts playbooks/setup_master.yml``
-- Setup client(s): ``ansible-playbook -i hosts playbooks/setup_client.yml``
 
-Done !
+Setup monitoring master
+=======================
+- Setup master: ``ansible-playbook -e @config.yml -i hosts playbooks/setup_master.yml``
+
+Setup monitoring clients
+========================
+- Setup client(s): ``ansible-playbook -e @config.yml -i hosts playbooks/setup_client.yml``
