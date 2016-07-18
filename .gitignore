@@ -1,6 +1,5 @@
 *.retry
 config.yml
 sensu_client_certificates/
-roles/base
-roles/monitoring
-roles/rdobot
+playbooks/roles/*
+playbooks/tmp/*
