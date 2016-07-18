@@ -2,7 +2,22 @@
 127.0.0.1 ansible_connection=local
 
 [master]
-master.monitoring.rdoproject.org ansible_port=3300 ansible_user=centos ansible_host=46.231.133.98
+master.monitoring.rdoproject.org ansible_port=3300 ansible_user=centos public_address=46.231.133.98
 
-[client]
-trunk.rdoproject.org ansible_port=3300 ansible_user=centos ansible_host=46.231.133.114
+[dlrn-primary]
+delorean.ci.centos.org public_address=66.187.224.197 discover_ssh="false"
+
+[dlrn-secondary]
+trunk.rdoproject.org ansible_port=3300 ansible_user=centos public_address=46.231.133.114
+
+[client:children]
+dlrn-primary
+dlrn-secondary
+slaves
+
+[slaves]
+# Servers in the ci.centos.org network requires specific .ssh/config parameters to go through a jump box
+rdo-jenkins.ci.centos.org public_address=66.187.224.197 discover_ssh="false" manage_ssh="false" manage_users="false" ansible_user=dmsimard
+rdo-ci-slave-02.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
+rdo-ci-slave-03.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
+rdo-ci-slave-04.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
