@@ -1,5 +1,4 @@
 *.retry
-ansible.cfg
 config.yml
 sensu_client_certificates/
 roles/base
