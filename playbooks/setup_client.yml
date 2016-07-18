@@ -16,7 +16,6 @@
 
 - name: Setup sensu client server basics
   hosts: client
-  user: "centos"
   become: "yes"
   become_user: "root"
   gather_facts: "false"
@@ -27,7 +26,6 @@
 
 - name: Setup sensu client
   hosts: client
-  user: "centos"
   become: "yes"
   become_user: "root"
   roles:

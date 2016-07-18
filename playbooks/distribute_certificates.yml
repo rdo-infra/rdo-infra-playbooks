@@ -22,7 +22,6 @@
 
 - name: Retrieve client certificates from the master
   hosts: master
-  user: "centos"
   gather_facts: "no"
   tasks:
     - name: Download client certificates
@@ -34,7 +33,6 @@
 
 - name: Distribute client certificates to the clients
   hosts: client
-  user: "centos"
   gather_facts: "no"
   become: "yes"
   become_user: "root"
