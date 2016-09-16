@@ -23,7 +23,7 @@
   service:
     name: "ntp"
     enabled: "yes"
-    stated: "started"
+    state: "started"
 
 - name: Ensure timezone is set to UTC
   file:
