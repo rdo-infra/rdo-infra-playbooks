@@ -21,10 +21,12 @@ manage_users: "true"
 rdo_base_packages:
   - libselinux-python
   - policycoreutils-python
+  - python-setuptools
   - wget
   - screen
   - redhat-lsb-core
   - deltarpm
+  - ntp
 
 rdo_debug_packages:
   - net-tools
@@ -32,6 +34,7 @@ rdo_debug_packages:
   - tcpdump
   - sysstat
   - psmisc
+  - bind-utils
 
 rdo_admin_group: "rdo-admin"
 rdo_admin_users:

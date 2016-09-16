@@ -19,6 +19,12 @@
     src: "templates/motd.j2"
     dest: "/etc/motd"
 
+- name: Enable and start ntpd
+  service:
+    name: "ntp"
+    enabled: "yes"
+    stated: "started"
+
 - name: Ensure timezone is set to UTC
   file:
     src: "/usr/share/zoneinfo/UTC"
