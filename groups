@@ -1,3 +1,5 @@
-# UUID                                  	Group Name
-#
-0a7a11e1fd3a2e6bbc9455383ae41be70611be88	rdo-infra/rdo-infra-playbooks-ptl
+# UUID          Group Name
+False 	Non-Interactive Users
+75c109e63fca7bca0a2978540c7f59104af8d1d0       	rdo-infra/rdo-infra-playbooks-core
+0a7a11e1fd3a2e6bbc9455383ae41be70611be88        	rdo-infra/rdo-infra-playbooks-ptl
+global:Registered-Users		Registered Users
