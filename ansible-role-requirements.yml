@@ -10,3 +10,7 @@
   src: https://github.com/rdo-infra/ansible-role-rdobot
   scm: git
   version: master
+- name: logserver
+  src: https://github.com/rdo-infra/ansible-role-logserver
+  scm: git
+  version: master

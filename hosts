@@ -21,3 +21,6 @@ rdo-jenkins.ci.centos.org public_address=66.187.224.197 discover_ssh="false" man
 rdo-ci-slave-02.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
 rdo-ci-slave-03.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
 rdo-ci-slave-04.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
+
+[logserver]
+thirdparty-logs.rdoproject.org ansible_port=3300 ansible_user=centos
