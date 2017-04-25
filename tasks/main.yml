@@ -17,7 +17,9 @@
 - include: ssh_discover.yml
   when: discover_ssh == "true"
 - include: ssh.yml
-  when: manage_ssh == "true"
+  when:
+    - discover_ssh == "true"
+    - manage_ssh == "true"
 
 # Gather facts should be set to false when running this role since it will
 # fail if the Ansible SSH port is not set correctly.
