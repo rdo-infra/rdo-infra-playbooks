@@ -19,13 +19,6 @@
     src: "templates/motd.j2"
     dest: "/etc/motd"
 
-- name: Ensure ntpd is not present (use chronyd)
-  service:
-    name: "ntpd"
-    enabled: "no"
-    state: "stopped"
-  ignore_errors: "yes"
-
 - name: Enable and start chronyd
   service:
     name: "chronyd"
