@@ -60,7 +60,3 @@ rdo_admin_users:
     name: "amoralej"
     ssh_key: |
       ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCzSWK0/apjniWnXflcSQE+XNFDc4bWvgWnhhXj++Woc9/O7w/TrPh+3GPh7YUaNX01DVB6YgXevGTN3qm1abrKDDhlUKfuI3HTACnrd8eZQhcoyJ/SQUspbnrbQXFDU9QEmPcvZqHXtkt0Y0ihfN04Y3ba1iYkHfysFqxMvJiwYzdOcV8JD5kULkvd5hXYRxj/rSHl1k83XwKwL6adtabhgzSrsxYhCJ0LzecGN+3l3vZvhkfzV6m8YgGFMS9UpXsLzk1rbwKr8zVnj4sTgk817kGqnyrEkbCYFfiOduDnkvTSY34bJ3+LW7dsgwOiKi9KyIFt9YqVYqnIR5xovMF1
-  trown:
-    name: "trown"
-    ssh_key: |
-      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC/1ODALXS4UnTrF27jEDXZLxaS5pn6kPMmt7+mPoYvWzep9LQm0t47vA6Ts7Cpl7bkn3HbbxhSTaUSxsh7GjbraXwZFTsCawfqQE8Dstd3IJY9Jm3e2Ri6w+vX7YF1w355YKAXw0opswy5KSnlL4e+B0pgR/TbClD4XET/+O9Bf9x8m2QiLRZrwgTKTrGKG0iTZn/CImE21BL6lvxYQH7yuLe96ejvvoZ4OdXP3xFiJW4HVxJmbDQNshKoNkirOwoT4hgjoqkz8uwNn/gRIcbJZlPDw6nOHEoctzHp6FZh2aHkKnx5lyaFabtiSadjWo1TYsqbU7OhC7H6Yif8JprN
