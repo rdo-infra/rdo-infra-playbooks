@@ -16,16 +16,7 @@
 
 - name: Install base packages
   package:
-    name: "{{ item }}"
+    name: "{{ rdo_base_packages }}"
     state: "present"
-  with_items: "{{ rdo_base_packages }}"
-  retries: "3"
-  delay: "20"
-
-- name: Install debug packages
-  package:
-    name: "{{ item }}"
-    state: "present"
-  with_items: "{{ rdo_debug_packages }}"
   retries: "3"
   delay: "20"

@@ -26,11 +26,10 @@ rdo_base_packages:
   - python-setuptools
   - wget
   - screen
+  - tmux
   - redhat-lsb-core
   - deltarpm
   - chrony
-
-rdo_debug_packages:
   - net-tools
   - lsof
   - tcpdump
