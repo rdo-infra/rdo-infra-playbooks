@@ -18,3 +18,11 @@
   service:
     name: "sshd"
     state: "restarted"
+
+- name: Set up persistent journal
+  command: systemd-tmpfiles --create --prefix /var/log/journal
+
+- name: Restart journald
+  service:
+    name: "systemd-journald"
+    state: "restarted"
