@@ -1,0 +1,31 @@
+# Example ~/.ssh/config file
+##################
+# ci.centos.org
+##################
+Host rdo-jenkins-2.ci.centos.org
+    Hostname rdo-jenkins-2.ci.centos.org
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host delorean.ci.centos.org
+    Hostname 172.19.3.94
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host rdo-ci-cloudslave01.ci.centos.org rdo-ci-cloudslave01
+    Hostname 172.19.4.18
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host rdo-ci-cloudslave02.ci.centos.org rdo-ci-cloudslave02
+    Hostname 172.19.4.27
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host rdo-ci-cloudslave03.ci.centos.org rdo-ci-cloudslave03
+    Hostname 172.19.4.29
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host rdo-ci-cloudslave04.ci.centos.org rdo-ci-cloudslave04
+    Hostname 172.19.4.16
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
+
+Host rdo-ci-cloudslave05.ci.centos.org rdo-ci-cloudslave05
+    Hostname 172.19.4.12
+    ProxyCommand ssh jump.ci.centos -W %h:%p 2>/dev/null
