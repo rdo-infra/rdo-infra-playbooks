@@ -28,6 +28,33 @@
     setype: "ssh_port_t"
     state: "present"
 
+- name: Install fail2ban from EPEL
+  vars:
+    package: "{{ item }}"
+  include: epel_package.yml
+  static: no
+  with_items:
+    - fail2ban
+    - fail2ban-systemd
+
+- name: Start and enable fail2ban
+  service:
+    name: "fail2ban"
+    state: "started"
+    enabled: "yes"
+
+- name: Configure fail2ban
+  copy:
+    content: |
+      [sshd]
+      enabled = true
+      port = {{ configured_port }}
+      bantime = 3600
+      maxretry = 3
+    dest: "/etc/fail2ban/jail.d/01-sshd.conf"
+    mode: "0644"
+  notify: "Restart fail2ban"
+
 - name: Ensure SSH is reloaded if need be
   meta: flush_handlers
 
