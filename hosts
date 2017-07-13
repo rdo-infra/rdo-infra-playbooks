@@ -1,26 +1,48 @@
-[localhost]
-127.0.0.1 ansible_connection=local
+[all:vars]
+# We will enable these later, they control the SSH port.
+discover_ssh=false
+manage_ssh=false
 
-[master]
-master.monitoring.rdoproject.org ansible_port=3300 ansible_user=centos public_address=46.231.133.98
+[standard]
+logs.rdoproject.org public_address=38.145.32.13
+images.rdoproject.org public_address=38.145.33.168
+www.rdoproject.org public_address=38.145.32.152
+lists.rdoproject.org public_address=38.145.33.193
+registry.rdoproject.org public_address=38.145.32.81
 
-[dlrn-primary]
-delorean.ci.centos.org public_address=66.187.224.197 discover_ssh="false"
+[review]
+review.rdoproject.org public_address=46.231.133.182
+# nodepool-builder is not on the WAN, see contrib/ssh_config
+nb01.review.rdoproject.org public_address=46.231.133.218
+# TODO, rename these zm02 and zm03 for short
+zuul-merger02.review.rdoproject.org public_address=46.231.133.69
+zuul-merger03.review.rdoproject.org public_address=46.231.133.57
 
-[dlrn-secondary]
-trunk.rdoproject.org ansible_port=3300 ansible_user=centos public_address=46.231.133.114
+[dlrn]
+trunk.rdoproject.org ansible_port=3300 public_address=54.81.116.189
+delorean.ci.centos.org public_address=8.43.84.199
+dlrn-db.rdoproject.org public_address=38.145.32.146
+# dlrn-builder does not have a DNS
+dlrn-builder.rdoproject.org ansible_ssh_host=38.145.32.81 public_address=38.145.32.81
 
-[client:children]
-dlrn-primary
-dlrn-secondary
-slaves
-
-[slaves]
+[cicojenkins]
 # Servers in the ci.centos.org network requires specific .ssh/config parameters to go through a jump box
-rdo-jenkins.ci.centos.org public_address=66.187.224.197 discover_ssh="false" manage_ssh="false" manage_users="false" ansible_user=dmsimard
-rdo-ci-slave-02.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
-rdo-ci-slave-03.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
-rdo-ci-slave-04.ci.centos.org public_address=8.43.84.248 discover_ssh="false" manage_ssh="false" ansible_user=centos
+# See contrib/ssh_config for more information
+rdo-jenkins-2.ci.centos.org
+rdo-ci-slave-02.ci.centos.org
+rdo-ci-slave-03.ci.centos.org
+rdo-ci-slave-04.ci.centos.org
+rdo-ci-slave-05.ci.centos.org
 
-[logserver]
-thirdparty-logs.rdoproject.org ansible_port=3300 ansible_user=centos
+[cicojenkins:vars]
+public_address=8.43.84.199
+
+[monitoring]
+master.monitoring.rdoproject.org ansible_port=3300 public_address=46.231.133.98
+
+[monitoring_clients:children]
+# Servers that the monitoring agent should be installed and configured on
+standard
+review
+dlrn
+cicojenkins
