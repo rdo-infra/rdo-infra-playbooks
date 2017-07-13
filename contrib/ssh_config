@@ -1,0 +1,38 @@
+# Example ~/.ssh/config file
+##################
+# review.rdoproject.org
+##################
+Host nb01.review.rdoproject.org
+    Hostname 192.168.240.8
+    ProxyCommand ssh -q review.rdoproject.org -W %h:%p
+
+##################
+# ci.centos.org
+##################
+Host rdo-jenkins-2.ci.centos.org
+    Hostname rdo-jenkins-2.ci.centos.org
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host delorean.ci.centos.org
+    Hostname 172.19.3.94
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host rdo-ci-cloudslave01.ci.centos.org rdo-ci-cloudslave01
+    Hostname 172.19.4.18
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host rdo-ci-cloudslave02.ci.centos.org rdo-ci-cloudslave02
+    Hostname 172.19.4.27
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host rdo-ci-cloudslave03.ci.centos.org rdo-ci-cloudslave03
+    Hostname 172.19.4.29
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host rdo-ci-cloudslave04.ci.centos.org rdo-ci-cloudslave04
+    Hostname 172.19.4.16
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
+
+Host rdo-ci-cloudslave05.ci.centos.org rdo-ci-cloudslave05
+    Hostname 172.19.4.12
+    ProxyCommand ssh -q jump.ci.centos -W %h:%p
