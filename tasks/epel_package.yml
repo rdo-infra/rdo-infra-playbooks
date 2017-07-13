@@ -1,0 +1,49 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: "Verify if {{ package }} is installed"
+  shell: rpm -qa | grep {{ package }}
+  failed_when: false
+  changed_when: false
+  register: installed_package
+
+- when: "'{{ package }}' not in installed_package.stdout"
+  block:
+    - name: Verify if EPEL is available
+      shell: rpm -qa | grep epel-release
+      failed_when: false
+      changed_when: false
+      register: epel
+
+    - name: Install epel-release
+      package:
+        name: "epel-release"
+        state: "present"
+      when: "'epel' not in epel.stdout"
+      register: installed_epel
+
+    - name: "Install {{ package }} from EPEL"
+      package:
+        name: "{{ package }}"
+        state: "present"
+
+    # If EPEL was installed, don't remove it but if we just installed it,
+    # destroy it with extreme prejudice
+    - name: Remove epel-release
+      package:
+        name: "epel-release"
+        state: "absent"
+      when: installed_epel | changed

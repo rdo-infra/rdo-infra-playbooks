@@ -22,36 +22,8 @@
   delay: "20"
 
 # dmsimard cannot live without htop which is only available in EPEL
-- name: Verify if htop is installed
-  shell: rpm -qa | grep htop
-  failed_when: false
-  changed_when: false
-  register: htop
-
-- when: "'htop' not in htop.stdout"
-  block:
-    - name: Verify if EPEL is available
-      shell: rpm -qa | grep epel-release
-      failed_when: false
-      changed_when: false
-      register: epel
-
-    - name: Install epel-release
-      package:
-        name: "epel-release"
-        state: "present"
-      when: "'epel' not in epel.stdout"
-      register: installed_epel
-
-    - name: Install htop
-      package:
-        name: "htop"
-        state: "present"
-
-    # If EPEL was installed, don't remove it but if we just installed it,
-    # destroy it with extreme prejudice
-    - name: Remove epel-release
-      package:
-        name: "epel-release"
-        state: "absent"
-      when: installed_epel | changed
+- name: Install htop from EPEL
+  vars:
+    package: "htop"
+  include: epel_package.yml
+  static: no
