@@ -1,0 +1,9 @@
+- name: Install and configure a Sensu client
+  hosts: monitoring_clients
+  become: yes
+  become_user: root
+  roles:
+    - prereqs
+    - repos
+    - sensu/client
+    - rdo-infra/sensu-client
