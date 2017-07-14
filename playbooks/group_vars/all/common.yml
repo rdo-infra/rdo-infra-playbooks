@@ -1,0 +1,84 @@
+---
+###
+# rdo-base
+###
+# These control SSH port and security, let's enable them later
+discover_ssh: false
+manage_ssh: false
+
+###
+# sensu-server and sensu-client through opstools-ansible
+###
+manage_packages: true
+manage_services: true
+manage_repos: true
+# We have security groups
+firewall_manage_rules: false
+
+yum_repos_d: /etc/yum.repos.d
+localhost_ip: 127.0.0.1
+
+rdo_release: "ocata"
+
+# Sensu SSL issue ?
+# https://github.com/sensu/sensu/issues/1601
+
+rabbitmq_use_ssl: true
+rabbitmq_ssl_cacert: "{{ server_ssl_ca_cert }}"
+rabbitmq_ssl_cert: "{{ server_ssl_cert }}"
+rabbitmq_ssl_key: "{{ server_ssl_key }}"
+
+sensu_manage_checks: false
+sensu_rabbitmq_with_ssl: true
+sensu_rabbitmq_ssl_cert: "{{ client_ssl_cert }}"
+sensu_rabbitmq_ssl_key: "{{ client_ssl_key }}"
+sensu_rabbitmq_password: "sensu"
+
+uchiwa_authentication: 'uchiwa'
+
+###
+# RDO Monitoring check configuration
+###
+rdo_sensu_plugins:
+  cpu-checks:
+    creates: "/opt/sensu/embedded/bin/check-cpu.rb"
+  process-checks:
+    creates: "/opt/sensu/embedded/bin/check-process.rb"
+  disk-checks:
+    creates: "/opt/sensu/embedded/bin/check-disk-usage.rb"
+  filesystem-checks:
+    creates: "/opt/sensu/embedded/bin/check-mtime.rb"
+  memory-checks:
+    creates: "/opt/sensu/embedded/bin/check-ram.rb"
+  network-checks:
+    creates: "/opt/sensu/embedded/bin/check-ping.rb"
+  dns:
+    creates: "/opt/sensu/embedded/bin/check-dns.rb"
+  http:
+    creates: "/opt/sensu/embedded/bin/check-http.rb"
+  uptime-checks:
+    creates: "/opt/sensu/embedded/bin/metrics-uptime.rb"
+  jenkins:
+    creates: "/opt/sensu/embedded/bin/check-jenkins.rb"
+  load-checks:
+    creates: "/opt/sensu/embedded/bin/check-load.rb"
+  io-checks:
+    creates: "/opt/sensu/embedded/bin/metrics-iostat-extended.rb"
+  uchiwa:
+    creates: "/opt/sensu/embedded/bin/check-uchiwa-health.rb"
+
+rdo_checks:
+  check-cpu:
+    command: '/opt/sensu/embedded/bin/check-cpu.rb'
+    occurrences: '10'
+  check-load:
+    command: '/opt/sensu/embedded/bin/check-load.rb'
+    occurrences: '10'
+  check-disk-usage:
+    command: '/opt/sensu/embedded/bin/check-disk-usage.rb'
+  check-ram:
+    command: '/opt/sensu/embedded/bin/check-ram.rb'
+  check-fstab:
+    command: '/opt/sensu/embedded/bin/check-fstab-mounts.rb'
+  check-dns:
+    command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
