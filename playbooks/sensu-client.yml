@@ -1,0 +1,19 @@
+- name: Install and configure a Sensu client
+  hosts: monitoring_clients
+  become: yes
+  become_user: root
+  tasks:
+    - name: Set up prerequisites
+      include_role:
+        name: "prereqs"
+      static: no
+
+    - name: Set up Sensu Client
+      include_role:
+        name: "sensu/client"
+      static: no
+
+    - name: Set up RDO Sensu monitoring
+      include_role:
+        name: "rdo-infra/sensu-client"
+      static: no
