@@ -1,0 +1,9 @@
+- name: Install RDO common base
+  hosts: all
+  become: yes
+  become_user: root
+  tasks:
+    - name: Include base role
+      include_role:
+        name: "rdo-infra/base"
+      static: no
