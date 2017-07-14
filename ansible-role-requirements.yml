@@ -1,16 +1,4 @@
 - name: base
-  src: https://github.com/rdo-infra/ansible-role-rdobase
-  scm: git
-  version: master
-- name: monitoring
-  src: https://github.com/rdo-infra/ansible-role-rdomonitoring
-  scm: git
-  version: master
-- name: rdobot
-  src: https://github.com/rdo-infra/ansible-role-rdobot
-  scm: git
-  version: master
-- name: logserver
-  src: https://github.com/rdo-infra/ansible-role-logserver
+  src: https://github.com/rdo-infra/ansible-role-rdo-base
   scm: git
   version: master
