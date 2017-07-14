@@ -1,0 +1,30 @@
+- name: Install and configure a Sensu client
+  hosts: monitoring_clients
+  become: yes
+  become_user: root
+  vars:
+    manage_packages: true
+    manage_services: true
+    manage_repos: true
+    yum_repos_d: /etc/yum.repos.d
+    localhost_ip: 127.0.0.1
+  tasks:
+    - name: Set up prerequisites
+      include_role:
+        name: "prereqs"
+      static: no
+
+    - name: Set up repos
+      include_role:
+        name: "repos"
+      static: no
+
+    - name: Set up Sensu Client
+      include_role:
+        name: "sensu/client"
+      static: no
+
+    - name: Set up RDO Sensu monitoring
+      include_role:
+        name: "rdo-infra/sensu-client"
+      static: no

@@ -1,0 +1,47 @@
+- name: Install and configure the Sensu server
+  hosts: monitoring
+  become: yes
+  become_user: root
+  vars:
+    manage_packages: true
+    manage_services: true
+    manage_repos: true
+    yum_repos_d: /etc/yum.repos.d
+    localhost_ip: 127.0.0.1
+  tasks:
+    - name: Set up prerequisites
+      include_role:
+        name: "prereqs"
+      static: no
+
+    - name: Set up repos
+      include_role:
+        name: "repos"
+      static: no
+
+    - name: Set up RabbitMQ
+      include_role:
+        name: "rabbitmq/server"
+      static: no
+
+    - name: Set up Redis
+      include_role:
+        name: "redis/server"
+      static: no
+
+    - name: Set up Sensu Server
+      include_role:
+        name: "sensu/server"
+      static: no
+
+    - name: Set up Uchiwa
+      include_role:
+        name: "uchiwa/server"
+      static: no
+
+    - name: Set up Uchiwa Proxy
+      include_role:
+        name: "uchiwa/proxy"
+      static: no
+
+- include: sensu-client.yml

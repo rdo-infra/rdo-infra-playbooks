@@ -1,0 +1,42 @@
+- name: Install base packages
+  package:
+    name: "{{ rdo_sensu_client_packages }}"
+    state: "latest"
+
+- name: Install required Sensu plugins
+  command: sensu-install -P {{ item.key }}
+  args:
+    creates: "{{ item.value.creates }}"
+  with_dict: "{{ rdo_sensu_plugins }}"
+
+- name: Setup custom Sensu plugins
+  copy:
+    src: "{{ item }}"
+    dest: "/usr/local/bin/{{item}}"
+    mode: "0555"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_plugins }}"
+
+- name: Ensure Sensu handlers directory exists
+  file:
+    path: "/etc/sensu/handlers"
+    state: "directory"
+
+- name: Setup custom Sensu handlers
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/sensu/handlers/{{ item }}"
+    mode: "0555"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_handlers }}"
+
+- name: Setup custom Sensu extensions
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/sensu/extensions/{{ item }}"
+    mode: "0555"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_extensions }}"
