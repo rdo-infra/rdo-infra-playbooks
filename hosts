@@ -40,7 +40,11 @@ public_address=8.43.84.199
 [monitoring]
 master.monitoring.rdoproject.org ansible_port=3300 public_address=46.231.133.98
 
-[monitoring_clients:children]
+# Required due to opstools setup expecting a rabbit_hosts group
+[rabbit_hosts:children]
+monitoring
+
+#[monitoring_clients:children]
 # Servers that the monitoring agent should be installed and configured on
 standard
 review
