@@ -1,0 +1,14 @@
+- name: Install and configure the Sensu server
+  hosts: monitoring
+  become: yes
+  become_user: root
+  roles:
+    - prereqs
+    - repos
+    - rabbitmq/server
+    - redis/server
+    - sensu/server
+    - uchiwa/server
+    - uchiwa/proxy
+
+- include: sensu-client.yml
