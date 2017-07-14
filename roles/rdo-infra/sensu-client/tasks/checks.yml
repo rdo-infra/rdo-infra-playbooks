@@ -1,0 +1,26 @@
+# Default checks
+
+
+- name: Set up checks
+  vars:
+    defaults: "{{ rdo_checks_defaults }}"
+  sensu_check:
+    name: "{{ item.key }}"
+    command: "{{ item.value.command }}"
+    metric: "{{ item.value.metric | default(defaults['metric']) }}"
+    handlers: "{{ item.value.handlers | default(defaults['handlers']) }}"
+    subscribers: "{{ item.value.subscribers | default(defaults['subscribers']) }}"
+    interval: "{{ item.value.interval | default(defaults['interval']) }}"
+    ttl: "{{ item.value.ttl | default(defaults['ttl']) }}"
+    standalone: "{{ item.value.standalone | default(defaults['standalone']) }}"
+    custom: "{{ item.value.custom | default(defaults['custom']) }}"
+  with_dict: "{{ rdo_checks }}"
+  notify:
+    - Restart sensu-client
+
+- name: Subscribe to default subscription
+  sensu_subscription:
+    name: "default"
+    state: "present"
+  notify:
+    - Restart sensu-client

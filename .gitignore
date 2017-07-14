@@ -1,5 +1,2 @@
 *.retry
-config.yml
-sensu_client_certificates/
-playbooks/roles/*
-playbooks/tmp/*
+roles/rdo-infra/base
