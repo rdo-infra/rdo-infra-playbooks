@@ -3,11 +3,15 @@
 # review.rdoproject.org
 ##################
 Host nb01.review.rdoproject.org
-    Hostname 192.168.240.10
+    Hostname 192.168.240.4
     ProxyCommand ssh -q managesf.review.rdoproject.org -W %h:%p
 
 Host zl01.review.rdoproject.org
-    Hostname 192.168.240.8
+    Hostname 192.168.240.7
+    ProxyCommand ssh -q managesf.review.rdoproject.org -W %h:%p
+
+Host zl01.review.rdoproject.org
+    Hostname 192.168.240.13
     ProxyCommand ssh -q managesf.review.rdoproject.org -W %h:%p
 
 ##################
