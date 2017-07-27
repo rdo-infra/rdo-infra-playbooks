@@ -1,2 +1,3 @@
 *.retry
 roles/rdo-infra/base
+roles/rdo-infra/rdobot

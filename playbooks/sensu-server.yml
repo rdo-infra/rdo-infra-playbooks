@@ -12,3 +12,5 @@
     - uchiwa/proxy
 
 - include: sensu-client.yml
+
+- include: sensu-rdobot.yml
