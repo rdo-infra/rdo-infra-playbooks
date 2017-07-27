@@ -3,6 +3,13 @@
     name: "{{ rdo_sensu_client_packages }}"
     state: "latest"
 
+# https://github.com/sensu-plugins/sensu-plugins-memory-checks/issues/33
+- name: Install vmstat gem for check memory
+  gem:
+    executable: "/opt/sensu/embedded/bin/gem"
+    name: "vmstat"
+    state: "present"
+
 - name: Install required Sensu plugins
   command: sensu-install -P {{ item.key }}
   args:
