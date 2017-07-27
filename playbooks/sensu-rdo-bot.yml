@@ -1,0 +1,6 @@
+- name: Install and configure rdobot
+  hosts: monitoring
+  become: yes
+  become_user: root
+  roles:
+    - rdo-infra/bot
