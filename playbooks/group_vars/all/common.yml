@@ -19,6 +19,8 @@ yum_repos_d: /etc/yum.repos.d
 localhost_ip: 127.0.0.1
 
 rdo_release: "ocata"
+uchiwa_authentication: 'uchiwa'
+sensu_api_authentication: true
 
 # Sensu SSL issue ?
 # https://github.com/sensu/sensu/issues/1601
@@ -33,8 +35,6 @@ sensu_rabbitmq_with_ssl: true
 sensu_rabbitmq_ssl_cert: "{{ client_ssl_cert }}"
 sensu_rabbitmq_ssl_key: "{{ client_ssl_key }}"
 sensu_rabbitmq_password: "sensu"
-
-uchiwa_authentication: 'uchiwa'
 
 ###
 # RDO Monitoring check configuration
