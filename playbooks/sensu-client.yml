@@ -7,3 +7,19 @@
     - repos
     - sensu/client
     - rdo-infra/sensu-client
+
+- name: Sanity check Sensu Client components
+  hosts: monitoring
+  become: yes
+  become_user: root
+  tasks:
+    - name: Run sanity checks
+      command: "{{ item }}"
+      changed_when: false
+      with_items:
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'sensu-client' -C 1"
+        - "/opt/sensu/embedded/bin/check-cpu.rb"
+        - "/opt/sensu/embedded/bin/check-load.rb"
+        - "/opt/sensu/embedded/bin/check-disk-usage.rb"
+        - "/opt/sensu/embedded/bin/check-fstab-mounts.rb"
+        - "/opt/sensu/embedded/bin/check-dns.rb -d 'rdoproject.org'"
