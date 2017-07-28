@@ -21,6 +21,7 @@ localhost_ip: 127.0.0.1
 rdo_release: "ocata"
 uchiwa_authentication: 'uchiwa'
 sensu_api_authentication: true
+sensu_client_address: "{{ public_address | default(ansible_default_ipv4.address) }}"
 
 # Sensu SSL issue ?
 # https://github.com/sensu/sensu/issues/1601
