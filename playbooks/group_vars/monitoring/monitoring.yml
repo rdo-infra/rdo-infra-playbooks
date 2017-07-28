@@ -12,9 +12,6 @@ rdo_additional_checks:
   check-sensu-server:
     command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-server" -C 1'
     subscribers: 'monitoring_master'
-  check-sensu-client:
-    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-client" -C 1'
-    subscribers: 'monitoring_master'
   check-uchiwa:
     command: "/opt/sensu/embedded/bin/check-uchiwa-health.rb -h localhost:3000/uchiwa -u rdo -p rdo"
     subscribers: 'monitoring_master'
