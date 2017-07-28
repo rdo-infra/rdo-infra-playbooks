@@ -19,8 +19,8 @@
 - name: Setup custom Sensu plugins
   copy:
     src: "{{ item }}"
-    dest: "/usr/local/bin/{{item}}"
-    mode: "0555"
+    dest: "/opt/sensu/embedded/bin/{{item}}"
+    mode: "0755"
     owner: "sensu"
     group: "sensu"
   with_items: "{{ rdo_custom_sensu_plugins }}"
@@ -34,7 +34,7 @@
   copy:
     src: "{{ item }}"
     dest: "/etc/sensu/handlers/{{ item }}"
-    mode: "0555"
+    mode: "0755"
     owner: "sensu"
     group: "sensu"
   with_items: "{{ rdo_custom_sensu_handlers }}"
@@ -43,7 +43,7 @@
   copy:
     src: "{{ item }}"
     dest: "/etc/sensu/extensions/{{ item }}"
-    mode: "0555"
+    mode: "0755"
     owner: "sensu"
     group: "sensu"
   with_items: "{{ rdo_custom_sensu_extensions }}"
