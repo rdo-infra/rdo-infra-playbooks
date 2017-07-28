@@ -1,0 +1,4 @@
+# Variables for ansible-role-rdobase
+# These control SSH port and security, let's enable them later
+discover_ssh: false
+manage_ssh: false

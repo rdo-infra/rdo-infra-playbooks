@@ -76,3 +76,6 @@ rdo_checks:
     command: '/opt/sensu/embedded/bin/check-fstab-mounts.rb'
   check-dns:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
+
+rdo_additional_checks: false
+rdo_additional_subscriptions: false

@@ -1,0 +1,31 @@
+# Variables for rdo-infra/sensu-client
+rdo_additional_checks:
+  check-rabbitmq:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "rabbitmq" -C 1'
+    subscribers: 'monitoring_master'
+  check-rdobot:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "rdobot" -C 1'
+    subscribers: 'monitoring_master'
+  check-sensu-api:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-api" -C 1'
+    subscribers: 'monitoring_master'
+  check-sensu-server:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-server" -C 1'
+    subscribers: 'monitoring_master'
+  check-sensu-client:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-client" -C 1'
+    subscribers: 'monitoring_master'
+  check-uchiwa:
+    command: "/opt/sensu/embedded/bin/check-uchiwa-health.rb -h localhost:3000/uchiwa -u rdo -p rdo"
+    subscribers: 'monitoring_master'
+  check-httpd:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "httpd" -C 1'
+    subscribers: 'monitoring_master'
+  check-domain-registration:
+    command: '/opt/sensu/embedded/bin/check-whois-domain-expiration.rb -d rdoproject.org -c 60'
+    subscribers: 'monitoring_master'
+    interval: '14400'
+    ttl: '43200'
+
+rdo_additional_subscriptions:
+  - monitoring_master

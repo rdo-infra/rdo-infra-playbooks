@@ -1,0 +1,25 @@
+# Variables for opstools-ansible Sensu server/client and Uchiwa implementation
+manage_packages: true
+manage_services: true
+manage_repos: true
+# We have security groups
+firewall_manage_rules: false
+
+yum_repos_d: /etc/yum.repos.d
+localhost_ip: 127.0.0.1
+
+rdo_release: "ocata"
+uchiwa_authentication: 'uchiwa'
+sensu_api_authentication: true
+sensu_client_address: "{{ public_address | default(ansible_default_ipv4.address) }}"
+
+rabbitmq_use_ssl: true
+rabbitmq_ssl_cacert: "{{ server_ssl_ca_cert }}"
+rabbitmq_ssl_cert: "{{ server_ssl_cert }}"
+rabbitmq_ssl_key: "{{ server_ssl_key }}"
+
+sensu_manage_checks: false
+sensu_rabbitmq_with_ssl: true
+sensu_rabbitmq_ssl_cert: "{{ client_ssl_cert }}"
+sensu_rabbitmq_ssl_key: "{{ client_ssl_key }}"
+sensu_rabbitmq_password: "sensu"
