@@ -35,10 +35,12 @@ rdo_checks:
     command: '/opt/sensu/embedded/bin/check-load.rb'
     occurrences: '10'
   check-disk-usage:
-    command: '/opt/sensu/embedded/bin/check-disk-usage.rb'
+    command: '/opt/sensu/embedded/bin/check-disk-usage.rb -p /mnt/config'
   check-ram:
     command: '/opt/sensu/embedded/bin/check-ram.rb'
   check-fstab:
     command: '/opt/sensu/embedded/bin/check-fstab-mounts.rb'
   check-dns:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
+  check-sensu-client:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "sensu-client" -C 1'
