@@ -11,6 +11,24 @@
     - uchiwa/server
     - uchiwa/proxy
 
-- include: sensu-client.yml
-
 - include: sensu-rdo-bot.yml
+  static: no
+
+- include: sensu-client.yml
+  static: no
+
+- name: Sanity check Sensu Server components
+  hosts: monitoring
+  become: yes
+  become_user: root
+  tasks:
+    - name: Run sanity checks
+      command: "{{ item }}"
+      changed_when: false
+      with_items:
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'rabbitmq' -C 1"
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'rdobot' -C 1"
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'sensu-api' -C 1"
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'sensu-server' -C 1"
+        - "/opt/sensu/embedded/bin/check-uchiwa-health.rb -h 'localhost:3000/uchiwa' -u rdo -p rdo"
+        - "/opt/sensu/embedded/bin/check-process.rb -p 'httpd' -C 1"
