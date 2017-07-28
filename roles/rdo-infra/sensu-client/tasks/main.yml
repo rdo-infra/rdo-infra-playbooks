@@ -5,3 +5,7 @@
 - name: Set up checks
   include: checks.yml
   static: no
+
+- name: Sanity check sensu components
+  include: sanity-check.yml
+  static: no
