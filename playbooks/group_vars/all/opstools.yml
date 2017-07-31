@@ -12,14 +12,12 @@ rdo_release: "ocata"
 uchiwa_authentication: 'uchiwa'
 sensu_api_authentication: true
 sensu_api_bind: 127.0.0.1
-sensu_client_address: "{{ public_address | default(ansible_default_ipv4.address) }}"
 
 rabbitmq_use_ssl: true
 rabbitmq_ssl_cacert: "{{ server_ssl_ca_cert }}"
 rabbitmq_ssl_cert: "{{ server_ssl_cert }}"
 rabbitmq_ssl_key: "{{ server_ssl_key }}"
 
-sensu_manage_checks: false
 sensu_rabbitmq_with_ssl: true
 sensu_rabbitmq_ssl_cert: "{{ client_ssl_cert }}"
 sensu_rabbitmq_ssl_key: "{{ client_ssl_key }}"
