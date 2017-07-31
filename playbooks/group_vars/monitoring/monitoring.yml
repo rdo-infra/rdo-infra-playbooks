@@ -68,5 +68,6 @@ additional_checks:
 
 rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) }}"
 
-rdo_additional_subscriptions:
+rdo_subscriptions:
+  - "default"
   - "monitoring_master"
