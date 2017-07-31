@@ -1,5 +1,47 @@
 # Variables for rdo-infra/sensu-client
-rdo_additional_checks:
+rdo_releases:
+  - "master-head"
+  - "master"
+  - "ocata"
+  - "newton"
+
+rdo_tags:
+  - "current"
+  - "consistent"
+  - "current-passed-ci"
+
+# Template the list of DLRN checks for every release and tag we're interested in
+delorean_checks: >
+    {% set checks = {} -%}
+    {% for release in rdo_releases -%}
+    {% for tag in rdo_tags -%}
+    {% if not release == "master-head" -%}
+    {% set _ = checks.update({ "check-delorean-" ~ release ~ "-" ~ tag: {
+                "command": "/opt/sensu/embedded/bin/check-delorean-builds.py centos7-" ~ release ~ " " ~ tag,
+                "subscribers": "monitoring_master",
+                "custom": {
+                    "broadcast": "#rdo",
+                    "retry_occurrences": "180"
+                }
+            }
+        })
+    -%}
+    {% endif -%}
+    {% set _ = checks.update({ "check-delorean-update-" ~ release ~ "-" ~ tag: {
+                "command": "/opt/sensu/embedded/bin/check-http-file-age.sh https://trunk.rdoproject.org/centos7-" ~ release ~ "/current/build.log 86400",
+                "subscribers": "monitoring_master",
+                "custom": {
+                    "broadcast": "#rdo-dev",
+                    "retry_occurrences": "180"
+                }
+            }
+        })
+    -%}
+    {% endfor -%}
+    {% endfor -%}
+    {{ checks }}
+
+additional_checks:
   check-rabbitmq:
     command: '/opt/sensu/embedded/bin/check-process.rb -p "rabbitmq" -C 1'
     subscribers: 'monitoring_master'
@@ -24,5 +66,7 @@ rdo_additional_checks:
     interval: '14400'
     ttl: '43200'
 
+rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) }}"
+
 rdo_additional_subscriptions:
-  - monitoring_master
+  - "monitoring_master"

@@ -22,6 +22,8 @@
   notify:
     - Restart sensu-client
 
+# This might yield a warning about using Jinja statements in the "when" condition
+# but it is a known issue: https://github.com/ansible/ansible/issues/23578
 - name: Set up additional checks
   vars:
     defaults: "{{ rdo_checks_defaults }}"
