@@ -1,3 +1,25 @@
+- name: Configure Sensu client
+  sensu_client:
+    name: "{{ inventory_hostname }}"
+    address: "{{ public_address | default(ansible_default_ipv4.address) }}"
+    subscriptions: "{{ rdo_subscriptions | default(['default']) }}"
+    socket:
+      bind: "127.0.0.1"
+      port: "3030"
+    keepalive:
+      thresholds:
+        warning: 180
+        critical: 360
+      handlers:
+        - "errbot"
+      custom:
+        broadcast:
+          - "#rdo-dev"
+      occurrences: 3
+      retry_occurrences: 30
+  notify:
+    - Restart sensu-client
+
 - name: Install base packages
   package:
     name: "{{ rdo_sensu_client_packages }}"
