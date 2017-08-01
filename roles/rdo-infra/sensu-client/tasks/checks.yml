@@ -10,6 +10,7 @@
     interval: "{{ item.value.interval | default(defaults['interval']) }}"
     ttl: "{{ item.value.ttl | default(defaults['ttl']) }}"
     standalone: "{{ item.value.standalone | default(defaults['standalone']) }}"
+    occurrences: "{{ item.value.occurrences | default(defaults['occurrences']) }}"
     custom: "{{ item.value.custom | default(defaults['custom']) }}"
   with_dict: "{{ rdo_checks }}"
   notify:
@@ -29,6 +30,7 @@
     interval: "{{ item.value.interval | default(defaults['interval']) }}"
     ttl: "{{ item.value.ttl | default(defaults['ttl']) }}"
     standalone: "{{ item.value.standalone | default(defaults['standalone']) }}"
+    occurrences: "{{ item.value.occurrences | default(defaults['occurrences']) }}"
     custom: "{{ item.value.custom | default(defaults['custom']) }}"
   when: rdo_additional_checks
   with_dict: "{{ rdo_additional_checks }}"
