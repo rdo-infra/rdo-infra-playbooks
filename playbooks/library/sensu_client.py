@@ -219,13 +219,14 @@ def main():
 
     # Build client configuration from module arguments
     config = {}
+    config['client'] = {}
     args = ['name', 'address', 'subscriptions', 'safe_mode', 'redact',
             'socket', 'keepalives', 'keepalive', 'registration', 'deregister',
             'deregistration', 'custom', 'ec2', 'chef', 'puppet', 'servicenow']
 
     for arg in args:
         if arg in module.params and module.params[arg] is not None:
-            config[arg] = module.params[arg]
+            config['client'][arg] = module.params[arg]
 
     # Load the current config, if there is one, so we can compare
     current_config = None
@@ -240,11 +241,11 @@ def main():
 
     if current_config is not None and current_config == config:
         # Config is the same, let's not change anything
-        module.exit_json(msg='Client configuration is already up to date', config=config)
+        module.exit_json(msg='Client configuration is already up to date', config=config['client'])
 
     with open(path, 'w') as client:
         client.write(json.dumps(config, indent=4))
-        module.exit_json(msg='Client configuration updated', changed=True, config=config)
+        module.exit_json(msg='Client configuration updated', changed=True, config=config['client'])
 
 if __name__ == '__main__':
     main()
