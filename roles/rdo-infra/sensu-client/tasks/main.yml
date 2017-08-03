@@ -5,3 +5,7 @@
 - name: Set up checks
   include: checks.yml
   static: no
+
+- name: Set up handlers
+  include: handlers.yml
+  static: no
