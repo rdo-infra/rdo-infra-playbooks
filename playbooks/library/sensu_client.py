@@ -12,8 +12,6 @@ ANSIBLE_METADATA = {
     'supported_by': 'community'
 }
 
-# Arguments, defaults and documentation as provided upstream:
-# https://sensuapp.org/docs/1.0/reference/clients.html
 DOCUMENTATION = '''
 ---
 module: sensu_client
@@ -21,19 +19,15 @@ author: "David Moreau Simard (@dmsimard)"
 short_description: Manages Sensu client configuration
 version_added: 2.4
 description:
-  - Manages Sensu client configuration
+  - Manages Sensu client configuration.
+  - 'For more information, refer to the Sensu documentation: U(https://sensuapp.org/docs/latest/reference/clients.html)'
 options:
   state:
     description:
       - Whether the client should be present or not
     choices: [ 'present', 'absent' ]
-    required: false
+    required: False
     default: present
-  path:
-    description:
-      - Path to the json file for the client to be added/removed
-    required: false
-    default: /etc/sensu/conf.d/client.json
   name:
     description:
       - A unique name for the client. The name cannot contain special characters or spaces.
@@ -129,10 +123,6 @@ EXAMPLES = '''
   sensu_client:
     name: "{{ ansible_fqdn }}"
     address: "{{ ansible_default_ipv4['address'] }}"
-    path: "/etc/sensu/conf.d/clients/{{ ansible_fqdn }}.json"
-    custom:
-      - priority: high
-      - region: east
     subscriptions:
       - default
       - webserver
@@ -150,15 +140,20 @@ EXAMPLES = '''
       custom:
         - broadcast: irc
       occurrences: 3
+  register: client
   notify:
     - Restart sensu-client
 
 - name: Secure Sensu client configuration file
   file:
-    path: "/etc/sensu/conf.d/clients/{{ ansible_fqdn }}.json"
+    path: "{{ client['file'] }}"
     owner: "sensu"
     group: "sensu"
     mode: "0600"
+
+- name: Delete the Sensu client configuration
+  sensu_client:
+    state: "absent"
 '''
 
 RETURN = '''
@@ -167,6 +162,11 @@ config:
   returned: success
   type: dict
   sample: {'name': 'client', 'subscriptions': ['default']}
+file:
+  description: Path to the client configuration file
+  returned: success
+  type: string
+  sample: "/etc/sensu/conf.d/client.json"
 '''
 
 from ansible.module_utils.basic import AnsibleModule
@@ -178,7 +178,6 @@ import os
 def main():
     module = AnsibleModule(argument_spec=dict(
         state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
-        path=dict(type='str', required=False, default='/etc/sensu/conf.d/client.json'),
         name=dict(type='str', required=False),
         address=dict(type='str', required=False),
         subscriptions=dict(type='list', required=False),
@@ -197,7 +196,7 @@ def main():
     ))
 
     state = module.params['state']
-    path = module.params['path']
+    path = "/etc/sensu/conf.d/client.json"
 
     if state == 'absent':
         try:
@@ -218,11 +217,10 @@ def main():
             module.fail_json(msg="missing required arguments: subcriptions")
 
     # Build client configuration from module arguments
-    config = {}
-    config['client'] = {}
+    config = {'client': {}}
     args = ['name', 'address', 'subscriptions', 'safe_mode', 'redact',
             'socket', 'keepalives', 'keepalive', 'registration', 'deregister',
-            'deregistration', 'custom', 'ec2', 'chef', 'puppet', 'servicenow']
+            'deregistration', 'ec2', 'chef', 'puppet', 'servicenow']
 
     for arg in args:
         if arg in module.params and module.params[arg] is not None:
@@ -241,11 +239,28 @@ def main():
 
     if current_config is not None and current_config == config:
         # Config is the same, let's not change anything
-        module.exit_json(msg='Client configuration is already up to date', config=config['client'])
+        module.exit_json(msg='Client configuration is already up to date',
+                         config=config['client'],
+                         file=path)
 
-    with open(path, 'w') as client:
-        client.write(json.dumps(config, indent=4))
-        module.exit_json(msg='Client configuration updated', changed=True, config=config['client'])
+    # Validate that directory exists before trying to write to it
+    if not os.path.exists(os.path.dirname(path)):
+        try:
+            os.makedirs(os.path.dirname(path))
+        except OSError as e:
+            module.fail_json(msg='Unable to create {0}: {1}'.format(os.path.dirname(path),
+                                                                    str(e)))
+
+    try:
+        with open(path, 'w') as client:
+            client.write(json.dumps(config, indent=4))
+            module.exit_json(msg='Client configuration updated',
+                             changed=True,
+                             config=config['client'],
+                             file=path)
+    except (OSError, IOError) as e:
+        module.fail_json(msg='Unable to write file {0}: {1}'.format(path,
+                                                                    str(e)))
 
 if __name__ == '__main__':
     main()
