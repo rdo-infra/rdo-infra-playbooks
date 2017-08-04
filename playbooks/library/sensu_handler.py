@@ -104,6 +104,8 @@ options:
       - 'NOTE: the handlers attribute is only required for handler sets (i.e. handlers configured with "type": "set").'
     required: True
     default: null
+notes:
+  - Check mode is supported
 requirements: [ ]
 '''
 
@@ -171,66 +173,61 @@ name:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-import errno
 import json
 import os
 
 
-def required_arg(type):
-    """ Returns the required argument for a type """
-    return {
-        'pipe': 'command',
-        'tcp': 'socket',
-        'udp': 'socket',
-        'transport': 'pipe',
-        'set': 'handlers'
-    }[type]
-
-
 def main():
-    module = AnsibleModule(argument_spec=dict(
-        state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
-        name=dict(type='str', required=True),
-        type=dict(type='str', required=False, choices=['pipe', 'tcp', 'udp', 'transport', 'set']),
-        filter=dict(type='str', required=False),
-        filters=dict(type='list', required=False),
-        severities=dict(type='list', required=False),
-        mutator=dict(type='dict', required=False),
-        timeout=dict(type='int', required=False, default=10),
-        handle_silenced=dict(type='bool', required=False, default=False),
-        handle_flapping=dict(type='bool', required=False, default=False),
-        command=dict(type='str', required=False),
-        socket=dict(type='dict', required=False),
-        pipe=dict(type='dict', required=False),
-        handlers=dict(type='list', required=False),
-    ))
+    module = AnsibleModule(
+        supports_check_mode=True,
+        argument_spec=dict(
+            state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
+            name=dict(type='str', required=True),
+            type=dict(type='str', required=False, choices=['pipe', 'tcp', 'udp', 'transport', 'set']),
+            filter=dict(type='str', required=False),
+            filters=dict(type='list', required=False),
+            severities=dict(type='list', required=False),
+            mutator=dict(type='str', required=False),
+            timeout=dict(type='int', required=False, default=10),
+            handle_silenced=dict(type='bool', required=False, default=False),
+            handle_flapping=dict(type='bool', required=False, default=False),
+            command=dict(type='str', required=False),
+            socket=dict(type='dict', required=False),
+            pipe=dict(type='dict', required=False),
+            handlers=dict(type='list', required=False),
+        ),
+        required_if=[
+            ['state', 'present', ['type']],
+            ['type', 'pipe', ['command']],
+            ['type', 'tcp', ['socket']],
+            ['type', 'udp', ['socket']],
+            ['type', 'transport', ['pipe']],
+            ['type', 'set', ['handlers']]
+        ]
+    )
 
     state = module.params['state']
     name = module.params['name']
     path = '/etc/sensu/conf.d/handlers/{0}.json'.format(name)
 
     if state == 'absent':
-        try:
-            os.remove(path)
-            msg = '{path} deleted successfully'.format(path=path)
-            module.exit_json(msg=msg, changed=True)
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                # Idempotency: it's okay if the file doesn't exist
-                msg = '{path} already does not exist'.format(path=path)
-                module.exit_json(msg=msg)
+        if os.path.exists(path):
+            if module.check_mode:
+                msg = '{path} would have been deleted'.format(path=path)
+                module.exit_json(msg=msg, changed=True)
             else:
-                msg = 'Exception when trying to delete {path}: {exception}'
-                module.fail_json(msg=msg.format(path=path, exception=str(e)))
-    else:
-        # Type is required only if state == present
-        if module.params['type'] is None:
-            module.fail_json(msg="missing required arguments: type")
-
-    # Some arguments are required depending on the type
-    required = required_arg(module.params['type'])
-    if module.params[required] is None:
-        module.fail_json(msg="missing required arguments: {0}".format(required))
+                try:
+                    os.remove(path)
+                    msg = '{path} deleted successfully'.format(path=path)
+                    module.exit_json(msg=msg, changed=True)
+                except OSError as e:
+                    msg = 'Exception when trying to delete {path}: {exception}'
+                    module.fail_json(
+                        msg=msg.format(path=path, exception=str(e)))
+        else:
+            # Idempotency: it's okay if the file doesn't exist
+            msg = '{path} already does not exist'.format(path=path)
+            module.exit_json(msg=msg)
 
     # Build handler configuration from module arguments
     config = {'handlers': {name: {}}}
@@ -246,11 +243,8 @@ def main():
     current_config = None
     try:
         current_config = json.load(open(path, 'r'))
-    except IOError:
-        # File does not exist or something like that
-        pass
-    except ValueError:
-        # Bad JSON or something like that
+    except (IOError, ValueError):
+        # File either doesn't exist or it's invalid JSON
         pass
 
     if current_config is not None and current_config == config:
@@ -261,12 +255,19 @@ def main():
                          name=name)
 
     # Validate that directory exists before trying to write to it
-    if not os.path.exists(os.path.dirname(path)):
+    if not module.check_mode and not os.path.exists(os.path.dirname(path)):
         try:
             os.makedirs(os.path.dirname(path))
         except OSError as e:
             module.fail_json(msg='Unable to create {0}: {1}'.format(os.path.dirname(path),
                                                                     str(e)))
+
+    if module.check_mode:
+        module.exit_json(msg='Handler configuration would have been updated',
+                         changed=True,
+                         config=config['handlers'][name],
+                         file=path,
+                         name=name)
 
     try:
         with open(path, 'w') as handler:

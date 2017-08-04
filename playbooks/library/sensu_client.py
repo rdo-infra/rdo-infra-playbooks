@@ -108,6 +108,8 @@ options:
       - The servicenow definition scope, used to configure the Sensu Enterprise ServiceNow integration (Sensu Enterprise users only).
     required: False
     default: null
+notes:
+  - Check mode is supported
 requirements: [ ]
 '''
 
@@ -170,51 +172,57 @@ file:
 '''
 
 from ansible.module_utils.basic import AnsibleModule
-import errno
 import json
 import os
 
 
 def main():
-    module = AnsibleModule(argument_spec=dict(
-        state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
-        name=dict(type='str', required=False),
-        address=dict(type='str', required=False),
-        subscriptions=dict(type='list', required=False),
-        safe_mode=dict(type='bool', required=False, default=False),
-        redact=dict(type='list', required=False),
-        socket=dict(type='dict', required=False),
-        keepalives=dict(type='bool', required=False, default=True),
-        keepalive=dict(type='dict', required=False),
-        registration=dict(type='dict', required=False),
-        deregister=dict(type='bool', required=False),
-        deregistration=dict(type='dict', required=False),
-        ec2=dict(type='dict', required=False),
-        chef=dict(type='dict', required=False),
-        puppet=dict(type='dict', required=False),
-        servicenow=dict(type='dict', required=False)
-    ))
+    module = AnsibleModule(
+        supports_check_mode=True,
+        argument_spec=dict(
+            state=dict(type='str', required=False, choices=['present', 'absent'], default='present'),
+            name=dict(type='str', required=False),
+            address=dict(type='str', required=False),
+            subscriptions=dict(type='list', required=False),
+            safe_mode=dict(type='bool', required=False, default=False),
+            redact=dict(type='list', required=False),
+            socket=dict(type='dict', required=False),
+            keepalives=dict(type='bool', required=False, default=True),
+            keepalive=dict(type='dict', required=False),
+            registration=dict(type='dict', required=False),
+            deregister=dict(type='bool', required=False),
+            deregistration=dict(type='dict', required=False),
+            ec2=dict(type='dict', required=False),
+            chef=dict(type='dict', required=False),
+            puppet=dict(type='dict', required=False),
+            servicenow=dict(type='dict', required=False)
+        ),
+        required_if=[
+            ['state', 'present', ['subscriptions']]
+        ]
+    )
 
     state = module.params['state']
     path = "/etc/sensu/conf.d/client.json"
 
     if state == 'absent':
-        try:
-            os.remove(path)
-            msg = '{path} deleted successfully'.format(path=path)
-            module.exit_json(msg=msg, changed=True)
-        except OSError as e:
-            if e.errno == errno.ENOENT:
-                # Idempotency: it's okay if the file doesn't exist
-                msg = '{path} already does not exist'.format(path=path)
-                module.exit_json(msg=msg)
+        if os.path.exists(path):
+            if module.check_mode:
+                msg = '{path} would have been deleted'.format(path=path)
+                module.exit_json(msg=msg, changed=True)
             else:
-                msg = 'Exception when trying to delete {path}: {exception}'
-                module.fail_json(msg=msg.format(path=path, exception=str(e)))
-    else:
-        # Subscriptions is required only if state == present
-        if module.params['subscriptions'] is None:
-            module.fail_json(msg="missing required arguments: subcriptions")
+                try:
+                    os.remove(path)
+                    msg = '{path} deleted successfully'.format(path=path)
+                    module.exit_json(msg=msg, changed=True)
+                except OSError as e:
+                    msg = 'Exception when trying to delete {path}: {exception}'
+                    module.fail_json(
+                        msg=msg.format(path=path, exception=str(e)))
+        else:
+            # Idempotency: it's okay if the file doesn't exist
+            msg = '{path} already does not exist'.format(path=path)
+            module.exit_json(msg=msg)
 
     # Build client configuration from module arguments
     config = {'client': {}}
@@ -230,11 +238,8 @@ def main():
     current_config = None
     try:
         current_config = json.load(open(path, 'r'))
-    except IOError:
-        # File does not exist or something like that
-        pass
-    except ValueError:
-        # Bad JSON or something like that
+    except (IOError, ValueError):
+        # File either doesn't exist or it's invalid JSON
         pass
 
     if current_config is not None and current_config == config:
@@ -244,12 +249,18 @@ def main():
                          file=path)
 
     # Validate that directory exists before trying to write to it
-    if not os.path.exists(os.path.dirname(path)):
+    if not module.check_mode and not os.path.exists(os.path.dirname(path)):
         try:
             os.makedirs(os.path.dirname(path))
         except OSError as e:
             module.fail_json(msg='Unable to create {0}: {1}'.format(os.path.dirname(path),
                                                                     str(e)))
+
+    if module.check_mode:
+        module.exit_json(msg='Client configuration would have been updated',
+                         changed=True,
+                         config=config['client'],
+                         file=path)
 
     try:
         with open(path, 'w') as client:
