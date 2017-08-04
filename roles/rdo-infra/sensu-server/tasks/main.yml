@@ -1,0 +1,50 @@
+- name: Setup custom Sensu plugins
+  copy:
+    src: "{{ item }}"
+    dest: "/opt/sensu/embedded/bin/{{item}}"
+    mode: "0755"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_plugins }}"
+
+- name: Ensure Sensu handlers directory exists
+  file:
+    path: "/etc/sensu/handlers"
+    state: "directory"
+
+- name: Setup custom Sensu handler scripts
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/sensu/handlers/{{ item }}"
+    mode: "0755"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_handlers }}"
+
+- name: Setup custom Sensu extensions
+  copy:
+    src: "{{ item }}"
+    dest: "/etc/sensu/extensions/{{ item }}"
+    mode: "0755"
+    owner: "sensu"
+    group: "sensu"
+  with_items: "{{ rdo_custom_sensu_extensions }}"
+  notify:
+    - Restart sensu-server
+
+# Configure a handler that sends event data as STDIN (pipe)
+- name: Configure Errbot Sensu handler
+  sensu_handler:
+    name: "errbot"
+    type: "pipe"
+    command: "/etc/sensu/handlers/errbot.py --endpoint http://127.0.0.1:3142/sensu_event"
+    severities:
+      - "critical"
+      - "warning"
+      - "unknown"
+    filters:
+      - "filter_disabled_or_silenced"
+      - "filter_check_retry_occurrences"
+    timeout: 15
+  notify:
+    - Restart sensu-server
