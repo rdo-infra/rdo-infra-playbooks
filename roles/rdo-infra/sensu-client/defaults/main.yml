@@ -40,14 +40,6 @@ rdo_custom_sensu_plugins:
   - check-delorean-builds.py
   - check-http-file-age.sh
 
-rdo_custom_sensu_handlers:
-  - errbot.py
-  - cachet.py
-
-rdo_custom_sensu_extensions:
-  - filter_disabled_or_silenced.rb
-  - filter_check_retry_occurrences.rb
-
 rdo_checks_defaults:
   occurrences: '3'
   interval: '60'

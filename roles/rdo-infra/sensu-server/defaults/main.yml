@@ -1,0 +1,7 @@
+rdo_custom_sensu_handlers:
+  - errbot.py
+  - cachet.py
+
+rdo_custom_sensu_extensions:
+  - filter_disabled_or_silenced.rb
+  - filter_check_retry_occurrences.rb

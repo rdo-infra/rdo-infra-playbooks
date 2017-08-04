@@ -13,6 +13,13 @@
 
 - include: sensu-rdo-bot.yml
 
+- name: Deploy RDO specific configuration for Sensu sever
+  hosts: monitoring
+  become: yes
+  become_user: root
+  roles:
+    - rdo-infra/sensu-server
+
 - include: sensu-client.yml
 
 - name: Sanity check Sensu Server components

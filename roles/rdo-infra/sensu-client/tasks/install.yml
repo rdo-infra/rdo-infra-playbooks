@@ -46,26 +46,3 @@
     owner: "sensu"
     group: "sensu"
   with_items: "{{ rdo_custom_sensu_plugins }}"
-
-- name: Ensure Sensu handlers directory exists
-  file:
-    path: "/etc/sensu/handlers"
-    state: "directory"
-
-- name: Setup custom Sensu handlers
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/sensu/handlers/{{ item }}"
-    mode: "0755"
-    owner: "sensu"
-    group: "sensu"
-  with_items: "{{ rdo_custom_sensu_handlers }}"
-
-- name: Setup custom Sensu extensions
-  copy:
-    src: "{{ item }}"
-    dest: "/etc/sensu/extensions/{{ item }}"
-    mode: "0755"
-    owner: "sensu"
-    group: "sensu"
-  with_items: "{{ rdo_custom_sensu_extensions }}"
