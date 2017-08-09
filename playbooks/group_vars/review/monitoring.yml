@@ -1,0 +1,3 @@
+# Software Factory still uses Newton, let's not set up >= Ocata until
+# they've upgraded
+rdo_release: "newton"
