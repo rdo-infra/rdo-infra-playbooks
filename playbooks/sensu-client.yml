@@ -25,7 +25,7 @@
     - rdo-infra/sensu-client
 
 - name: Sanity check Sensu Client components
-  hosts: monitoring
+  hosts: monitoring_clients
   become: yes
   become_user: root
   tasks:
