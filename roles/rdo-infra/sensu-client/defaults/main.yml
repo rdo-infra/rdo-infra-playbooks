@@ -85,5 +85,4 @@ rdo_checks:
   check-dns:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
 
-rdo_additional_checks: false
-rdo_additional_subscriptions: false
+rdo_additional_checks: {}
