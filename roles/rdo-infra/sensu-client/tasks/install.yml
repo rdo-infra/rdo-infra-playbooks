@@ -47,6 +47,7 @@
     executable: "/opt/sensu/embedded/bin/gem"
     name: "vmstat"
     state: "present"
+    user_install: "no"
 
 - name: Install required Sensu plugins
   command: sensu-install -P {{ item.key }}
