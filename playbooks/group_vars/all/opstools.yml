@@ -29,6 +29,7 @@ uchiwa_authentication: 'uchiwa'
 sensu_api_authentication: true
 sensu_api_bind: 127.0.0.1
 
+sensu_rabbitmq_server: master.monitoring.rdoproject.org
 rabbitmq_use_ssl: true
 rabbitmq_ssl_cacert: "{{ server_ssl_ca_cert }}"
 rabbitmq_ssl_cert: "{{ server_ssl_cert }}"
