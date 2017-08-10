@@ -67,7 +67,7 @@ rdo_checks_defaults:
     - 'errbot'
   custom:
     broadcast: '#rdo-dev'
-    retry_occurrences: '30'
+    retry_occurrences: '60'
 
 rdo_checks:
   check-cpu:
