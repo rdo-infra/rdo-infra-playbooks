@@ -16,5 +16,5 @@
 
 - name: Restart sensu-client
   service:
-    name: sensu-client
-    state: restarted
+    name: "sensu-client"
+    state: "restarted"

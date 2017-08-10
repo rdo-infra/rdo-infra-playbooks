@@ -63,3 +63,9 @@
     owner: "sensu"
     group: "sensu"
   with_items: "{{ rdo_custom_sensu_plugins }}"
+
+- name: Start and enable sensu-client
+  service:
+    name: "sensu-client"
+    enabled: "yes"
+    state: "started"
