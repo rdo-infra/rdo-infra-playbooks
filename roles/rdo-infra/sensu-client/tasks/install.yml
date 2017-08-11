@@ -21,7 +21,7 @@
     subscriptions: "{{ rdo_subscriptions | default(['default']) }}"
     socket:
       bind: "127.0.0.1"
-      port: 3030
+      port: "{{ rdo_sensu_client_port }}"
     keepalive:
       thresholds:
         warning: 180

@@ -24,6 +24,8 @@ rdo_sensu_client_packages:
   - libxml2-devel
   - openssl-devel
 
+rdo_sensu_client_port: 3030
+
 rdo_sensu_plugins:
   cpu-checks:
     creates: "/opt/sensu/embedded/bin/check-cpu.rb"

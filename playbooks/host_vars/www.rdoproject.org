@@ -1,0 +1,2 @@
+# The rdo dashboards application already takes up the default sensu-client port
+rdo_sensu_client_port: 4040
