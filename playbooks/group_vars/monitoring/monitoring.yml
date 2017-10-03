@@ -27,6 +27,38 @@ rdo_tags:
   - "consistent"
   - "current-passed-ci"
 
+# Domains that are expected to have http/s enabled
+rdo_domains:
+  - images.rdoproject.org
+  - console.registry.rdoproject.org
+  - trunk.registry.rdoproject.org
+  - registry.rdoproject.org:8443
+  - trunk.rdoproject.org
+  - review.rdoproject.org
+  - rdoproject.org
+  - logs.rdoproject.org
+  - thirdparty.logs.rdoproject.org
+  - centos.logs.rdoproject.org
+  - uchiwa.monitoring.rdoproject.org
+
+http_checks: >
+    {% set checks = {} -%}
+    {% for domain in rdo_http_domains -%}
+      {% set _ = checks.update({ "check-http-" ~ domain: {
+                  "command": "/opt/sensu/embedded/bin/check-http.rb -u https://" ~ domain,
+                  "subscribers": "monitoring_master",
+              }
+          })
+      -%}
+      {% set _ = checks.update({ "check-https-" ~ domain: {
+                  "command": "/opt/sensu/embedded/bin/check-https-cert.rb -c 5 -w 10 -u https://" ~ domain,
+                  "subscribers": "monitoring_master",
+              }
+          })
+      -%}
+    {% endfor -%}
+    {{ checks }}
+
 # Template the list of DLRN checks for every release and tag we're interested in
 delorean_checks: >
     {% set checks = {} -%}
@@ -83,7 +115,7 @@ additional_checks:
     interval: '14400'
     ttl: '43200'
 
-rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) }}"
+rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) }}"
 
 rdo_subscriptions:
   - "default"
