@@ -57,6 +57,7 @@ rdo_sensu_plugins:
 rdo_custom_sensu_plugins:
   - check-delorean-builds.py
   - check-http-file-age.sh
+  - check-bup-backup-age.sh
 
 rdo_checks_defaults:
   occurrences: '3'
@@ -89,4 +90,5 @@ rdo_checks:
 
 rdo_additional_checks: {}
 
-rdo_sudo_list: {}
+rdo_sudo_list:
+  - /usr/local/bin/bup
