@@ -88,3 +88,5 @@ rdo_checks:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
 
 rdo_additional_checks: {}
+
+rdo_sudo_command_list: []
