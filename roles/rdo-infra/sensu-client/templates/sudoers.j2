@@ -1,0 +1,4 @@
+Cmnd_Alias SENSU_CMD = {% for command in rdo_sudo_list[:-1] %} {{ command }}, {% endfor %} {{ rdo_sudo_list[-1] }}
+
+
+sensu ALL=(ALL) NOPASSWD: SENSU_CMD

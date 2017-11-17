@@ -14,14 +14,12 @@
 #   under the License.
 #
 
-- name: Install dependencies
-  include: install.yml
-  static: no
+- name: Deploy sudoers file for sensu
+  template:
+    src: ../templates/sudoers.j2
+    dest: /etc/sudoers.d/10-sensu-rules
+    owner: root
+    group: root
+    mode: 0440
+  when: rdo_sudo_list|length > 0
 
-- name: Set up checks
-  include: checks.yml
-  static: no
-
-- name: Configure sudo entries
-  include: sudoers.yml
-  static: no
