@@ -48,3 +48,11 @@
   notify:
     - Set up persistent journal
     - Restart journald
+
+- name: Set grub timeout to 10 seconds
+  lineinfile:
+    path: "/etc/default/grub"
+    regexp: "^GRUB_TIMEOUT"
+    line: 'GRUB_TIMEOUT=10'
+  notify:
+    - Update grub configuration
