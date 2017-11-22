@@ -33,7 +33,11 @@ rdo_additional_checks:
       -%}
     {% endfor -%}
     {{ checks }}
+ check-nodepool:
+   command: '/opt/sensu/embedded/bin/check-mtime.rb -f /var/log/nodepool/nodepool.log -w 1800 -c 3600 -z'
+   subscribers: 'managesf'
 
 rdo_subscriptions:
   - "default"
   - "managesf"
+
