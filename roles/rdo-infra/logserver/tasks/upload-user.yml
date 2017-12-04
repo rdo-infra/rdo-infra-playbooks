@@ -1,0 +1,30 @@
+# TODO: Figure out why rssh is in epel-testing and not in epel
+- name: Install rssh
+  package:
+    name: rssh
+    state: present
+    enablerepo: epel-testing
+
+- name: Configure rssh
+  copy:
+    src: rssh.conf
+    dest: /etc/rssh.conf
+
+- name: Set up upload group
+  group:
+    name: "{{ logserver_upload_user }}"
+    state: present
+
+- name: Set up user for uploads
+  user:
+    name: "{{ logserver_upload_user }}"
+    state: present
+    groups: "{{ logserver_upload_user }},rsshusers"
+    shell: /usr/bin/rssh
+
+- name: Set up authorized keys for upload user
+  authorized_key:
+    user: "{{ logserver_upload_user }}"
+    state: present
+    key: "{{ item }}"
+  with_items: "{{ logserver_upload_authorized_keys }}"
