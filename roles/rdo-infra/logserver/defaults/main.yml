@@ -1,0 +1,32 @@
+logserver_required_packages:
+  - gcc
+  - git
+  - httpd
+  - mod_wsgi
+  - mod_ssl
+  - python-devel
+  - libselinux-python
+  - redhat-rpm-config
+
+# TODO: Set this to false after the initial round of tests
+logserver_test_certificates: true
+logserver_loganalyze_repo: https://github.com/openstack-infra/os-loganalyze
+logserver_document_root: /var/www/html
+logserver_upload_user: uploader
+logserver_upload_authorized_keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyJ4DxTKdQ8grli+FqUzoJnXWlwvhWBJwdSbKJh6en6tWwLp97dUXM2R8B5WGtggtlC7SKOSk0u49ZAOInz5lf4ljSStkWIm4DzwJWEKB5iiWgorEwhYyuKFvfikC2OMlPE8bBKCquK40gWGYeINMGeeoKWeXhB5ks4MjZqg0l65J3BGHJd4StDSd903lzNwPM9c8LBfHgEM0H7K1W/Qt86rDi2bcaDv1q1xNhVjQ8v/bR3yglnwsEjX5S6ULQlx3mYUMhfRQUiOb7bSaBlDL9faKL89GFrvkMT3zJ4v65cHpPDa3pQfuD/k+UBUhFeaXMyPFT/Wmimf2g7iLroCbhQ== rdo-ci@ci.centos.org
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCp9iFXvR6UoWYboU41KFpx+Sdd7ov0i+szIjdB7p8LAR5mjVCWZWAyUSE16DQO0VRbl6FpxFUPRQCUXg5P59D6MjRPB+lIvAyZ53CkgVfkaKYNdLQKRoyBR0Q5ng0Gt74AwU7fo0lyVa9MYsxAVbwrE0ngrqzGA1Lm5TSAmZeURZLch65xZm8qc5UU2TZ9f9NEwdZgKFAplBT2Om+DdECNO+TRy/RAivBFmZangQBnBEp4cOiverur22Lc2MO4veBVT+pvTWI0YNKFPmwRpgfWTsZ6R1sUOHCIXmK+P8nR/BMAF/+XXNdEg4RTJFCNP5nWiSUpMj3z6dvQ0zv1twgb nodepool@review.rdoproject.org
+  - ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAoilfFFTGFASMZXm8pOuj3W7TmDltehxTcPRXEdOnkh7RMUKU0gNEaNvdR4VPjVk6BIZ9XHaCxvLxGryYbED2s8iCXl0rYGe9qPM1E1WE0ZUL00BL3gmFOVozvr5Denf+Stb9cZXxHsaOBWOi5R+GRuIwjmLmNlGZcvkfV4R4bA8y2lNifxi0LBoY65vvWSymL5ZxptxzBPEZpoDk+/3tavx55dZ8L8ibbMIILl8RhS7eqj0VTtP4Z591w61x/Q7nOufCcSXuyY76KvGz1xaLG9h0CpLKbc1k8/9bGEmBABOIbvuajiKKN/a/vv0XewwyehhjtcKssoJSbOoXa/wskQ== rhos-jenkins
+
+# We'll symlink old_path to domain for backwards compatibility purposes but
+# should clean this up eventually
+logserver_tenants:
+  logs.rdoproject.org:
+    domain: logs.rdoproject.org
+    old_path: review.rdoproject.org
+  centos.logs.rdoproject.org:
+    domain: centos.logs.rdoproject.org
+    old_path: ci.centos.org
+  thirdparty.logs.rdoproject.org:
+    domain: thirdparty.logs.rdoproject.org
+    old_path: thirdparty

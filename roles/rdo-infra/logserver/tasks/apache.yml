@@ -1,0 +1,48 @@
+- name: Ensure Apache SSL directory exists
+  become: yes
+  file:
+    path: /etc/httpd/ssl
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0700
+
+# ssl.conf is part of the default Apache configuration and is re-installed
+# automatically when Apache is updated. We don't want this to be happening.
+- name: Ensure unordered SSL config is empty
+  copy:
+    content: |
+      {{ ansible_managed }}
+      # This file is left empty on purpose.
+    dest: /etc/httpd/conf.d/ssl.conf
+  notify:
+    - Restart Apache
+
+- name: Ensure default SSL config is loaded first
+  copy:
+    src: 00-ssl.conf
+    dest: /etc/httpd/conf.d/00-ssl.conf
+  notify:
+    - Restart Apache
+
+- name: Ensure document root exists
+  file:
+    path: "{{ logserver_document_root }}"
+    state: directory
+    owner: uploader
+    group: uploader
+    mode: 0755
+
+- name: Set up SSL and vhost for each domain
+  vars:
+    domain: "{{ item.value.domain }}"
+    old_path: "{{ item.value.old_path }}"
+  include: apache-domain.yml
+  static: no
+  with_dict: "{{ logserver_tenants }}"
+
+- name: Enable and start apache
+  service:
+    name: httpd
+    enabled: yes
+    state: started
