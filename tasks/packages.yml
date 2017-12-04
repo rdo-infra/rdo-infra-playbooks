@@ -21,9 +21,17 @@
   retries: "3"
   delay: "20"
 
-# dmsimard cannot live without htop which is only available in EPEL
-- name: Install htop from EPEL
-  vars:
-    package: "htop"
-  include: epel_package.yml
-  static: no
+- name: Install epel-release
+  package:
+    name: epel-release
+    state: present
+
+- name: Ensure EPEL is disabled by default
+  command: yum-config-manager --disable epel
+
+- name: Install packages from EPEL
+  package:
+    name: "{{ item }}"
+    state: present
+    enablerepo: epel
+  with_items: "{{ rdo_epel_packages }}"

@@ -37,6 +37,9 @@ rdo_base_packages:
   - psmisc
   - bind-utils
 
+rdo_epel_packages:
+  - htop
+
 rdo_admin_group: "rdo-admin"
 rdo_admin_users:
   dmsimard:
