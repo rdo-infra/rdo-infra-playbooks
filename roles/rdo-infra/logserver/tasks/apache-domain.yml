@@ -1,0 +1,61 @@
+- name: Ensure document root exists
+  file:
+    path: "{{ logserver_document_root }}/{{ domain }}"
+    state: directory
+    owner: "{{ logserver_upload_user }}"
+    group: "{{ logserver_upload_user }}"
+    mode: 0755
+
+- name: Install robots.txt in document root
+  copy:
+    src: robots.txt
+    dest: "{{ logserver_document_root }}/{{ domain }}"
+
+- name: Ensure domain SSL directory exists
+  file:
+    path: "/etc/httpd/ssl/{{ domain }}"
+    state: directory
+    mode: 0750
+
+- name: Generate an OpenSSL private key
+  openssl_privatekey:
+    path: "/etc/httpd/ssl/{{ domain }}/privkey.pem"
+
+- name: Generate an OpenSSL CSR
+  openssl_csr:
+    path: "/etc/httpd/ssl/{{ domain }}.csr"
+    privatekey_path: "/etc/httpd/ssl/{{ domain }}/privkey.pem"
+    common_name: "{{ domain }}"
+
+- name: Generate LetsEncrypt challenge if necessary
+  letsencrypt:
+    account_key: "/etc/httpd/ssl/{{ domain }}/privkey.pem"
+    csr: "/etc/httpd/ssl/{{ domain }}.csr"
+    dest: "/etc/httpd/ssl/{{ domain }}/cert.pem"
+    acme_directory: "{{ (logserver_test_certificates | bool) | ternary('https://acme-staging.api.letsencrypt.org/directory', omit) }}"
+    fullchain: true
+  register: challenge
+
+- name: Fulfill LetsEncrypt challenge
+  copy:
+    dest: "{{ logserver_document_root }}/{{ domain }}/{{ challenge['challenge_data'][domain]['http-01']['resource'] }}"
+    content: "{{ challenge['challenge_data'][domain]['http-01']['resource_value'] }}"
+  when: challenge | changed
+
+- name: Create or renew certificate if necessary
+  letsencrypt:
+    account_key: "/etc/httpd/ssl/{{ domain }}/privkey.pem"
+    csr: "/etc/httpd/ssl/{{ domain }}.csr"
+    dest: "/etc/httpd/ssl/{{ domain }}/cert.pem"
+    data: "{{ challenge }}"
+  notify:
+    - Restart Apache
+
+- name: Ensure file permissions on the certificate files
+  file:
+    path: "/etc/httpd/ssl/{{ item }}"
+    mode: 0600
+    owner: root
+    group: root
+  when: item.state == 'file'
+  with_filetree: /etc/httpd/ssl/
