@@ -1,0 +1,44 @@
+- name: Ensure Apache SSL directory exists
+  become: yes
+  file:
+    path: /etc/httpd/ssl
+    state: directory
+    owner: apache
+    group: apache
+    mode: 0700
+
+- name: Ensure unordered SSL config is removed
+  file:
+    path: /etc/httpd/conf.d/ssl.conf
+    state: absent
+  notify:
+    - Restart Apache
+
+- name: Ensure default SSL config is loaded first
+  copy:
+    src: 00-ssl.conf
+    dest: /etc/httpd/conf.d/00-ssl.conf
+  notify:
+    - Restart Apache
+
+- name: Ensure document root exists
+  file:
+    path: "{{ logserver_document_root }}"
+    state: directory
+    owner: uploader
+    group: uploader
+    mode: 0755
+
+- name: Set up SSL and vhost for each domain
+  vars:
+    domain: "{{ item.value.domain }}"
+    old_path: "{{ item.value.old_path }}"
+  include: apache-domain.yml
+  static: no
+  with_items: "{{ logserver_tenants }}"
+
+- name: Enable and start apache
+  service:
+    name: httpd
+    enabled: yes
+    state: started
