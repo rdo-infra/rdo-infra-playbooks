@@ -14,10 +14,18 @@
 #   under the License.
 #
 
-- name: Setup the logserver
-  hosts: logserver
-  become: yes
-  become_user: root
-  roles:
-    - rdo-infra/base
-    - rdo-infra/logserver
+galaxy_info:
+  author: rdo-infra
+  description: Sets up a logserver based on os-loganalyze
+  company: Red Hat
+  license: Apache2
+  min_ansible_version: 2.0.1
+  platforms:
+    - name: EL
+      versions:
+        - all
+  categories:
+    - cloud
+    - python
+    - development
+    - openstack
