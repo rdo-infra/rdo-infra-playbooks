@@ -1,0 +1,23 @@
+- name: Install rssh
+  package:
+    name: rssh
+    state: present
+    enablerepo: epel
+
+- name: Configure rssh
+  copy:
+    src: rssh.conf
+    dest: /etc/rssh.conf
+
+- name: Set up user for uploads
+  user:
+    name: "{{ logserver_upload_user }}"
+    groups: "{{ logserver_upload_user }},rsshusers"
+    shell: /usr/bin/rssh
+
+- name: Set up authorized keys for upload user
+  authorized_key:
+    user: "{{ logserver_upload_user }}"
+    state: present
+    key: "{{ item }}"
+  with_items: "{{ logserver_upload_authorized_keys }}"
