@@ -1,0 +1,28 @@
+- name: Clone os-loganalyze from github
+  become: yes
+  git:
+    repo: "{{ logserver_loganalyze_repo }}"
+    dest: /var/www/cgi-bin/os-loganalyze
+
+- name: Create os-loganalyze config directory
+  become: yes
+  file:
+    path: /etc/os_loganalyze
+    state: directory
+
+- name: Create os-loganalyze config file
+  become: yes
+  template:
+    src: wsgi.conf.j2
+    dest: /etc/os_loganalyze/wsgi.conf
+
+- name: Create os-loganalyze file conditions config
+  become: yes
+  copy:
+    src: file_conditions.yaml
+    dest: /etc/os_loganalyze/file_conditions.yaml
+
+- name: Install os-loganalyze
+  become: yes
+  pip:
+    name: file:///var/www/cgi-bin/os-loganalyze
