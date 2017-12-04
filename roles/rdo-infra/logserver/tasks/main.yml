@@ -1,0 +1,14 @@
+- name: Install required packages
+  package:
+    name: "{{ logserver_required_packages }}"
+    state: present
+
+- name: Install rssh from EPEL
+  package:
+    name: rssh
+    state: present
+    enablerepo: epel
+
+- include: upload-user.yml
+- include: loganalyze.yml
+- include: apache.yml
