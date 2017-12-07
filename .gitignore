@@ -1,3 +1,10 @@
 *.retry
 roles/rdo-infra/base
 roles/rdo-infra/bot
+roles/rdo-infra/rdo_dashboards
+roles/rdo-infra/rdo_download_stats
+roles/rdo-infra/rdo_redirect_repos
+roles/builder
+roles/httpd
+roles/tor
+roles/msmtp
