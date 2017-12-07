@@ -6,3 +6,6 @@
   src: https://github.com/rdo-infra/ansible-role-rdo-bot
   scm: git
   version: master
+- src: https://github.com/rdo-infra/ansible-role-rdo_dashboards.git
+  name: rdo_dashboards
+
