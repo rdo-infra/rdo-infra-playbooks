@@ -1,0 +1,96 @@
+---
+
+# topics to consider (from Duck):
+# - use of OSCI services for hosts hosted in the Community Cage (currently only rdo-web-builder.osci.io)
+#   + [WIP] chrony should be configured to use OSCI servers
+#   + resolv.conf should be configured to use OSCI servers
+#   -> OSAS will maintain the related parameters in playbooks/group_vars/osci_zone
+# - OSAS adds its own Copr repository (this should not be necessary anymore when needrestart enters a CentOS/Fedora release, but could take some time until the servers are upgraded to this release)
+# - missing common features compared to OSAS playbook:
+#   + yum-cron support (OSAS unattended_updates role)
+#   + needrestart support (OSAS base role): we could make it a role to share easily, or add it to the unattended_updates role maybe
+#   + qemu-guest-agent when needed (OSAS guest_virt_tools role) (affects rdo-web-builder.osci.io)
+#   + selinux config is partial (OSAS selinux role)
+#   + firewalld (OSAS base role): many roles expect it to be installed, not sure it is worth a dedicated role
+# - rdo_download_stats and rdo_redirect_repos were initially inside the old OSAS repo, reworked and still kept inside in the new repo
+#   we should think about having them in their own repo, or reorganizing the rules; I'm leaving this as-is until discussed
+
+
+- hosts: rdo-web-builder.osci.io
+  vars:
+    website_username: web_builder
+  roles:
+  - role: builder
+    name: "{{ website_name }}"
+    builder: "{{ website_builder | default('middleman') }}"
+    builder_username: "{{ website_username }}"
+    git_url: "{{ website_repo_url }}"
+    git_version: master
+    auto_deploy_hour: "*/6"
+    cron_error_email: "{{ builder_error_email }}"
+  - role: msmtp
+    smart_host: "{{ osci.mail_forwarder }}"
+    disable_freeipa: true
+  tasks:
+  - name: fetch dashboard
+    cron:
+      name: "fetch dashboard"
+      minute: "0"
+      hour: "*/6"
+      user: "{{ website_username }}"
+      job: "cd /srv/builder/{{ website_name }} && ./fetch-dashboard.rb"
+    when: website_has_dashboard is defined and website_has_dashboard
+
+- hosts: www.rdoproject.org
+  vars:
+    use_ssl: True
+    force_ssl: True
+    use_letsencrypt: True
+  tasks:
+    - name: create web builder's user
+      user:
+        name: "{{ websync_user }}"
+        comment: "Web Builder User"
+    - name: Create vhost for www.rdoproject.org
+      include_role:
+        name: httpd
+        tasks_from: vhost
+      vars:
+        website_domain: www.rdoproject.org
+        document_root: "{{ websync_path }}"
+        document_root_group: "{{ websync_user }}"
+        server_aliases:
+          - rdoproject.org
+          - openstack.redhat.com
+        use_mod_speling: True
+    - name: "Add RDO-specific mod_speling config"
+      copy:
+        content: "CheckCaseOnly on\n"
+        dest: /etc/httpd/conf.d/www.rdoproject.org.conf.d/mod_speling_rdo.conf
+      notify: reload httpd
+    - name: Install web redirection to RDO Repositories
+      include_role:
+        name: rdo_redirect_repos
+    - name: Create vhost for ask.rdoproject.org
+      include_role:
+        name: httpd
+        tasks_from: vhost
+      vars:
+        website_domain: ask.rdoproject.org
+        redirect: https://ask.openstack.org/en/questions/scope:unanswered/sort:age-desc/page:1/query:rdo/
+    - name: Create vhost for docs.rdoproject.org
+      include_role:
+        name: httpd
+        tasks_from: vhost
+      vars:
+        website_domain: docs.rdoproject.org
+        redirect: https://www.rdoproject.org/documentation/
+    - name: Install RDO Dashboards
+      include_role:
+        name: rdo_dashboards
+      vars:
+        website_domain: dashboards.rdoproject.org
+    - name: Generate RDO download stats
+      include_role:
+        name: rdo_download_stats
+
