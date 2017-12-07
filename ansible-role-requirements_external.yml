@@ -1,0 +1,15 @@
+---
+- src: git+https://github.com/OSAS/ansible-role-web_builder.git
+  name: builder
+# TODO: remove this optional dependency of msmtp
+- src: git+https://gitlab.com/osas/ansible-role-tor.git
+  name: tor
+- src: git+https://gitlab.com/osas/ansible-role-msmtp.git
+  name: msmtp
+# ansible-galaxy tried to install it into /home/duck/Projects/RDO/rdo-infra-playbooks/roles/opstools-ansible/roles/httpd
+# even while the path is given as argument. the name conflicts but cannot be changed as it is used inside directly included roles
+# (rdo_dashboards role, MLs roles…)
+# TODO: find a solution; installed manually when needed in the meanwhile
+#- src: git+https://gitlab.com/osas/ansible-role-ah-httpd.git
+#  name: httpd
+

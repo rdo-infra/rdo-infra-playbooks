@@ -6,7 +6,9 @@ Dependencies
 ============
 - Pull required roles::
 
+    # this will install in the first (default) path defined in 'ansible.cfg', which is 'roles/rdo-infra/'
     ansible-galaxy install -r ansible-role-requirements.yml
+    ansible-galaxy install -p roles -r ansible-role-requirements_external.yml
 
 - Setup config.yml (private credentials, etc.)
 
