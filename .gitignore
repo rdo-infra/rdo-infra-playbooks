@@ -5,3 +5,4 @@ AUTHORS
 ChangeLog
 doc/build
 roles/openshift/openshift-ansible
+roles/chrony
