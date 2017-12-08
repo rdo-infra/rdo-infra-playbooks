@@ -20,3 +20,6 @@
   become_user: root
   roles:
     - rdo-infra/base
+    - role: chrony
+      servers_preferred: "{{ ntp_servers | default([]) }}"
+

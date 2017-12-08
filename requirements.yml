@@ -1,0 +1,3 @@
+---
+- src: git+https://gitlab.com/osas/ansible-role-chrony.git
+  name: chrony
