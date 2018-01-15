@@ -18,14 +18,51 @@
   hosts: monitoring
   become: yes
   become_user: root
-  roles:
-    - prereqs
-    - repos
-    - rabbitmq/server
-    - redis/server
-    - sensu/server
-    - uchiwa/server
-    - uchiwa/proxy
+  tasks:
+    - name: Install the Sensu repository
+      yum_repository:
+        name: sensu
+        description: The Sensu Core yum repository
+        baseurl: "https://sensu.global.ssl.fastly.net/yum/$releasever/$basearch/"
+        gpgcheck: no
+        enabled: yes
+
+    - name: Install the RDO repository for RabbitMQ and Redis
+      package:
+        name: "https://rdoproject.org/repos/openstack-pike/rdo-release-pike.rpm"
+        state: installed
+
+    # We're keeping it enabled only for the duration of this playbook
+    - name: Ensure RDO repository is enabled for RabbitMQ and Redis
+      command: yum-config-manager --enable centos-openstack-pike
+
+    - block:
+        - name: Include prereqs setup from opstools
+          include_role:
+            name: prereqs
+
+        - name: Include rabbitmq setup from opstools
+          include_role:
+            name: rabbitmq/server
+
+        - name: Include redis setup from opstools
+          include_role:
+            name: redis/server
+
+        - name: Include sensu setup from opstools
+          include_role:
+            name: sensu/server
+
+        - name: Include Uchiwa server setup from opstools
+          include_role:
+            name: uchiwa/server
+
+        - name: Include Uchiwa proxy setup from opstools
+          include_role:
+            name: uchiwa/proxy
+      always:
+        - name: Ensure RDO repository is disabled
+          command: yum-config-manager --disable centos-openstack-pike
 
 - include: sensu-rdo-bot.yml
 

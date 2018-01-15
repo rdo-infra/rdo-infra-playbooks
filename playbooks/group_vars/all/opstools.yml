@@ -17,7 +17,9 @@
 # Variables for opstools-ansible Sensu server/client and Uchiwa implementation
 manage_packages: true
 manage_services: true
-manage_repos: true
+# We're installing the Sensu repository ourselves, otherwise opstools
+# wants to install a lot of repositories we don't really need.
+manage_repos: false
 # We have security groups
 firewall_manage_rules: false
 

@@ -18,11 +18,26 @@
   hosts: monitoring_clients
   become: yes
   become_user: root
-  roles:
-    - prereqs
-    - repos
-    - sensu/common
-    - rdo-infra/sensu-client
+  tasks:
+    - name: Install the Sensu repository
+      yum_repository:
+        name: sensu
+        description: The Sensu Core yum repository
+        baseurl: "https://sensu.global.ssl.fastly.net/yum/$releasever/$basearch/"
+        gpgcheck: no
+        enabled: yes
+
+    - name: Include prereqs setup from opstools
+      include_role:
+        name: prereqs
+
+    - name: Include sensu common setup from opstools
+      include_role:
+        name: sensu/common
+
+    - name: Include RDO infrastructure sensu client configuration
+      include_role:
+        name: rdo-infra/sensu-client
 
 - name: Sanity check Sensu Client components
   hosts: monitoring_clients
