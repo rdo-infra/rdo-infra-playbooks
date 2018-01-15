@@ -18,9 +18,18 @@
   hosts: monitoring
   become: yes
   become_user: root
+  pre_tasks:
+    - name: Install the Sensu repository
+      copy:
+        dest: /etc/yum.repos.d/sensu.repo
+        content: |
+          [sensu]
+          name=sensu
+          baseurl=https://sensu.global.ssl.fastly.net/yum/$releasever/$basearch/
+          gpgcheck=0
+          enabled=1
   roles:
     - prereqs
-    - repos
     - rabbitmq/server
     - redis/server
     - sensu/server
