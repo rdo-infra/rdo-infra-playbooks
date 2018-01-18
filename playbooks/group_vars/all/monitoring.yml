@@ -51,7 +51,7 @@ rdo_checks:
     command: '/opt/sensu/embedded/bin/check-load.rb'
     occurrences: '10'
   check-disk-usage:
-    command: '/opt/sensu/embedded/bin/check-disk-usage.rb -p /mnt/config -p /var/lib/origin/openshift.local.volumes -p /var/cache/nodepool/dib_tmp'
+    command: "/opt/sensu/embedded/bin/check-disk-usage.rb -p /mnt/config -p /var/cache/nodepool/dib_tmp -x tmpfs"
   check-ram:
     command: '/opt/sensu/embedded/bin/check-ram.rb'
   check-fstab:
