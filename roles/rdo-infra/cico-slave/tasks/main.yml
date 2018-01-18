@@ -1,0 +1,96 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Install base packages
+  package:
+    name: "{{ cico_slave_packages }}"
+    state: installed
+
+- name: Install pip
+  easy_install:
+    name: pip
+    state: present
+
+- name: Install tox
+  pip:
+    name: tox
+    state: present
+
+- name: Install cicoclient
+  pip:
+    name: python-cicoclient
+    state: present
+
+- name: Create jenkins user
+  user:
+    name: jenkins
+    state: present
+
+- name: Set up OpenStack cloud configuration directory
+  file:
+    path: /home/jenkins/.config/openstack
+    state: directory
+    owner: jenkins
+    group: jenkins
+    recurse: yes
+
+- name: Set up OpenStack cloud configuration file
+  template:
+    src: clouds.yaml.j2
+    dest: /home/jenkins/.config/openstack/clouds.yaml
+    owner: jenkins
+    group: jenkins
+    mode: 0640
+
+# The "centos" user of the CentOS cloud image has sudo by default.
+- name: Remove cloud-init sudoers defaults
+  file:
+    path: /etc/sudoers.d/90-cloud-init-users
+    state: absent
+
+- name: Setup passwordless sudo for jenkins
+  lineinfile:
+    dest: "/etc/sudoers.d/91-jenkins"
+    create: "yes"
+    mode: "0440"
+    owner: "root"
+    group: "root"
+    regexp: "^jenkins"
+    line: "jenkins ALL=(ALL) NOPASSWD: ALL"
+    validate: "/usr/sbin/visudo -cf %s"
+
+- name: Fetch slave.jar from Jenkins master
+  get_url:
+    url: "{{ cico_jenkins_master_url }}/jnlpJars/slave.jar"
+    dest: /home/jenkins/slave.jar
+    mode: 0640
+    owner: jenkins
+    group: jenkins
+
+- name: Create cron job to start slave on reboot
+  cron:
+    name: "Start jenkins slave on reboot"
+    special_time: reboot
+    user: jenkins
+    job: "nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ ansible_host }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &"
+
+- name: Create cron job to clean up old workspaces
+  cron:
+    name: "Clean up old workspaces every 24hrs"
+    user: jenkins
+    minute: "0"
+    hour: "0"
+    job: 'find /home/jenkins/workspace/ -maxdepth 1 -type d -mtime +1 -exec rm -rf {} \;'
