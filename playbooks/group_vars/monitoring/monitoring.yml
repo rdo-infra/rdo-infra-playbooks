@@ -35,7 +35,7 @@ rdo_domains:
   - registry.rdoproject.org:8443
   - trunk.rdoproject.org
   - review.rdoproject.org
-  - rdoproject.org
+  - www.rdoproject.org
   - logs.rdoproject.org
   - thirdparty.logs.rdoproject.org
   - centos.logs.rdoproject.org
