@@ -36,6 +36,8 @@ rdo_base_packages:
   - sysstat
   - psmisc
   - bind-utils
+  - strace
+  - iotop
 
 rdo_epel_packages:
   - htop
