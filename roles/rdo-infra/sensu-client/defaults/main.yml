@@ -58,6 +58,7 @@ rdo_custom_sensu_plugins:
   - check-delorean-builds.py
   - check-http-file-age.sh
   - check-bup-backup-age.sh
+  - check-nodepool-image-age.sh
 
 rdo_checks_defaults:
   occurrences: '3'
@@ -92,3 +93,4 @@ rdo_additional_checks: {}
 
 rdo_sudo_command_list:
   - /usr/local/bin/bup
+  - /usr/bin/nodepool
