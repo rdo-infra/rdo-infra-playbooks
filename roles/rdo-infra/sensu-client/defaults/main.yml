@@ -23,6 +23,7 @@ rdo_sensu_client_packages:
   - libffi-devel
   - libxml2-devel
   - openssl-devel
+  - gcc-c++
 
 rdo_sensu_client_port: 3030
 
