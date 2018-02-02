@@ -1,0 +1,10 @@
+rdo_cron_jobs:
+  git_gc:
+    name: "git_gc"
+    day:  "*"
+    hour: "2"
+    minute: "0"
+    month: "*"
+    weekday: "*"
+    user:  "nodepool"
+    job: "/usr/bin/find /var/cache/nodepool/dib_cache/source-repositories/ -maxdepth 2 -type d -name "*.git" -exec /usr/bin/git --git-dir="{}" gc \; > /dev/null"
