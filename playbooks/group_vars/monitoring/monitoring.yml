@@ -41,6 +41,7 @@ rdo_domains:
   - thirdparty.logs.rdoproject.org
   - centos.logs.rdoproject.org
   - uchiwa.monitoring.rdoproject.org
+  - lists.rdoproject.org
 
 # Domains where we only expect http enabled
 rdo_domains_httponly:
