@@ -48,8 +48,12 @@ rdo_domains_httponly:
   - mirror.regionone.rdo-cloud.rdoproject.org
 
 rdo_backup_locations:
-  - "/var/lib/backup_lists_rdo/bup|lists.rdoproject.org"
-  - "/var/lib/backup_review_rdo/bup|review.rdoproject.org"
+  - dir: /var/lib/backup_lists_rdo/bup
+    domain: lists.rdoproject.org
+    month_subdir: 0
+  - dir: /var/lib/backup_review_rdo/bup
+    domain: review.rdoproject.org
+    month_subdir: 1
 
 rdo_nodepool_image_names:
   - rdo-centos-7
@@ -71,10 +75,9 @@ nodepool_checks: >
 
 backup_checks: >
     {% set checks = {} -%}
-    {% for location in rdo_backup_locations -%}
-      {% set loc = location.split('|') -%}
-      {% set _ = checks.update({ "check-backup-" ~ loc[1] | replace(".", "-"): {
-                  "command": "/opt/sensu/embedded/bin/check-bup-backup-age.sh" ~ " " ~ loc[0] ~ " " ~ loc[1] ~ " " ~ "172800",
+    {% for loc in rdo_backup_locations -%}
+      {% set _ = checks.update({ "check-backup-" ~ loc.domain | replace(".", "-"): {
+                  "command": "/opt/sensu/embedded/bin/check-bup-backup-age.sh" ~ " " ~ loc.dir ~ " " ~ loc.domain ~ " " ~ "172800" ~ " " ~ loc.month_subdir,
                   "subscribers": "backup_server",
              }
          })
