@@ -31,18 +31,25 @@ function ExitScript() {
 }
 
 function Usage() {
-    echo "Usage: ${0} <bup directory> <base dir in backup> <age in seconds>"
+    echo "Usage: ${0} <bup directory> <base dir in backup> <age in seconds> <use current month subdir>"
     return 0
 }
 
 # We need two arguments
-if [ "${#}" -lt 3 ]; then
+if [ "${#}" -lt 4 ]; then
     Usage
     ExitScript $CRITICAL "Please provide the required arguments"
 fi
 BUP_DIR="${1}"
 DIRECTORY="${2}"
 THRESHOLD="${3}"
+USE_DATE_SUBDIR="${4}"
+
+if [ $USE_DATE_SUBDIR -eq 1 ];
+then
+    CURDATE=$(date +%Y-%m)
+    BUP_DIR=${BUP_DIR}/${CURDATE}
+fi
 
 # Get timestamps
 NOW=$(date +"%s")

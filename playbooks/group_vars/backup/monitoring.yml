@@ -17,8 +17,8 @@
 # Variables for rdo-infra/sensu-client
 
 rdo_backup_locations:
-  - "/var/lib/backup_lists_rdo/bup:lists.rdoproject.org"
-  - "/var/lib/backup_review_rdo/bup:review.rdoproject.org"
+  - "/var/lib/backup_lists_rdo/bup:lists.rdoproject.org:0"
+  - "/var/lib/backup_review_rdo/bup:review.rdoproject.org:1"
 
 rdo_additional_checks:
   check-backup: >
@@ -26,7 +26,7 @@ rdo_additional_checks:
     {% for location in rdo_backup_locations -%}
       {% set loc = location.split(':') %}
       {% set _ = checks.update({ "check-backup-" ~ loc[1] | replace(".", "-"): {
-                  "command": "/opt/sensu/embedded/bin/check-bup-backup-age.sh" ~ loc[0] ~ " " ~ loc[1] ~ "172800",
+                  "command": "/opt/sensu/embedded/bin/check-bup-backup-age.sh" ~ loc[0] ~ " " ~ loc[1] ~ "172800" ~ loc[2],
                   "subscribers": "backup_server",
               }
           })
