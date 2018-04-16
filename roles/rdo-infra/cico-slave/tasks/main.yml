@@ -120,6 +120,14 @@
   become: yes
   become_user: jenkins
 
+- name: Create .ssh directory for jenkins user
+  file:
+    path: /home/jenkins/.ssh
+    state: directory
+    owner: jenkins
+    group: jenkins
+    mode: "0700"
+
 - name: Create id_rsa SSH key
   copy:
     content: "{{ cico_id_rsa_key }}"
