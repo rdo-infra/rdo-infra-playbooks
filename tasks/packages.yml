@@ -25,9 +25,11 @@
   package:
     name: epel-release
     state: present
+  when: ansible_distribution != "Fedora"
 
 - name: Ensure EPEL is disabled by default
   command: yum-config-manager --disable epel
+  when: ansible_distribution != "Fedora"
 
 - name: Install packages from EPEL
   package:
@@ -35,3 +37,4 @@
     state: present
     enablerepo: epel
   with_items: "{{ rdo_epel_packages }}"
+  when: ansible_distribution != "Fedora"
