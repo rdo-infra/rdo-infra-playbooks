@@ -16,27 +16,6 @@
 
 # Variables for rdo-infra/sensu-client
 
-rdo_nodepool_image_names:
-  - rdo-centos-7
-  - upstream-centos-7
-  - rdo-fedora-26
-
-rdo_additional_checks:
-  check-nodepool-images: >
-    {% set checks = {} -%}
-    {% for image in rdo_nodepool_image_names -%}
-      {% set _ = checks.update({ "check-nodepool-image-age-" ~ image: {
-                  "command": "/opt/sensu/embedded/bin/check-nodepool-image-age.sh" ~ image ~ "2",
-                  "subscribers": "managesf",
-              }
-          })
-      -%}
-    {% endfor -%}
-    {{ checks }}
- check-nodepool:
-   command: '/opt/sensu/embedded/bin/check-mtime.rb -f /var/log/nodepool/nodepool.log -w 1800 -c 3600 -z'
-   subscribers: 'managesf'
-
 rdo_subscriptions:
   - "default"
   - "managesf"

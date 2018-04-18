@@ -47,6 +47,40 @@ rdo_domains:
 rdo_domains_httponly:
   - mirror.regionone.rdo-cloud.rdoproject.org
 
+rdo_backup_locations:
+  - "/var/lib/backup_lists_rdo/bup|lists.rdoproject.org"
+  - "/var/lib/backup_review_rdo/bup|review.rdoproject.org"
+
+rdo_nodepool_image_names:
+  - rdo-centos-7
+  - upstream-centos-7
+  - rdo-fedora-26
+
+nodepool_checks: >
+  {% set checks = {} -%}
+  {% for image in rdo_nodepool_image_names -%}
+    {% set _ = checks.update({ "check-nodepool-image-age-" ~ image: {
+                "command": "/opt/sensu/embedded/bin/check-nodepool-image-age.sh" ~ image ~ "2",
+                "subscribers": "managesf",
+            }
+        })
+    -%}
+  {% endfor -%}
+  {{ checks }}
+
+
+backup_checks: >
+    {% set checks = {} -%}
+    {% for location in rdo_backup_locations -%}
+      {% set loc = location.split('|') -%}
+      {% set _ = checks.update({ "check-backup-" ~ loc[1] | replace(".", "-"): {
+                  "command": "/opt/sensu/embedded/bin/check-bup-backup-age.sh" ~ " " ~ loc[0] ~ " " ~ loc[1] ~ " " ~ "172800",
+                  "subscribers": "backup_server",
+             }
+         })
+      -%}
+    {% endfor -%}
+    {{ checks }}
 
 http_checks: >
     {% set checks = {} -%}
@@ -129,8 +163,11 @@ additional_checks:
     subscribers: 'monitoring_master'
     interval: '14400'
     ttl: '43200'
+  check-nodepool:
+    command: '/opt/sensu/embedded/bin/check-mtime.rb -f /var/log/nodepool/nodepool.log -w 1800 -c 3600 -z'
+    subscribers: 'managesf'
 
-rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) }}"
+rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) | combine(backup_checks) | combine(nodepool_checks)}}"
 
 rdo_subscriptions:
   - "default"
