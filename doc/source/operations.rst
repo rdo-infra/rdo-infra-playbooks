@@ -8,3 +8,4 @@ RDO Infrastructure services.
    :maxdepth: 1
 
    dbreplica
+   afs
