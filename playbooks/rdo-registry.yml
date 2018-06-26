@@ -14,10 +14,14 @@
 #   under the License.
 #
 
-- name: Prepare the configuration of the OpenShift Standalone Registry
-  hosts: masters
-  become: yes
-  tasks:
-    - include_role:
-        name: projects-creation
+- name: Prepare the host
+  import_playbook: registry-host-preparation.yml
 
+- name: Set up NetworkManager
+  import_playbook: roles/openshift/openshift-ansible/playbooks/byo/openshift-node/network_manager.yml
+
+- name: Install OpenShift
+  import_playbook: roles/openshift/openshift-ansible/playbooks/byo/config.yml
+
+- name: Set up RDO resources in the registry
+  import_playbook: registry-project-creation.yml
