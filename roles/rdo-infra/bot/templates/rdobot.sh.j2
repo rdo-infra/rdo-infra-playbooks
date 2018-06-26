@@ -1,0 +1,20 @@
+#!/bin/bash
+# Simple bash script meant to be used by the systemd unit file to start
+# rdobot from a virtualenv.
+
+CONFIG="{{ rdobot_config }}"
+VENV="{{ rdobot_virtualenv_path }}"
+
+if [[ ! -e ${VENV} ]]; then
+  echo "Virtualenv expected and not found at ${VENV}"
+  exit 1
+fi
+
+if [[ ! -e ${CONFIG} ]]; then
+  echo "Config expected and not found at ${CONFIG}"
+  exit 1
+fi
+
+echo "Pre-flight checks are okay, launching rdodot"
+source ${VENV}/bin/activate && errbot -c ${CONFIG}
+exit 0

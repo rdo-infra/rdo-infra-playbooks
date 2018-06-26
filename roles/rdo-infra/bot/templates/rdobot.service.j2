@@ -1,0 +1,11 @@
+[Unit]
+Description=rdobot
+After=syslog.target network.target
+
+[Service]
+ExecStart={{ rdobot_systemd_wrapper }}
+ExecStop=/bin/kill -s INT $MAINPID
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
