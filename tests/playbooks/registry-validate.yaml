@@ -1,0 +1,66 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+# Validates the registry once it has been set up
+
+- name: registry-validate.yaml
+  hosts: master
+  become: true
+  tasks:
+    - name: Run some OpenShift commands
+      command: "{{ item }}"
+      with_items:
+        - oc get pods
+        - oc get routes
+        - oc get svc
+        - oc get projects
+        - oc policy who-can resource cluster-admin
+        - oc get serviceaccounts --all-namespaces=true
+
+    - name: Get a TripleO service account secret
+      oc_serviceaccount_secret:
+        state: list
+        service_account: tripleo.service
+        namespace: default
+      register: sa_secret
+      no_log: yes
+
+    - name: Get a TripleO service account token
+      oc_secret:
+        state: list
+        name: "{{ sa_secret['results'][0]['name'] }}"
+        namespace: default
+      register: sa_token
+      no_log: yes
+
+    - name: Download an image locally
+      command: docker pull fedora
+
+    - name: Login to the registry
+      command: docker login -u tripleo.service -p "{{ sa_token['results']['data']['token'] }}" trunk.registry.rdoproject.org
+      no_log: yes
+
+    - name: Tag the image for the registry
+      command: docker tag docker.io/fedora trunk.registry.rdoproject.org/tripleomaster/fedora
+
+    - name: Push the image to the registry
+      command: docker push trunk.registry.rdoproject.org/tripleomaster/fedora
+
+    - name: Delete the local image
+      command: docker rmi trunk.registry.rdoproject.org/master/fedora
+
+    - name: Pull the image from the registry
+      command: docker pull trunk.registry.rdoproject.org/tripleomaster/fedora
