@@ -1,4 +1,0 @@
-- name: bot
-  src: https://github.com/rdo-infra/ansible-role-rdo-bot
-  scm: git
-  version: master
