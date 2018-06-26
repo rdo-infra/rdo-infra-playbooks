@@ -1,0 +1,77 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Setup alternate SSH port
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Port"
+    line: "Port {{ configured_port }}"
+  notify: "Restart sshd"
+
+- name: Setup PermitRootLogin without-password
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^PermitRootLogin"
+    line: "PermitRootLogin without-password"
+  notify: "Restart sshd"
+
+- name: Setup PasswordAuthentication no
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^PasswordAuthentication"
+    line: "PasswordAuthentication no"
+  notify: "Restart sshd"
+
+- name: Setup selinux for alternate SSH port
+  seport:
+    ports: "{{ configured_port }}"
+    proto: "tcp"
+    setype: "ssh_port_t"
+    state: "present"
+
+- name: Install fail2ban from EPEL
+  vars:
+    package: "{{ item }}"
+  include: epel_package.yml
+  static: no
+  with_items:
+    - fail2ban
+    - fail2ban-systemd
+
+- name: Start and enable fail2ban
+  service:
+    name: "fail2ban"
+    state: "started"
+    enabled: "yes"
+
+- name: Configure fail2ban
+  copy:
+    content: |
+      [sshd]
+      enabled = true
+      port = {{ configured_port }}
+      bantime = 3600
+      maxretry = 3
+    dest: "/etc/fail2ban/jail.d/01-sshd.conf"
+    mode: "0644"
+  notify: "Restart fail2ban"
+
+- name: Ensure SSH is reloaded if need be
+  meta: flush_handlers
+
+- name: Ensure we use the configured SSH port for the remainder of the role
+  set_fact:
+    ansible_port: "{{ configured_port }}"
