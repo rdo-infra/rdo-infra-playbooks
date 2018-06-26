@@ -1,0 +1,48 @@
+- nodeset:
+    name: registry-centos-7
+    nodes:
+      - name: bastion
+        label: rdo-centos-7
+      - name: master
+        label: rdo-centos-7
+    groups:
+      - name: openshift
+        nodes:
+          - master
+      - name: masters
+        nodes:
+          - master
+      - name: nodes
+        nodes:
+          - master
+      - name: etcd
+        nodes:
+          - master
+
+- job:
+    name: rdo-registry-integration-base
+    parent: base
+    description: |
+      Base RDO OpenShift Registry integration job
+    vars:
+      openshift_node_labels:
+        region: infra
+        zone: default
+      openshift_schedulable: true
+    pre-run: tests/playbooks/registry-pre.yaml
+    nodeset: registry-centos-7
+
+- job:
+    name: rdo-registry-integration
+    parent: rdo-registry-integration-base
+    description: |
+      OpenShift Registry integration job
+    run: tests/playbooks/registry-run.yaml
+
+- project:
+    check:
+      jobs:
+        - rdo-registry-integration
+    gate:
+      jobs:
+        - rdo-registry-integration
