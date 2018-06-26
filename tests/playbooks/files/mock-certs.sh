@@ -1,4 +1,5 @@
 #!/bin/bash
+# This sets up mock SSL certificates suitable for use in the RDO OpenShift registry integration tests
 
 set -eux
 domains="registry.rdoproject.org \
