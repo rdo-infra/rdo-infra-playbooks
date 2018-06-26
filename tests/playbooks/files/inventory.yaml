@@ -1,0 +1,40 @@
+all:
+  children:
+    standard:
+      hosts:
+        bastion:
+          ansible_connection: ssh
+          ansible_port: 22
+          ansible_user: root
+        master:
+          ansible_connection: ssh
+          ansible_port: 22
+          ansible_user: root
+    etcd:
+      hosts:
+        master: 
+    masters:
+      hosts:
+        master:
+    nodes:
+      hosts:
+        master:
+    openshift:
+      hosts:
+        master:
+    installer:
+      hosts:
+        bastion:
+    OSEv3:
+      children:
+        masters:
+        nodes:
+        etcd:
+        installer:
+        master:
+  vars:
+    ansible_python_interpreter: /usr/bin/python2
+    openshift_node_labels:
+      region: infra
+      zone: default
+    openshift_schedulable: true
