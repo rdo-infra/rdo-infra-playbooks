@@ -1,0 +1,78 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Set up hosts
+  hosts: all
+  gather_facts: true
+  roles:
+    - multi-node-known-hosts
+    - multi-node-hosts-file
+    - multi-node-firewall
+    - copy-build-sshkey
+
+- name: Prepare bastion node
+  hosts: bastion
+  gather_facts: no
+  tasks:
+    - name: Set up prepared repositories from cache
+      include_role:
+        name: use-cached-repos
+
+    - name: Synchronize src repos to workspace directory
+      synchronize:
+        dest: .
+        src: "{{ zuul.executor.src_root }}"
+      no_log: true
+
+    - name: Set up openshift-ansible in the role path
+      git:
+        repo: https://github.com/rdo-infra/openshift-ansible
+        version: rdo-3.7
+        dest: "{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible"
+
+    - name: Create a virtual environment with openshift-ansible requirements
+      pip:
+        requirements: "{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible/requirements.txt"
+        virtualenv: /opt/openshift-ansible
+
+    - name: Ensure openssl is installed
+      package:
+        name: openssl
+        state: present
+
+    - name: Upload mock-certs.sh
+      copy:
+        src: mock-certs.sh
+        dest: /usr/local/bin/mock-certs.sh
+
+    - name: Run mock-certs.sh to generate mock certificates
+      command: /usr/local/bin/mock-certs.sh
+
+
+- name: Prepare OpenShift node
+  hosts: master
+  become: yes
+  tasks:
+    - name: Set up /etc/hosts for registry integration tests
+      lineinfile:
+        dest: /etc/hosts
+        line: 127.0.0.1
+        insertafter: EOF
+      with_items:
+        - registry.rdoproject.org
+        - console.registry.rdoproject.org
+        - trunk.registry.rdoproject.org
+        - registry.distributed-ci.io
