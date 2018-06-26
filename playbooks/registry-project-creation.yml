@@ -14,9 +14,9 @@
 #   under the License.
 #
 
-- name: Prepare host for an OpenShift Standalone Registry installation
-  hosts: nodes
+- name: Prepare the configuration of the OpenShift Standalone Registry
+  hosts: masters
   become: yes
   tasks:
     - include_role:
-        name: host-preparation
+        name: rdo-infra/registry-project-creation

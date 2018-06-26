@@ -14,10 +14,10 @@
 #   under the License.
 #
 
-- name: Prepare the configuration of the OpenShift Standalone Registry
-  hosts: masters
-  become: yes
+- name: Run OpenShift registry setup
+  hosts: bastion
+  become: true
+  gather_facts: no
   tasks:
-    - include_role:
-        name: projects-creation
-
+    - name: Run rdo-registry playbook
+      import_playbook: playbooks/rdo-registry.yml
