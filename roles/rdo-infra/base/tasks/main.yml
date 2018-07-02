@@ -33,3 +33,5 @@
 - include: config.yml
 - include: ssl_cert.yml
   when: (generate_ssl_certificate | bool)
+- include: telegraf.yml
+  when: (deploy_telegraf | bool)
