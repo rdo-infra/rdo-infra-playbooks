@@ -14,8 +14,29 @@
 #   under the License.
 #
 
-# Variables for ansible-role-rdobase
-# These control SSH port and security, let's enable them later
-discover_ssh: false
-manage_ssh: false
-deploy_telegraf: true
+- name: Enable telegraf repository
+  yum_repository:
+    name: telegraf
+    description: Telegraf repository
+    baseurl: https://repos.influxdata.com/rhel/$releasever/$basearch/stable
+    gpgkey: https://repos.influxdata.com/influxdb.key
+
+- name: Install telegraf
+  package:
+    name: "telegraf"
+    state: present
+
+- name: Deploy telegraf configuration file
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: telegraf
+    group: root
+    mode: 0640
+
+- name: Enable and start telegraf service
+  service:
+    name: "telegraf"
+    enabled: "yes"
+    state: "started"
+
