@@ -20,6 +20,11 @@ discover_ssh: "true"
 manage_ssh: "true"
 manage_users: "true"
 
+generate_ssl_certificate: "false"
+ssl_cert_options:
+  email: "jpena@redhat.com"
+  domain: "testmachine.rdoproject.org"
+
 rdo_base_packages:
   - libselinux-python
   - policycoreutils-python
