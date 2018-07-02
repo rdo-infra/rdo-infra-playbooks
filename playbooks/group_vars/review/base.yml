@@ -14,8 +14,6 @@
 #   under the License.
 #
 
-# Variables for ansible-role-rdobase
-# These control SSH port and security, let's enable them later
-discover_ssh: false
-manage_ssh: false
-deploy_telegraf: true
+# We do not want to deploy telegraf on review.rdo, Software Factory takes care
+# of that.
+#deploy_telegraf: false

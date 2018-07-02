@@ -31,3 +31,6 @@
 - include: users.yml
   when: manage_users == "true"
 - include: config.yml
+
+- include: telegraf.yml
+  when: (deploy_telegraf | bool)
