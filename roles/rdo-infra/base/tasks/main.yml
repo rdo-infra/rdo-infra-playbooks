@@ -31,3 +31,5 @@
 - include: users.yml
   when: manage_users == "true"
 - include: config.yml
+- include: ssl_cert.yml
+  when: generate_ssl_certificate == "true"
