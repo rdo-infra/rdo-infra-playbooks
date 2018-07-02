@@ -14,28 +14,6 @@
 #   under the License.
 #
 
-- name: Restart sshd
-  service:
-    name: "sshd"
-    state: "restarted"
-
-- name: Restart fail2ban
-  service:
-    name: "fail2ban"
-    state: "restarted"
-
-- name: Set up persistent journal
-  command: systemd-tmpfiles --create --prefix /var/log/journal
-
-- name: Restart journald
-  service:
-    name: "systemd-journald"
-    state: "restarted"
-
-- name: Restart telegraf
-  service:
-    name: "telegraf"
-    state: "restarted"
-
-- name: Update grub configuration
-  shell: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+# We do not want to deploy telegraf on review.rdo, Software Factory takes care
+# of that.
+deploy_telegraf: false
