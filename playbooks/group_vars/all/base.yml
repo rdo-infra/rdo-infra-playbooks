@@ -20,3 +20,4 @@ discover_ssh: false
 manage_ssh: false
 manage_packages: "true"
 manage_config: "true"
+deploy_telegraf: true

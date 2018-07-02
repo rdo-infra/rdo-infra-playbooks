@@ -14,28 +14,31 @@
 #   under the License.
 #
 
-- name: Restart sshd
-  service:
-    name: "sshd"
-    state: "restarted"
+- name: Enable telegraf repository
+  yum_repository:
+    name: telegraf
+    description: Telegraf repository
+    baseurl: https://repos.influxdata.com/rhel/$releasever/$basearch/stable
+    gpgkey: https://repos.influxdata.com/influxdb.key
 
-- name: Restart fail2ban
-  service:
-    name: "fail2ban"
-    state: "restarted"
+- name: Install telegraf
+  package:
+    name: "telegraf"
+    state: present
 
-- name: Set up persistent journal
-  command: systemd-tmpfiles --create --prefix /var/log/journal
+- name: Deploy telegraf configuration file
+  template:
+    src: telegraf.conf.j2
+    dest: /etc/telegraf/telegraf.conf
+    owner: root
+    group: telegraf
+    mode: 0640
+  notify:
+    - Restart telegraf
 
-- name: Restart journald
-  service:
-    name: "systemd-journald"
-    state: "restarted"
-
-- name: Restart telegraf
+- name: Enable and start telegraf service
   service:
     name: "telegraf"
-    state: "restarted"
+    enabled: "yes"
+    state: "started"
 
-- name: Update grub configuration
-  shell: /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
