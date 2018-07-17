@@ -1,0 +1,28 @@
+From df2ed021f1f19950a515739984ab5e9b0943f901 Mon Sep 17 00:00:00 2001
+From: Monty Taylor <mordred@inaugust.com>
+Date: Tue, 17 Jul 2018 16:26:19 -0500
+Subject: [PATCH] Surround substitute with inflate/deflate
+
+Just using substitute doesn't work with Accept-Encoding: gzip, deflate
+because the filter chain winds up being wrong.
+
+https://serverfault.com/questions/843905/apache-mod-substitute-works-in-curl-but-not-on-browser
+
+Change-Id: I2fe8af25242d66ffdc4ab21138e33d4b76bf32b8
+---
+ templates/mirror.vhost.erb | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/templates/mirror.vhost.erb b/templates/mirror.vhost.erb
+index a4de9b9..bc5f33f 100644
+--- a/templates/mirror.vhost.erb
++++ b/templates/mirror.vhost.erb
+@@ -167,7 +167,7 @@ NameVirtualHost <%= @vhost_name %>:8081
+ 
+     # Rewrite the locations of the actual files
+     <Location /pypi>
+-      SetOutputFilter SUBSTITUTE
++      SetOutputFilter INFLATE;SUBSTITUTE;DEFLATE
+       Substitute "s|https://files.pythonhosted.org/|/pypifiles/|ni"
+     </Location>
+ 

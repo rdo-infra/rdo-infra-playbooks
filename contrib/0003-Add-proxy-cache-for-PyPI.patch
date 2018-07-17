@@ -1,0 +1,52 @@
+From f1723017d61be3adf853cc2848060ffcbc158617 Mon Sep 17 00:00:00 2001
+From: Monty Taylor <mordred@inaugust.com>
+Date: Tue, 17 Jul 2018 09:31:56 -0500
+Subject: [PATCH] Add proxy cache for PyPI
+
+Investigate using apache proxy caching for PyPI instead of a full
+mirror. Make the /pypi path proxy directly to pypi.org upstream instead
+of to the rackspace AFS mirror.
+
+We have to use the substitute module (already enabled) to rewrite the
+embedded links in the html content returned, because instead of relative
+links to something under /pypi which get redirected, the CDN links are
+direct.
+
+Change-Id: Id68ff2914ba7fb588092cff113e8d1536f7d5a56
+---
+ templates/mirror.vhost.erb | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/templates/mirror.vhost.erb b/templates/mirror.vhost.erb
+--- a/templates/mirror.vhost.erb
++++ b/templates/mirror.vhost.erb
+@@ -157,8 +157,19 @@
+ 
+     # pypi
+     CacheEnable disk  "/pypi"
+-    ProxyPass "/pypi/" "http://mirror.dfw.rax.openstack.org/pypi/" ttl=120 keepalive=On retry=0
+-    ProxyPassReverse "/pypi/" "http://mirror.dfw.rax.openstack.org/pypi/"
++    ProxyPass "/pypi/" "https://pypi.org/" ttl=120 keepalive=On retry=0
++    ProxyPassReverse "/pypi/" "https://pypi.org/
++
++    # files.pythonhosted.org
++    CacheEnable disk  "/pypifiles"
++    ProxyPass "/pypifiles/" "https://files.pythonhosted.org/" ttl=120 keepalive=On retry=0
++    ProxyPassReverse "/pypifiles/" "https://files.pythonhosted.org/"
++
++    # Rewrite the locations of the actual files
++    <Location /pypi>
++      SetOutputFilter SUBSTITUTE
++      Substitute "s|https://files.pythonhosted.org/|/pypifiles/|ni"
++    </Location>
+ 
+     # images.linuxcontainers.org
+     CacheEnable disk "/images.linuxcontainers"
+@@ -199,6 +210,7 @@
+     CacheEnable disk "/oraclelinux
+     ProxyPass "/oraclelinux/" "http://yum.oracle.com/repo/OracleLinux/" ttl=120 keepalive=On retry=0
+     ProxyPassReverse "/oraclelinux/" "http://yum.oracle.com/repo/OracleLinux/"
++
+ </VirtualHost>
+ 
+ <VirtualHost <%= @vhost_name %>:8081>
