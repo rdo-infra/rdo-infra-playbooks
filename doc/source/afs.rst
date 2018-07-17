@@ -31,6 +31,10 @@ Setup steps
   # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/76/529376/9 && git cherry-pick FETCH_HEAD
   # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/39/528739/18 && git cherry-pick FETCH_HEAD
 
+FIXME apply the patch based on https://review.openstack.org/583263
+git am 0003-Add-proxy-cache-for-PyPI.patch # from rdo-infra-playbooks/contrib/
+TODO openstack-infra/puppet-openstackci reviews need rebase
+
 * Install puppet module. Do not use puppet module build/puppet module install, since the openstackci module may pull way more requirements than needed for the AFS mirror setup.
 
 .. code-block:: shell-session
