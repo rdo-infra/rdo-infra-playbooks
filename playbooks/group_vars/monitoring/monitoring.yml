@@ -55,24 +55,6 @@ rdo_backup_locations:
     domain: review.rdoproject.org
     month_subdir: 1
 
-rdo_nodepool_image_names:
-  - rdo-centos-7
-  - upstream-centos-7
-  - rdo-fedora-26
-
-nodepool_checks: >
-  {% set checks = {} -%}
-  {% for image in rdo_nodepool_image_names -%}
-    {% set _ = checks.update({ "check-nodepool-image-age-" ~ image: {
-                "command": "/opt/sensu/embedded/bin/check-nodepool-image-age.sh" ~ image ~ "2",
-                "subscribers": "managesf",
-            }
-        })
-    -%}
-  {% endfor -%}
-  {{ checks }}
-
-
 backup_checks: >
     {% set checks = {} -%}
     {% for loc in rdo_backup_locations -%}
@@ -166,11 +148,8 @@ additional_checks:
     subscribers: 'monitoring_master'
     interval: '14400'
     ttl: '43200'
-  check-nodepool:
-    command: '/opt/sensu/embedded/bin/check-mtime.rb -f /var/log/nodepool/nodepool.log -w 1800 -c 3600 -z'
-    subscribers: 'managesf'
 
-rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) | combine(backup_checks) | combine(nodepool_checks)}}"
+rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) | combine(backup_checks) }}"
 
 rdo_subscriptions:
   - "default"

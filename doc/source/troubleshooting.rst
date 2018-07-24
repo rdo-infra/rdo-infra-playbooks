@@ -8,7 +8,6 @@ instructions for the most common issues found on each service.
 .. toctree::
    :maxdepth: 1
 
-   nodepool
    rdotrunk
    dlrndb
    images
