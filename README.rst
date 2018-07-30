@@ -2,6 +2,13 @@ rdo-infra-playbooks
 ===================
 Playbooks to configure servers involved in the delivery of RDO.
 
+Contributing
+============
+
+All reviews are done using Gerrit on review.rdoproject.org.
+
+The project can be found on https://review.rdoproject.org/r/#/admin/projects/rdo-infra/rdo-infra-playbooks
+
 Dependencies
 ============
 - Pull required roles::
