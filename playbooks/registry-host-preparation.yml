@@ -15,7 +15,8 @@
 #
 
 - name: Prepare host for an OpenShift Standalone Registry installation
-  hosts: nodes
+  hosts: masters
   become: yes
   roles:
     - rdo-infra/registry-host-preparation
+    - rdo-infra/registry-image-pruning
