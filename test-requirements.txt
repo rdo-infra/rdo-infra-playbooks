@@ -1,1 +1,2 @@
 ansible-lint
+setuptools>=18.5
