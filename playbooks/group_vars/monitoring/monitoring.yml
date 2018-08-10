@@ -18,10 +18,10 @@
 rdo_releases:
   - "master-head"
   - "master"
+  - "rocky"
   - "queens"
   - "pike"
   - "ocata"
-  - "newton"
 
 rdo_tags:
   - "current"
@@ -110,6 +110,7 @@ delorean_checks: >
         })
     -%}
     {% endif -%}
+    {% endfor -%}
     {% set _ = checks.update({ "check-delorean-update-" ~ release ~ "-" ~ tag: {
                 "command": "/opt/sensu/embedded/bin/check-http-file-age.sh https://trunk.rdoproject.org/centos7-" ~ release ~ "/current/build.log 86400",
                 "subscribers": "monitoring_master",
@@ -120,7 +121,6 @@ delorean_checks: >
             }
         })
     -%}
-    {% endfor -%}
     {% endfor -%}
     {{ checks }}
 
