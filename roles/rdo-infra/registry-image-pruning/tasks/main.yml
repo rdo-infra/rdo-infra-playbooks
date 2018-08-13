@@ -62,4 +62,4 @@
     minute: 0
     hour: 1
     user: root
-    job: /usr/local/bin/openshift_registry_pruner
+    job: "/usr/local/bin/openshift_registry_pruner >> /var/log/openshift_tag_pruner/pruner.$(/usr/bin/date +%s).log"
