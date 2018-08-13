@@ -107,11 +107,16 @@ def main():
 
     # Load whitelisted tags if there's any
     whitelist = []
+    if len(whitelist) == 0:
+        log.critical("An empty whitelist has been provided.")
+        sys.exit(1)
     if args.whitelist is not None:
         whitelist = args.whitelist.split(',')
         log.info('Whitelisted tags: %s' % ', '.join(whitelist))
     else:
-        log.warn("No whitelist has been provided, all tags will be pruned.")
+        # If there are no whitelisted tags, we can remove more than we want
+        log.critical("No whitelist has been provided.")
+        sys.exit(1)
 
     log.info("Deleting tags from %s older than %s days" % (args.namespace,
                                                            args.days))
