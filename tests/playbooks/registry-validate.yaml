@@ -69,6 +69,10 @@
     - name: Download an image locally
       command: docker pull fedora
 
+    - name: Debug sa_token for CI job failures
+      debug:
+        var: sa_token
+
     - name: Login to the registry
       command: docker login -u tripleo.service -p "{{ registry_token }}" trunk.registry.rdoproject.org
       no_log: yes
