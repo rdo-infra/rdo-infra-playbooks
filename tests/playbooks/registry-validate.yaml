@@ -49,8 +49,12 @@
     - name: Download an image locally
       command: docker pull fedora
 
+    - name: Debug sa_token for CI job failures
+      debug:
+        var: sa_token
+
     - name: Login to the registry
-      command: docker login -u tripleo.service -p "{{ sa_token['results']['results'][0]['metadata']['annotations']['openshift.io/token-secret.value'] }}" trunk.registry.rdoproject.org
+      command: docker login -u tripleo.service -p "{{ sa_token['results']['results'][0]['data']['token'] }}" trunk.registry.rdoproject.org
       no_log: yes
 
     - name: Tag the image for the registry
