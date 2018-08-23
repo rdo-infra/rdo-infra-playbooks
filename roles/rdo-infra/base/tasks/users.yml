@@ -28,9 +28,9 @@
 
 - name: Setup authorized keys for admin users
   authorized_key:
-    user: "{{ item.value.name }}"
-    key: "{{ item.value.ssh_key }}"
-  with_dict: "{{ rdo_admin_users }}"
+    user: "{{ item.0.key }}"
+    key: "{{ item.1 }}"
+  loop: "{{ q('subelements', q('dict', rdo_admin_users), 'value.ssh_keys') }}"
 
 - name: Setup passwordless sudo for admin users
   lineinfile:
