@@ -102,7 +102,7 @@ count=0
 for dir in $(cat $LOGFILE |sort |uniq)
 do
     # rm -rf $dir
-    (($count++))
+    count=$(($count+1))
     if (( $count % 1000 == 0 )); then
         echo "${count} directories pruned..." | log
     fi
