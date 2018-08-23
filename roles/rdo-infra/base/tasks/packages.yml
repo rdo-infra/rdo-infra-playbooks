@@ -28,7 +28,7 @@
   when: ansible_distribution != "Fedora"
 
 - name: Ensure EPEL is disabled by default
-  command: yum-config-manager --disable epel
+  command: "yum-config-manager {{ enable_epel_repo | default(false) | bool | ternary('--enable', '--disable') }} epel"
   when: ansible_distribution != "Fedora"
 
 - name: Install packages from EPEL
