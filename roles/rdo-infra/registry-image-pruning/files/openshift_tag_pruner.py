@@ -62,7 +62,7 @@ def get_args():
                                           ' (Dry-run by default)',
                         action='store_true')
     parser.add_argument('--days', help='Delete tags older than N days',
-                        default=7)
+                        default=7, type=int)
     parser.add_argument('--whitelist', help='Comma-separated list of tags to'
                                             ' whitelist',
                         default=None)
@@ -107,12 +107,13 @@ def main():
 
     # Load whitelisted tags if there's any
     whitelist = []
-    if len(args.whitelist) == 0:
-        log.critical("An empty whitelist has been provided.")
-        sys.exit(1)
-    if args.whitelist is not None:
+
+    if args.whitelist is not None and len(args.whitelist) != 0:
         whitelist = args.whitelist.split(',')
         log.info('Whitelisted tags: %s' % ', '.join(whitelist))
+    elif len(args.whitelist) == 0:
+        log.critical("An empty whitelist has been provided.")
+        sys.exit(1)
     else:
         # If there are no whitelisted tags, we can remove more than we want
         log.critical("No whitelist has been provided.")
