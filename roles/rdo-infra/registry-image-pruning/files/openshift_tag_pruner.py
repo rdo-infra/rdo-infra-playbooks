@@ -102,17 +102,18 @@ def main():
         time.sleep(5)
 
     # Seconds in a day * args.days
-    MAX_AGE = 86400 * args.days
+    MAX_AGE = 86400 * int(args.days)
     NOW = datetime.utcnow()
 
     # Load whitelisted tags if there's any
     whitelist = []
-    if len(args.whitelist) == 0:
-        log.critical("An empty whitelist has been provided.")
-        sys.exit(1)
-    if args.whitelist is not None:
+
+    if args.whitelist is not None and len(args.whitelist) != 0:
         whitelist = args.whitelist.split(',')
         log.info('Whitelisted tags: %s' % ', '.join(whitelist))
+    elif len(args.whitelist) == 0:
+        log.critical("An empty whitelist has been provided.")
+        sys.exit(1)
     else:
         # If there are no whitelisted tags, we can remove more than we want
         log.critical("No whitelist has been provided.")
