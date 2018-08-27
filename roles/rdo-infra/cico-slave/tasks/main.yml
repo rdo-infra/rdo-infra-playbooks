@@ -164,4 +164,4 @@
     name: "Start jenkins slave on fail"
     minute: '*/5'
     user: jenkins
-    job: "ps -fu jenkins |grep java | grep -v grep > /dev/null || (nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &)"
+    job: "ps -fu jenkins |grep java | grep -v grep > /dev/null || (. ~/.bashrc; nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &)"
