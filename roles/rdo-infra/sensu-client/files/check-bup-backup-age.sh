@@ -50,9 +50,14 @@ if [ $USE_DATE_SUBDIR -eq 1 ]; then
     BUP_DIR=${BUP_DIR}/${CURDATE}
 fi
 
+export BUP_DIR
+
 # Get timestamps
 NOW=$(date +"%s")
-FILE_DATE=$(sudo BUP_DIR=${BUP_DIR} /usr/local/bin/bup ls -l ${DIRECTORY} | grep -v latest | awk '{print $6}' |sort -r | head -n 1)
+FILE_DATE=$(sudo /usr/local/bin/bup ls -l ${DIRECTORY} | grep -v latest | awk '{print $6}' |sort -r | head -n 1)
+
+[ -z $FILE_DATE ] && ExitScript $CRITICAL "CRITICAL: Could not get backup date for ${BUP_DIR}"
+
 DATE_SHORT=$(echo $FILE_DATE | awk -F- '{print $1$2$3}')
 TIMESTAMP=$(date -d "${DATE_SHORT}" +%s)
 
