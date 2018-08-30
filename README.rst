@@ -1,6 +1,6 @@
 rdo-infra-playbooks
 ===================
-Playbooks to configure servers involved in the delivery of RDO.
+Playbooks and roles to configure servers involved in the delivery of RDO.
 
 Contributing
 ============
@@ -11,19 +11,47 @@ The project can be found on https://review.rdoproject.org/r/#/admin/projects/rdo
 
 Dependencies
 ============
-- Pull required roles::
+- Pull required roles if you are planning to set up the RDO registry::
 
-    ansible-galaxy install -r ansible-role-requirements.yml
+    mkdir -p roles/openshift
+    git clone https://github.com/rdo-infra/openshift-ansible roles/openshift/ansible
+    cd roles/openshift/ansible
+    git checkout rdo-3.7
 
-- Setup config.yml (private credentials, etc.)
+- For the monitoring roles, you will need to fetch the opstools-ansible role::
+
+    cd roles/opstools-ansible
+    git submodule update --init --recursive
+
+Setup base RDO server requirements
+==================================
+- Setup machine: ``ansible-playbook -i hosts.yml playbooks/base.yml``
+
+Setup Jenkins slave for ci.centos.org environment
+=================================================
+- Setup machine: ``ansible-playbook -i hosts.yml playbooks/cico-slave.yml``
 
 Setup monitoring master
 =======================
-- Setup master: ``ansible-playbook -e @config.yml -i hosts playbooks/setup_master.yml``
+- Setup master: ``ansible-playbook -i hosts.yml playbooks/sensu-server.yml``
 
 Setup monitoring clients
 ========================
-- Setup client(s): ``ansible-playbook -e @config.yml -i hosts playbooks/setup_client.yml``
+- Setup client(s): ``ansible-playbook -i hosts.yml playbooks/sensu-client.yml``
+
+Setup RDO Registry
+==================
+
+::
+
+    virtualenv ~/.venv
+    . ~/.venv/bin/activate
+    pip install -r roles/openshift/openshift-ansible/requirements.txt
+    ansible-playbook -b -i inventory.yaml playbooks/registry-host-preparation.yml
+    ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/openshift-node/network_manager.yml
+    ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/config.yml
+    ansible-playbook -b -i inventory.yaml playbooks/registry-project-creation.yml
+
 
 Copyright
 =========
