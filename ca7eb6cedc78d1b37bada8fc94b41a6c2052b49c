@@ -1,0 +1,9 @@
+Code-Review+2: hguemar <hguemar@fedoraproject.org>
+Code-Review+1: <tdecacqu@redhat.com>
+Workflow+1: hguemar <hguemar@fedoraproject.org>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 31 Aug 2018 13:02:48 +0000
+Reviewed-on: https://review.rdoproject.org/r/16043
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
