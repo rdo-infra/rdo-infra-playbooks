@@ -24,12 +24,14 @@
     name: "{{ item.value.name }}"
     append: "yes"
     groups: "{{ rdo_admin_group }}"
+    state: "{{ item.value.state | default('present') }}"
   with_dict: "{{ rdo_admin_users }}"
 
 - name: Setup authorized keys for admin users
   authorized_key:
     user: "{{ item.0.key }}"
     key: "{{ item.1 }}"
+  when: item.0.value.state | default('present') != 'absent'
   loop: "{{ q('subelements', q('dict', rdo_admin_users), 'value.ssh_keys') }}"
 
 - name: Setup passwordless sudo for admin users
