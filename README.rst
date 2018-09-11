@@ -54,6 +54,18 @@ Setup RDO Registry
     ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/config.yml
     ansible-playbook -b -i inventory.yaml playbooks/registry-project-creation.yml
 
+Setup Websites
+==============
+
+The main website and the planet are generated using builders on a separate machine:
+
+    ansible-playbook -i hosts.yml -t websites_builders playbooks/web.yml
+
+The generated static pages as well as various redirections and the dashboard are on
+a publishing machine:
+
+    ansible-playbook -i hosts.yml -t websites playbooks/web.yml
+
 
 Copyright
 =========
