@@ -1,0 +1,7 @@
+---
+- name: "Set the redirection for RDO repos"
+  template:
+    src: redirect_repos.conf
+    dest: /etc/httpd/conf.d/www.rdoproject.org.conf.d/redirect_repos.conf
+    mode: 0644
+  notify: verify config and restart httpd
