@@ -18,6 +18,7 @@ registry_admins:
   - dmsimard
   - jpena
   - amoralej
+  - zcaplovi
 
 rdo_branches:
   - master
