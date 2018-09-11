@@ -6,3 +6,7 @@ ChangeLog
 doc/build
 roles/openshift/openshift-ansible
 roles/chrony
+roles/web_builder
+roles/msmtp
+roles/httpd
+roles/rdo-infra/dashboards
