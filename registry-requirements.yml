@@ -1,0 +1,4 @@
+---
+- src: git+https://github.com/rdo-infra/openshift-ansible
+  name: openshift/openshift-ansible
+  version: "rdo-3.7"
