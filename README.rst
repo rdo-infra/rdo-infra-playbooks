@@ -11,12 +11,14 @@ The project can be found on https://review.rdoproject.org/r/#/admin/projects/rdo
 
 Dependencies
 ============
-- Pull required roles if you are planning to set up the RDO registry::
+- Pull required roles::
 
-    mkdir -p roles/openshift
-    git clone https://github.com/rdo-infra/openshift-ansible roles/openshift/ansible
-    cd roles/openshift/ansible
-    git checkout rdo-3.7
+    ansible-galaxy install -r requirements.yml 
+
+- Pull required roles **only** if you are planning to set up the RDO registry, since it
+  seems to conflict with the user task::
+
+    ansible-galaxy install -r registry-requirements.yml 
 
 - For the monitoring roles, you will need to fetch the opstools-ansible role::
 
