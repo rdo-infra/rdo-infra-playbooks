@@ -1,0 +1,271 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+- name: Base MariaDB configuration
+  hosts:
+    - dlrndb_master
+    - dlrndb_replica
+  become: yes
+  become_user: root
+  tasks:
+    - name: Install required packages
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - mariadb-server
+        - MySQL-python
+        - openssl
+
+    - name: Start MariaDB
+      service:
+        name: mariadb
+        state: started
+        enabled: yes
+
+    - name: Set the root password
+      mysql_user:
+        user: root
+        password: "{{ dlrndb.mariadb_root_pw }}"
+      ignore_errors: yes
+
+    - name: Secure the root user for IPV6 localhost (::1)
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: root
+        password: "{{ dlrndb.mariadb_root_pw }}"
+        host: "::1"
+
+    - name: Secure the root user for IPV4 localhost (127.0.0.1)
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: root
+        password: "{{ dlrndb.mariadb_root_pw }}"
+        host: "127.0.0.1"
+
+    - name: Secure the root user for localhost domain
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: root
+        password: "{{ dlrndb.mariadb_root_pw }}"
+        host: "localhost"
+
+    - name: Secure the root user for server_hostname domain
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: root
+        password: "{{ dlrndb.mariadb_root_pw }}"
+        host: "{{ ansible_fqdn }}"
+
+    - name: Deletes anonymous server user
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: ""
+        host_all: yes
+        state: absent
+
+    - name: Removes the test database
+      mysql_db:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        db: test
+        state: absent
+
+- name: Create SSL configuration on master
+  hosts: dlrndb_master
+  become: yes
+  become_user: root
+  tasks:
+    - name: Create /etc/mysql/ssl
+      file:
+        path: /etc/mysql/ssl
+        state: directory
+        mode: 0750
+        owner: root
+        group: mysql
+
+    # In theory, we could use the openssl_* ansible modules, but they do not
+    # support using a custom CA
+    - name: Create CA cert
+      shell:
+        cmd: |
+          openssl genrsa 2048 > ca-key.pem
+          openssl req -new -x509 -nodes -days 365000 -key ca-key.pem -out ca-cert.pem -subj "/C=US/CN=dlrndb-ca.rdoproject.org"
+        chdir: /etc/mysql/ssl
+        creates: /etc/mysql/ssl/ca-cert.pem
+
+    - name: Create server cert
+      shell:
+        cmd: |
+          openssl req -newkey rsa:2048 -days 365000 -nodes -keyout server-key.pem -out server-req.pem -subj "/C=US/CN=dlrndb-server.rdoproject.org"
+          openssl rsa -in server-key.pem -out server-key.pem
+          openssl x509 -req -in server-req.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out server-cert.pem
+        chdir: /etc/mysql/ssl
+        creates: /etc/mysql/ssl/server-cert.pem
+
+    - name: Create client cert
+      shell:
+        cmd: |
+          openssl req -newkey rsa:2048 -days 365000 -nodes -keyout client-key.pem -out client-req.pem -subj "/C=US/CN=dlrndb-client.rdoproject.org"
+          openssl rsa -in client-key.pem -out client-key.pem
+          openssl x509 -req -in client-req.pem -days 365000 -CA ca-cert.pem -CAkey ca-key.pem -set_serial 01 -out client-cert.pem
+        chdir: /etc/mysql/ssl
+        creates: /etc/mysql/ssl/client-cert.pem
+
+    - name: Compress directory /etc/mysql/ssl
+      archive:
+        path: /etc/mysql/ssl
+        dest: /etc/mysql/ssl.tgz
+
+    - name: Fetch SSL configuration
+      fetch:
+         src: /etc/mysql/ssl.tgz
+         dest: /tmp/
+         flat: yes
+
+- name: Transfer SSL configuration to replica
+  hosts: dlrndb_replica
+  become: yes
+  become_user: root
+  tasks:
+    - name: Create /etc/mysql/ssl
+      file:
+        path: /etc/mysql/ssl
+        state: directory
+        mode: 0750
+        owner: root
+        group: mysql
+
+    - name: Extract ssl.tgz from master
+      unarchive:
+        src: /tmp/ssl.tgz
+        dest: /etc/mysql
+
+- name: Enable SSL configuration for MariaDB
+  hosts:
+    - dlrndb_master
+    - dlrndb_replica
+  become: yes
+  become_user: root
+  handlers:
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: restarted
+  tasks:
+    - name: Deploy /etc/my.cnf.d/ssl.cnf
+      copy:
+        src: dlrndb_ssl.cnf
+        dest: /etc/my.cnf.d/ssl.cnf
+        mode: 0644
+      notify:
+        - restart mariadb
+
+    - name: Add SSL CA entry to mysql-clients.cnf
+      ini_file:
+        path: /etc/my.cnf.d/mysql-clients.cnf
+        section: mysql
+        option: ssl-ca
+        value: /etc/mysql/ssl/ca-cert.pem
+      notify:
+        - restart mariadb
+
+    - name: Add SSL cert entry to mysql-clients.cnf
+      ini_file:
+        path: /etc/my.cnf.d/mysql-clients.cnf
+        section: mysql
+        option: ssl-cert
+        value: /etc/mysql/ssl/client-cert.pem
+      notify:
+        - restart mariadb
+
+    - name: Add SSL key entry to mysql-clients.cnf
+      ini_file:
+        path: /etc/my.cnf.d/mysql-clients.cnf
+        section: mysql
+        option: ssl-key
+        value: /etc/mysql/ssl/client-key.pem
+      notify:
+        - restart mariadb
+
+- name: Enable replication configuration on master
+  hosts: dlrndb_master
+  become: yes
+  become_user: root
+  handlers:
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: restarted
+
+  tasks:
+    - name: Deploy replication.cnf
+      copy:
+        src: replication_master.cnf
+        dest: /etc/my.cnf.d/replication.cnf
+        mode: 0644
+      notify:
+        - restart mariadb
+
+    - name: Create user with replication rights
+      mysql_user:
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+        user: "{{ dlrndb.replication_user }}"
+        password: "{{ dlrndb.replication_passwd }}"
+        host: "%"
+        priv: "*.*:REPLICATION SLAVE,REQUIRESSL"
+
+
+- name: Enable replication on replica
+  hosts: dlrndb_replica
+  become: yes
+  become_user: root
+  vars:
+    replication_master: "{{ hostvars[inventory_hostname].groups.dlrndb_master.0 }}"
+  handlers:
+    - name: restart mariadb
+      service:
+        name: mariadb
+        state: restarted
+  tasks:
+    - name: Deploy replication.cnf
+      copy:
+        src: replication_replica.cnf
+        dest: /etc/my.cnf.d/replication.cnf
+        mode: 0644
+      notify:
+        - restart mariadb
+
+    - name: Configure MySQL replica
+      mysql_replication:
+        master_host: "{{ replication_master | default(master) }}"
+        master_user: "{{ dlrndb.replication_user }}"
+        master_password: "{{ dlrndb.replication_passwd }}"
+        master_ssl: 1
+        mode: changemaster
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
+
+    - name: Start MySQL replica process
+      mysql_replication:
+        mode: startslave
+        login_user: root
+        login_password: "{{ dlrndb.mariadb_root_pw }}"
