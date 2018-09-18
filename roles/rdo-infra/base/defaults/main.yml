@@ -19,6 +19,8 @@ ansible_port: "22"
 discover_ssh: "true"
 manage_ssh: "true"
 manage_users: "true"
+manage_packages: "true"
+manage_config: "true"
 
 generate_ssl_certificate: "false"
 # We can set up multiple domains per system

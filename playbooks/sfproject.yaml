@@ -14,9 +14,10 @@
 #   under the License.
 #
 
-# Variables for ansible-role-rdobase
-# These control SSH port and security, let's enable them later
-discover_ssh: false
-manage_ssh: false
-manage_packages: "true"
-manage_config: "true"
+- name: Install RDO common admin user for sfproject nodes
+  hosts: sfproject
+  become: yes
+  become_user: root
+  roles:
+    - rdo-infra/base
+
