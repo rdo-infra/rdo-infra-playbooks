@@ -15,11 +15,11 @@
 #
 
 - include: ssh_discover.yml
-  when: discover_ssh == "true"
+  when: (discover_ssh | bool)
 - include: ssh.yml
   when:
-    - discover_ssh == "true"
-    - manage_ssh == "true"
+    - (discover_ssh | bool)
+    - (manage_ssh | bool)
 
 # Gather facts should be set to false when running this role since it will
 # fail if the Ansible SSH port is not set correctly.
@@ -28,8 +28,10 @@
   setup:
 
 - include: packages.yml
+  when: (manage_packages | bool)
 - include: users.yml
-  when: manage_users == "true"
+  when: (manage_users | bool)
 - include: config.yml
+  when: (manage_config | bool)
 - include: ssl_cert.yml
   when: (generate_ssl_certificate | bool)
