@@ -28,8 +28,10 @@
   setup:
 
 - include: packages.yml
+  when: manage_packages == "true"
 - include: users.yml
   when: manage_users == "true"
 - include: config.yml
+  when: manage_config == "true"
 - include: ssl_cert.yml
   when: (generate_ssl_certificate | bool)
