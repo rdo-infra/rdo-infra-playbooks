@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Inventory for {{ ansible_hostname }}</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <table id="inventory">
+      <tr>
+        <th>Key</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Public IP</td>
+        <td>{% if public_address is defined %} {{ public_address }} {% else %} {{ ansible_default_ipv4.address }} {% endif %}</td>
+      </tr>
+      <tr>
+        <td>CPU</td>
+        <td>{{ ansible_processor_vcpus }}</td>
+      </tr>
+      <tr>
+        <td>RAM</td>
+        <td>{{ ansible_memtotal_mb }}</td>
+      </tr>
+      <tr>
+        <td>IP Addresses</td>
+        <td>{% for ip in ansible_all_ipv4_addresses %}
+{{ ip }}<br>
+{% endfor %}</td>
+      </tr>
+      <tr>
+        <td>Disks</td>
+        <td><ul>{% for key, value in ansible_devices.items() %}
+<li>{{ key }}, size {{ value.size }}</li><br>
+{% endfor %}</ul></td>
+      </tr>
+      <tr>
+        <td>Cloud</td>
+        <td>{{ host_cloud }}</td>
+      </tr>
+      <tr>
+        <td>Tenant</td>
+        <td>{{ host_tenant }}</td>
+      </tr>
+      <tr>
+        <td>Service</td>
+        <td>{{ host_service }}</td>
+      </tr>
+      <tr>
+        <td>Automation</td>
+        <td><ul>
+<li>base: {{ host_automation.base }}</li>
+<li>service:
+{% for file in host_automation.service %}
+<li>- {{ file }}</li>
+{% endfor %}</li></ul></td>
+      </tr>
+    </table>
+  </body>
+</html>

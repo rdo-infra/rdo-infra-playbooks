@@ -25,6 +25,30 @@ Dependencies
     cd roles/opstools-ansible
     git submodule update --init --recursive
 
+Adding new systems to the inventory
+===================================
+
+The Ansible inventory is stored in the ``hosts.yml`` file. We also have some special,
+per-system tags that allow us to describe additional inventory data that is not stored
+elsewhere.
+
+To add a new system:
+
+- Create the required entry in ``hosts.yml``, adding it to any group the new system
+  should belong to. Use the ``standard`` group if no there is no other group to assign to.
+
+- Create a ``playbooks/host_vars/<hostname>/inventory.yml`` file, with the following
+  contents::
+
+    ---
+    host_cloud: <cloud hosting the system>
+    host_tenant: <tenant in cloud>
+    host_service: <free-form string describing the service>
+    host_automation:
+      base: <link to playbooks setting up the base users, packages, etc.>
+      service:
+        - <list of pointers to additional playbooks, puppet modules, automation tools that set up the service>
+
 Setup base RDO server requirements
 ==================================
 - Setup machine: ``ansible-playbook -i hosts.yml playbooks/base.yml``
@@ -66,6 +90,15 @@ a publishing machine:
 
     ansible-playbook -i hosts.yml -t websites playbooks/web.yml
 
+Run the inventory playbook
+==========================
+
+::
+    ansible-playbook -i hosts.yml playbooks/inventory.yml
+
+The playbook will generate a series of html files at /tmp, named ``inventory-hostname.html``.
+If you want to publish the html pages in a web server, copy the CSS file at ``contrib/styles.css``
+in the same directory, and you will get a fancier output.
 
 Copyright
 =========
