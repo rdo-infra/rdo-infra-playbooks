@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RDO Infra Inventory</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <ul>
+{% for system in play_hosts %}
+<li><a href=inventory-{{ system }}.html>{{ system }}</a></li>
+{% endfor %}
+    </ul>
+  </body>
+</html>

@@ -1,3 +1,0 @@
-monitoring_client_subscriptions:
-  - default
-  - dlrn-primary
