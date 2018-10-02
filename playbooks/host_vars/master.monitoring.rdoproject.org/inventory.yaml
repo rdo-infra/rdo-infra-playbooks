@@ -1,0 +1,8 @@
+---
+host_cloud: RDOCloud
+host_tenant: rdo
+host_service: "Monitoring"
+host_automation:
+  base: "https://github.com/rdo-infra/rdo-infra-playbooks"
+  service:
+    - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/sensu-server.yml"
