@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>RDO Infra Inventory</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"> </script>
+    <script type="text/javascript" src="script.js"</script>
+    </script>
+  </head>
+  <body>
+  <div class="sidebar-left">
+    <ul class="sidebar-left">
+        {% for system in ansible_play_hosts|sort %}
+        <li><a href=inventory-{{ system }}.html>{{ system }}</a></li>
+        {% endfor %}
+    </ul>
+  </div>
+  <div class="main"> </div>
+  </body>
+</html>
