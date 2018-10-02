@@ -39,6 +39,29 @@ This is very easy, look at this URL for more info:
 
     https://github.com/building5/ansible-vault-tools
 
+Adding new systems to the inventory
+===================================
+
+The Ansible inventory is stored in the ``hosts.yml`` file. We also have some special,
+per-system tags that allow us to describe additional inventory data that is not stored
+elsewhere.
+
+To add a new system:
+
+- Create the required entry in ``hosts.yml``, adding it to any group the new system
+  should belong to. Use the ``standard`` group if no there is no other group to assign to.
+
+- Create a ``playbooks/host_vars/<hostname>/inventory.yml`` file, with the following
+  contents::
+
+    ---
+    host_cloud: <cloud hosting the system>
+    host_tenant: <tenant in cloud>
+    host_service: <free-form string describing the service>
+    host_automation:
+      base: <link to playbooks setting up the base users, packages, etc.>
+      service:
+        - <list of pointers to additional playbooks, puppet modules, automation tools that set up the service>
 
 Setup base RDO server requirements
 ==================================
@@ -87,6 +110,16 @@ Setup Mails
 The mail and mailing-list servers (current Mailman 2 and future Mailman 3):
 
     ansible-playbook -i hosts.yml playbooks/mail.yml
+
+Run the inventory playbook
+==========================
+
+::
+    ansible-playbook -i hosts.yml playbooks/inventory.yml
+
+The playbook will generate a series of html files at /tmp/rdo-inventory. There is an index
+file and css associated, so you can just transfer all files to a web page and serve them
+from there.
 
 
 Copyright
