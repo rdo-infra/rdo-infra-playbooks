@@ -1,0 +1,8 @@
+---
+host_cloud: OSCI
+host_tenant: rdo
+host_service: "Webi Builder"
+host_automation:
+  base: "https://github.com/rdo-infra/rdo-infra-playbooks"
+  service:
+    - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/web.yml"
