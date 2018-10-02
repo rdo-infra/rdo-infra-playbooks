@@ -1,0 +1,8 @@
+---
+host_cloud: AWS
+host_tenant: us-east-1
+host_service: "RDO Trunk"
+host_automation:
+  base: "https://github.com/rdo-infra/rdo-infra-playbooks"
+  service:
+    - "https://github.com/rdo-infra/puppet-dlrn"

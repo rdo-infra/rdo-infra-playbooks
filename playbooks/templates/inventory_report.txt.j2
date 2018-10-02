@@ -1,0 +1,20 @@
+Public IP: {% if public_address is defined %} {{ public_address }} {% else %} {{ ansible_default_ipv4.address }} {% endif %}
+CPU: {{ ansible_processor_vcpus }}
+RAM: {{ ansible_memtotal_mb }}
+IP Addresses:
+{% for ip in ansible_all_ipv4_addresses %}
+  - {{ ip }}
+{% endfor %}
+Disks:
+{% for key, value in ansible_devices.items() %}
+  - {{ key }}, size {{ value.size }}
+{% endfor %}
+Cloud: {{ host_cloud }}
+Tenant: {{ host_tenant }}
+Service: {{ host_service }}
+Automation:
+  - base: {{ host_automation.base }}
+  - service:
+{% for file in host_automation.service %}
+    - {{ file }}
+{% endfor %}
