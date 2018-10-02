@@ -1,0 +1,8 @@
+---
+host_cloud: RDOCloud
+host_tenant: sf-prod
+host_service: "Software Factory"
+host_automation:
+  base: "https://github.com/rdo-infra/rdo-infra-playbooks"
+  service:
+    - sfconfig
