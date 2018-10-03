@@ -66,6 +66,13 @@ a publishing machine:
 
     ansible-playbook -i hosts.yml -t websites playbooks/web.yml
 
+Setup Mails
+===========
+
+The mail and mailing-list servers (current Mailman 2 and future Mailman 3):
+
+    ansible-playbook -i hosts.yml playbooks/mail.yml
+
 
 Copyright
 =========

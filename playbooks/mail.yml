@@ -1,0 +1,179 @@
+---
+
+- hosts: future.lists.rdoproject.org:lists.rdoproject.org
+  vars:
+    vg_name: "data"
+    ml_lv_name: "mailman"
+    fs_type: xfs
+  tasks:
+  - name: Add swap file
+    include_role:
+      name: swap_file
+    vars:
+      size: 1G
+      path: /var/swap
+  - name: Test if partition for extra data exists
+    stat:
+      path: /dev/vdb1
+    register: data_1
+  - name: Partition disk for extra data
+    parted:
+      device: /dev/vdb
+      label: gpt
+      number: 1
+      name: "data_1"
+      flags: [ lvm ]
+      state: present
+    when: not data_1.stat.exists
+  - name: Create LVM VG for extra data
+    lvg:
+      vg: "{{ vg_name }}"
+      pvs: "/dev/vdb1"
+      state: present
+  # if we need more, adding a new PV in the VG would be very easy
+  - name: Create LVM LV for Mailing-Lists data
+    lvol:
+      lv: "{{ ml_lv_name }}"
+      vg: "{{ vg_name }}"
+      size: "100%VG"
+      state: present
+  - name: Create filesystem for Mailing-Lists data
+    filesystem:
+      fstype: "{{ fs_type }}"
+      dev: "/dev/{{ vg_name }}/{{ ml_lv_name }}"
+  - name: Mount filesystem for Mailing-Lists data
+    mount:
+      src: "/dev/{{ vg_name }}/{{ ml_lv_name }}"
+      path: /srv/data
+      fstype: "{{ fs_type }}"
+      state: mounted
+  tags: partitioning
+
+- hosts: lists.rdoproject.org
+  vars:
+    data_dir: "files/mail"
+    mail_domain: lists.rdoproject.org
+    ml_routing_map: /etc/postfix/mailinglists
+    website_domain: lists.rdoproject.org
+    force_tls: True
+    use_tls: True
+    use_letsencrypt: True
+    tls_method: manual
+    cert_file: "/etc/letsencrypt/live/{{ website_domain }}/fullchain.pem"
+    key_file: "/etc/letsencrypt/live/{{ website_domain }}/privkey.pem"
+    ca_file: /etc/pki/tls/cert.pem
+    # due to https://github.com/ansible/ansible/issues/21890
+    sa_config_bits: /etc/mail/spamassassin/local.cf.d
+  tasks:
+    - name: Install SpamAssassin
+      include_role:
+        name: spamassassin
+      vars:
+        service_profile: medium
+    - name: "Install web vhost '{{ website_domain }}'"
+      include_role:
+        name: httpd
+        tasks_from: vhost
+    - name: Install Mailman 2
+      include_role:
+        name: mailman2
+    - name: Install Postgrey
+      include_role:
+        name: postgrey
+      vars:
+        whitelist_clients:
+          - redhat.com
+    - name: Install Postfix
+      include_role:
+        name: postfix
+      vars:
+        myhostname: "{{ inventory_hostname }}"
+        relay_domains:
+          - "{{ mail_domain }}"
+        with_mailman2: true
+        with_postgrey: true
+        with_spamassassin: true
+        # used for selective antispam
+        smtpd_recipient_restrictions_custom:
+          - "check_recipient_access pcre:$config_directory/recipients_access"
+        aliases:
+          root: "{{ ['root'] + ml_error_emails }}"
+          listmaster: root
+        local_accounts:
+          - privacy
+    - name: install extra maps
+      copy:
+        src: "{{ data_dir }}/{{ item }}"
+        dest: "/etc/postfix/{{ item }}"
+      with_items:
+        - recipients_access
+      notify: regenerate mail maps
+    - name: Use the second disk for all Mailman2 data
+      include_role:
+        name: data_movebind
+      vars:
+        src: /var/lib/mailman
+        dest: /srv/data/mailman2-lib
+        services:
+          - crond
+          - mailman
+          - httpd
+    # quick fix for SPAM generating a low Spamassassin score
+    - name: SPAM filtering
+      copy:
+        src: "{{ data_dir }}/sa_rdo_mls.cf"
+        dest: "{{ sa_config_bits }}/10_rdo_mls.cf"
+      notify: regenerate spamassassin configuration
+    - name: Discard very-likely SPAM
+      blockinfile:
+        path: /etc/postfix/header_checks
+        block: |
+          /^X-Spam-Level: \*{8,}/ DISCARD
+        marker: "# {mark} ANSIBLE MANAGED BLOCK ML-SPAM"
+      notify: reload mail system
+    - name: Install MDA
+      include_role:
+        name: dovecot
+      vars:
+        auth: yaml-dict
+    - name: install Dovecot users
+      copy:
+        src: "files/mail/users/"
+        dest: /etc/dovecot/users/
+
+- hosts: future.lists.rdoproject.org
+  vars:
+    vg_name: "data"
+    ml_lv_name: "mailman"
+    fs_type: xfs
+  roles:
+  - role: mailing-lists-server
+    display_name: "RDO List Archives"
+    domain: lists.rdoproject.org
+    admin_users:
+      - duck
+      - misc
+      - rbowen
+    mail_aliases:
+      root: "{{ ['root'] + ml_error_emails }}"
+      listmaster: root
+    use_simple_tls: True
+    whitelist_clients:
+      - redhat.com
+  # use the second disk for all Mailman3 data
+  - role: data_movebind
+    src: /var/lib/mailman3
+    dest: /srv/data/mailman3-lib
+    services:
+      - crond
+      - mailman3
+      - httpd
+  # use the second disk for all Hyperkitty+Postorius data
+  - role: data_movebind
+    src: /var/www/mailman
+    dest: /srv/data/mailman3-www
+    services:
+      - crond
+      - mailman3
+      - httpd
+

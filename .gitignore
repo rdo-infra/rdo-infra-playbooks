@@ -10,3 +10,16 @@ roles/web_builder
 roles/msmtp
 roles/httpd
 roles/rdo-infra/dashboards
+roles/bind9
+roles/data_movebind
+roles/dovecot
+roles/httpd_wsgi
+roles/mailing-lists-server
+roles/mailman2
+roles/mailman3
+roles/memcached
+roles/postfix
+roles/postgresql
+roles/postgrey
+roles/spamassassin
+roles/swap_file
