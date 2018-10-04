@@ -96,9 +96,6 @@
         name: rdo-infra/dashboards
       vars:
         website_domain: dashboards.rdoproject.org
-    - name: Generate RDO download stats
-      include_role:
-        name: rdo-infra/download_stats
     - name: create planet builder's user
       user:
         name: "{{ planet_sync_user }}"
