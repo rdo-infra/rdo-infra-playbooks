@@ -98,4 +98,8 @@ rdo_admin_users:
     name: "duck"
     ssh_keys:
       - "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAINkTw3tpP6CFVAFKCGucuJUluJbgaqBInH91e8HyK46U duck@Zushi"
+  jruzicka:
+    name: "jruzicka"
+    ssh_keys:
+      - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPWtlbVYcz9wqDD6e6LwNyDJTzr+gwQNfnRXie+V53SfB0APcVTZiWjoxyV5+RtcYJ8Ip784WFa4tDx7I1SumO1Jp55XptEgB5mIiMc3bia+2XWLUvU8v/atmSYjoj4PrmkTaFVqRzWFI8oAKuEODXQDKjMdkRjfq7e4JVn8Sk8/5/2wz+ZvR8FL1Fgw6uGSjvalo7FE/6gZ5WY0NQnhr3/oZiA0u7zEnpBWoAIsh/CoqeCUQq3kqN35MqwUe8aDMoXbn4pCnYthDZAaHn42m54ikONOYaQxMEm2McQfRP3V1VhkDQ8vDhqU4xNmZkI8KAFfMcgjA5gCUmG/ciPX6/"
 rdo_cron_jobs: {}
