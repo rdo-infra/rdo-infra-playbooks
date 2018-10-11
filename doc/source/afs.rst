@@ -28,8 +28,8 @@ Setup steps
 
   # git clone https://github.com/openstack-infra/puppet-openstackci
   # cd puppet-openstackci
-  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/76/529376/12 && git cherry-pick FETCH_HEAD
-  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/39/528739/21 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/76/529376/17 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/39/528739/23 && git cherry-pick FETCH_HEAD
 
 * Install puppet module. Do not use puppet module build/puppet module install, since the openstackci module may pull way more requirements than needed for the AFS mirror setup.
 
