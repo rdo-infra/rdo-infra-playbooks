@@ -14,27 +14,11 @@
 #   under the License.
 #
 
-- name: Install certbot from EPEL
-  package:
-    name: "certbot"
-    state: present
-    enablerepo: epel
-  when: ansible_distribution != "Fedora"
+- name: Check for existing certificates
+  stat:
+    path: "/etc/letsencrypt/live/{{ cert_item.value.domain }}"
+  register: cert
 
-- name: Install certbot on Fedora
-  package:
-    name: "certbot"
-    state: present
-  when: ansible_distribution == "Fedora"
-
-- include_tasks: ssl_create_cert.yml
-  with_dict: "{{ ssl_cert_options }}"
-  loop_control:
-    loop_var: cert_item
-
-- name: Create cron job for automatic cert renewal
-  cron:
-    name: "Automatic SSL cert renew"
-    weekday: "0"
-    user:  "root"
-    job: "/usr/bin/certbot renew && /usr/bin/systemctl reload httpd"
+- name: Generate certificate
+  command: "certbot certonly --standalone -m {{ cert_item.value.email }} --agree-tos -n -d {{ cert_item.value.domain }}"
+  when: cert.stat.exists == False
