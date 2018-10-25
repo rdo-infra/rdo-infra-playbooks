@@ -149,7 +149,7 @@ additional_checks:
     interval: '14400'
     ttl: '43200'
   check-afs-centos:
-    command: 'check-http-json.rb -u "http://graphite.openstack.org/render?target=stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation&format=json&from=-1min&noNullPoints=true&maxDataPoints=1" --key "[0].datapoints[0][0]" --value-greater-than $(date +%s --date=yesterday)'
+    command: '/opt/sensu/embedded/bin/check-http-json.rb -u "http://graphite.openstack.org/render?target=stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation&format=json&from=-1min&noNullPoints=true&maxDataPoints=1" --key "[0].datapoints[0][0]" --value-greater-than $(date +%s --date=yesterday)'
     subscribers: 'monitoring_master'
 
 rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) | combine(backup_checks) }}"
