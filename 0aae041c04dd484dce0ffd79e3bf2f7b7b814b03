@@ -1,0 +1,9 @@
+Code-Review+2: Fabien Boucher <fboucher@redhat.com>
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Workflow+1: Javier Peña <jpena@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 26 Oct 2018 10:58:48 +0000
+Reviewed-on: https://review.rdoproject.org/r/16716
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
