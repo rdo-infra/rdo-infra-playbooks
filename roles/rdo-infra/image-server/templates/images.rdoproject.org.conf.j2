@@ -1,0 +1,38 @@
+<VirtualHost *:80>
+    ServerName {{ inventory_hostname }}
+
+    DocumentRoot /var/www/html/images
+    <Directory /var/www/html/images>
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    # Alias https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo/stable/ to https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo-rdo
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^aarch64
+    RewriteRule ^/(.*)/rdo_trunk/current-tripleo/stable/(.*)$ /$1/rdo_trunk/current-tripleo-rdo/$2 [R=301,NC,L]
+    RewriteRule ^/(.*)/delorean/current-tripleo/stable/(.*)$ /$1/delorean/current-tripleo-rdo/$2 [R=301,NC,L]
+
+</VirtualHost>
+<VirtualHost *:443>
+    ServerName {{ inventory_hostname }}
+
+    DocumentRoot /var/www/html/images
+    <Directory /var/www/html/images>
+        Order deny,allow
+        Allow from all
+    </Directory>
+    SSLEngine on
+    SSLProtocol             ALL -SSLv2 -SSLv3
+    SSLCertificateFile /etc/letsencrypt/live/{{ inventory_hostname }}/cert.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/{{ inventory_hostname }}/chain.pem
+
+    # Alias https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo/stable/ to https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo-rdo
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^aarch64
+    RewriteRule ^/(.*)/rdo_trunk/current-tripleo/stable/(.*)$ /$1/rdo_trunk/current-tripleo-rdo/$2 [R=301,NC,L]
+    RewriteRule ^/(.*)/delorean/current-tripleo/stable/(.*)$ /$1/delorean/current-tripleo-rdo/$2 [R=301,NC,L]
+
+</VirtualHost>
+
