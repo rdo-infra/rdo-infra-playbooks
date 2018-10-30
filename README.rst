@@ -111,6 +111,16 @@ The mail and mailing-list servers (current Mailman 2 and future Mailman 3):
 
     ansible-playbook -i hosts.yml playbooks/mail.yml
 
+Setup images.rdoproject.org
+===========================
+
+::
+    ansible-playbook -i hosts.yml playbooks/images.yml
+
+The playbook assumes that the base playbook has already been executed, since it relies on
+the SSL certificate being created.
+
+
 Run the inventory playbook
 ==========================
 

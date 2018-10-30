@@ -1,0 +1,26 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+image_packages:
+  - httpd
+  - mod_ssl
+
+uploader_auth_keys:
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyJ4DxTKdQ8grli+FqUzoJnXWlwvhWBJwdSbKJh6en6tWwLp97dUXM2R8B5WGtggtlC7SKOSk0u49ZAOInz5lf4ljSStkWIm4DzwJWEKB5iiWgorEwhYyuKFvfikC2OMlPE8bBKCquK40gWGYeINMGeeoKWeXhB5ks4MjZqg0l65J3BGHJd4StDSd903lzNwPM9c8LBfHgEM0H7K1W/Qt86rDi2bcaDv1q1xNhVjQ8v/bR3yglnwsEjX5S6ULQlx3mYUMhfRQUiOb7bSaBlDL9faKL89GFrvkMT3zJ4v65cHpPDa3pQfuD/k+UBUhFeaXMyPFT/Wmimf2g7iLroCbhQ== rdo-ci@ci.centos.org"
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAoilfFFTGFASMZXm8pOuj3W7TmDltehxTcPRXEdOnkh7RMUKU0gNEaNvdR4VPjVk6BIZ9XHaCxvLxGryYbED2s8iCXl0rYGe9qPM1E1WE0ZUL00BL3gmFOVozvr5Denf+Stb9cZXxHsaOBWOi5R+GRuIwjmLmNlGZcvkfV4R4bA8y2lNifxi0LBoY65vvWSymL5ZxptxzBPEZpoDk+/3tavx55dZ8L8ibbMIILl8RhS7eqj0VTtP4Z591w61x/Q7nOufCcSXuyY76KvGz1xaLG9h0CpLKbc1k8/9bGEmBABOIbvuajiKKN/a/vv0XewwyehhjtcKssoJSbOoXa/wskQ== rhos-jenkins"
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8ZB5QbTvOWJrb2AAQP87cramCj4wnE0s6g/FUiCSVdXAa59eVEf78NhYxq7MNrfUQj3In0xBjS6Pc5089NYGoXnCY6kyOliLVUNU+DX6f8xtGzI+SGbYbTjPdf8Z5FHITtW5bd2ZQYjHGQbZeiflhoGhgz37ak87Pn8QspU7qWuflVhhL7cqlCuDbCoHMDNKocoFG7xEDzutkPvx63qAq15diylBmdAK/Wbcf9QYX6vYqtnZ7gW+7AFRf8cjx9EnFKQ9XcVszvclGr7nZFh1KHY0BoX85J8ySqtKvktv+bBvgbmCJjD0B4b1dkJLOETPnyAWMcAQrfGAWxXy2kt2yrp249tboGknGJnF6sSo9Ob9eBs3+6pBG1cY67YF40+TTfhZbpV6SP6rnL1qKz2RbWUGPve18h10wOYOIVpvAwdsD4Goj+ntNd4X1xU23e+WCka5Kz419TCDT4NSZsavpWy90UKiNZPoh1QzNWdPEXUF0QVk/Pdz6OpRV8vsyKuTlHrAx9P8YvV5T9m2PobfnX8zNHB6OW6L+iwOTaGonq8iDlSkUu70pecmWRtJ4qz2EBllFlxt992chvxqzG4Tj2I4bhuv1dAqskteET44UFIk9Eu3G7AB1jbONyx5CpdiJoAHGSKBf97uWdd/bL1Nn8pBAzWKpYXPsPKySQQWGUQ== dradez@aarch64_images"
+  - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCk8JoSqmJsacufZNloFnmE0nsUs6YfTRO4BbmLVMhA6eG13mE2nXKlliqhaGQL9ry9/6wei2iKjCgZ4PFIy0/PPorEID1/uyY3YqubjjK2Bvs4P52xmgR5025tBrHCRXzxh4LHybirQawPpq73ElSYJWfqN2Lsz5K6e5B4Jn30AAZ7rTmOkRcPY4iB3pHZmuB0G77qufplrRRs3Biza7mo0F4PIn64uup85FZn00lP8Xqahq2d6Y2zL+UR5+a+8q1ScYzW1V7W/ZU6i388dhjfBrd87Lg+FkwchrR9tcNn0AIXVzF274KFOcxVPTNiz5JKw5KT/qXy4x86XGiHnkP9 root@dell.tlv"
+
