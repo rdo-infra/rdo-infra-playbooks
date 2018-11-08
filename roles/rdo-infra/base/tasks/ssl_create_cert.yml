@@ -22,3 +22,12 @@
 - name: Generate certificate
   command: "certbot certonly --standalone -m {{ cert_item.value.email }} --agree-tos -n -d {{ cert_item.value.domain }}"
   when: cert.stat.exists == False
+
+- name: Create cron job for automatic cert renewal
+  cron:
+    name: "Automatic SSL cert renew for {{ cert_item.value.domain }}"
+    minute: "{{ 60 | random }}"
+    hour: "0"
+    weekday: "0"
+    user:  "root"
+    job: " /usr/bin/certbot renew -a webroot -d {{ cert_item.value.domain }} --webroot-path {{ cert_item.value.webroot | default('/var/www/html') }} && /usr/bin/systemctl reload httpd"
