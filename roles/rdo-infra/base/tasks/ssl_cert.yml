@@ -37,4 +37,4 @@
     name: "Automatic SSL cert renew"
     weekday: "0"
     user:  "root"
-    job: "/usr/bin/certbot renew && /usr/bin/systemctl reload httpd"
+    job: "/usr/bin/systemctl stop httpd && /usr/bin/certbot renew && /usr/bin/systemctl start httpd"
