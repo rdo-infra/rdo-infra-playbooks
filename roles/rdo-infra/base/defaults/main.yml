@@ -28,6 +28,7 @@ ssl_cert_options:
   cert1:
     email: "jpena@redhat.com"
     domain: "testmachine.rdoproject.org"
+    webroot: "/var/www/html"
 
 rdo_base_packages:
   - libselinux-python
