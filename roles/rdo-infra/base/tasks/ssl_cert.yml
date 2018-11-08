@@ -31,10 +31,3 @@
   with_dict: "{{ ssl_cert_options }}"
   loop_control:
     loop_var: cert_item
-
-- name: Create cron job for automatic cert renewal
-  cron:
-    name: "Automatic SSL cert renew"
-    weekday: "0"
-    user:  "root"
-    job: "/usr/bin/certbot renew && /usr/bin/systemctl reload httpd"
