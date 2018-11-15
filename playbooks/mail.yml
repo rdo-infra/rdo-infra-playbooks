@@ -143,37 +143,77 @@
 
 - hosts: future.lists.rdoproject.org
   vars:
+    data_dir: "files/mail"
     vg_name: "data"
     ml_lv_name: "mailman"
     fs_type: xfs
-  roles:
-  - role: mailing-lists-server
-    display_name: "RDO List Archives"
-    domain: lists.rdoproject.org
-    admin_users:
-      - duck
-      - misc
-      - rbowen
-    mail_aliases:
-      root: "{{ ['root'] + ml_error_emails }}"
-      listmaster: root
-    use_simple_tls: True
-    whitelist_clients:
-      - redhat.com
-  # use the second disk for all Mailman3 data
-  - role: data_movebind
-    src: /var/lib/mailman3
-    dest: /srv/data/mailman3-lib
-    services:
-      - crond
-      - mailman3
-      - httpd
-  # use the second disk for all Hyperkitty+Postorius data
-  - role: data_movebind
-    src: /var/www/mailman
-    dest: /srv/data/mailman3-www
-    services:
-      - crond
-      - mailman3
-      - httpd
+    # due to https://github.com/ansible/ansible/issues/21890
+    sa_config_bits: /etc/mail/spamassassin/local.cf.d
+  tasks:
+    - name: Install Mailing-Lists Server
+      include_role:
+        name: mailing-lists-server
+      vars:
+        display_name: "RDO List Archives"
+        domain: lists.rdoproject.org
+        admin_users:
+          - duck
+          - misc
+        mail_aliases:
+          root: "{{ ['root'] + ml_error_emails }}"
+          listmaster: root
+        use_simple_tls: True
+        whitelist_clients:
+          - redhat.com
+    - name: use the second disk for all Mailman3 data
+      include_role:
+        name: data_movebind
+      vars:
+        src: /var/lib/mailman3
+        dest: /srv/data/mailman3-lib
+        services:
+          - crond
+          - mailman3
+          - httpd
+    - name:  use the second disk for all Hyperkitty+Postorius data
+      include_role:
+        name: data_movebind
+      vars:
+        src: /var/www/mailman
+        dest: /srv/data/mailman3-www
+        services:
+          - crond
+          - mailman3
+          - httpd
+    # quick fix for SPAM generating a low Spamassassin score
+    - name: SPAM filtering
+      copy:
+        src: "{{ data_dir }}/sa_rdo_mls.cf"
+        dest: "{{ sa_config_bits }}/10_rdo_mls.cf"
+      notify: regenerate spamassassin configuration
+    - name: Discard very-likely SPAM
+      blockinfile:
+        path: /etc/postfix/header_checks
+        block: |
+          /^X-Spam-Level: \*{8,}/ DISCARD
+        marker: "# {mark} ANSIBLE MANAGED BLOCK ML-SPAM"
+      notify: reload mail system
+    - name: Install MDA
+      include_role:
+        name: dovecot
+      vars:
+        auth: yaml-dict
+    - name: install Dovecot users
+      copy:
+        src: "{{ data_dir }}/users/"
+        dest: /etc/dovecot/users/
+    - name: Configure web access to old ML archives
+      copy:
+        src: "{{ data_dir }}/web/old_ml_archives.conf"
+        # Duck: we should think about making _vhost_confdir part of the public API
+        dest: "{{ _vhost_confdir }}/"
+        owner: root
+        group: root
+        mode: 0644
+      notify: reload httpd
 
