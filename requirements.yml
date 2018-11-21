@@ -35,4 +35,6 @@
   name: swap_file
 - src: git+https://gitlab.com/osas/ansible-role-httpd_wsgi.git
   name: httpd_wsgi
+- src: git+https://gitlab.com/osas/ansible-role-unattended_updates.git
+  name: unattended_updates
 
