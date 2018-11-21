@@ -109,5 +109,14 @@
         document_root: "{{ planet_sync_path }}"
         document_root_group: "{{ planet_sync_user }}"
         content_security_policy: "default-src 'none'; img-src *; style-src 'self' 'unsafe-inline'"
+    # content is generated with playbooks/inventory.yaml
+    - name: Create vhost for inventory.rdoproject.org
+      include_role:
+        name: httpd
+        tasks_from: vhost
+      vars:
+        website_domain: inventory.rdoproject.org
+        document_root: /var/www/inventory.rdoproject.org
+        content_security_policy: "default-src 'none'; img-src *; style-src 'self' 'unsafe-inline'"
   tags: websites
 

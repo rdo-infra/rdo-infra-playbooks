@@ -57,3 +57,15 @@
         src: /tmp/inventory_report.html
         dest: /tmp/rdo-inventory/inventory-{{ inventory_hostname }}.html
         flat: yes
+
+- name: Update inventory.rdoproject.org
+  hosts: all
+  tasks:
+    - name: Sync inventory.rdoproject.org content
+      synchronize:
+        src: /tmp/rdo-inventory/
+        dest: /var/www/inventory.rdoproject.org/
+        delete: yes
+      run_once: true
+  tags: inventory_web_sync
+
