@@ -22,4 +22,5 @@
     - rdo-infra/base
     - role: chrony
       servers_preferred: "{{ ntp_servers | default([]) }}"
+    - unattended_updates
 
