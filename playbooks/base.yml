@@ -22,4 +22,8 @@
     - rdo-infra/base
     - role: chrony
       servers_preferred: "{{ ntp_servers | default([]) }}"
+    - role: unattended_updates
+      # CentOS does not provide security-only upgrades, so if the host is sensitive
+      # then do not setup automatic updates at all
+      when: ansible_distribution != 'CentOS' or not unattended_security_updates_only|default(False)|bool
 
