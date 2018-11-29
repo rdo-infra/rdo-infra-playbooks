@@ -14,5 +14,5 @@
 #   under the License.
 #
 
-- include: packages.yml
-- include: setup.yml
+- import_tasks: packages.yml
+- import_tasks: setup.yml

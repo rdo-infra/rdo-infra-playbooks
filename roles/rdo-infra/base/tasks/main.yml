@@ -14,9 +14,9 @@
 #   under the License.
 #
 
-- include: ssh_discover.yml
+- include_tasks: ssh_discover.yml
   when: (discover_ssh | bool)
-- include: ssh.yml
+- include_tasks: ssh.yml
   when:
     - (discover_ssh | bool)
     - (manage_ssh | bool)
@@ -27,13 +27,13 @@
 - name: Run deferred setup to gather facts
   setup:
 
-- include: packages.yml
+- include_tasks: packages.yml
   when: (manage_packages | bool)
-- include: users.yml
+- include_tasks: users.yml
   when: (manage_users | bool)
-- include: config.yml
+- include_tasks: config.yml
   when: (manage_config | bool)
-- include: ssl_cert.yml
+- include_tasks: ssl_cert.yml
   when: (generate_ssl_certificate | bool)
-- include: telegraf.yml
+- include_tasks: telegraf.yml
   when: (deploy_telegraf | bool)

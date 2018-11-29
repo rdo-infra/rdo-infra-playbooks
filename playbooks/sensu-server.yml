@@ -64,7 +64,7 @@
         - name: Ensure RDO repository is disabled
           command: yum-config-manager --disable centos-openstack-pike
 
-- include: sensu-rdo-bot.yml
+- import_playbook: sensu-rdo-bot.yml
 
 - name: Deploy RDO specific configuration for Sensu sever
   hosts: monitoring
@@ -73,7 +73,7 @@
   roles:
     - rdo-infra/sensu-server
 
-- include: sensu-client.yml
+- import_playbook: sensu-client.yml
 
 - name: Sanity check Sensu Server components
   hosts: monitoring
