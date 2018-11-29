@@ -43,13 +43,11 @@
     state: "present"
 
 - name: Install fail2ban from EPEL
-  vars:
-    package: "{{ item }}"
-  include: epel_package.yml
-  static: no
-  with_items:
-    - fail2ban
-    - fail2ban-systemd
+  package:
+    name:
+      - fail2ban
+      - fail2ban-systemd
+    enablerepo: epel
 
 - name: Start and enable fail2ban
   service:
