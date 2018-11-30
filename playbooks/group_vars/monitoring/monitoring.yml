@@ -30,22 +30,23 @@ rdo_tags:
 
 # Domains that are expected to have http/s enabled
 rdo_domains:
-  - images.rdoproject.org
-  - console.registry.rdoproject.org
-  - trunk.registry.rdoproject.org
-  - registry.rdoproject.org:8443
-  - trunk.rdoproject.org
-  - review.rdoproject.org
-  - www.rdoproject.org
-  - logs.rdoproject.org
-  - thirdparty.logs.rdoproject.org
   - centos.logs.rdoproject.org
-  - uchiwa.monitoring.rdoproject.org
+  - console.registry.rdoproject.org
+  - images.rdoproject.org
   - lists.rdoproject.org
+  - logs.rdoproject.org
+  - registry.rdoproject.org:8443
+  - review.rdoproject.org
+  - thirdparty.logs.rdoproject.org
+  - trunk.rdoproject.org
+  - trunk.registry.rdoproject.org
+  - uchiwa.monitoring.rdoproject.org
+  - www.rdoproject.org
 
 # Domains where we only expect http enabled
 rdo_domains_httponly:
   - mirror.regionone.rdo-cloud.rdoproject.org
+  - mirror.ca-ymq-1.vexxhost-rdo.rdoproject.org
 
 rdo_backup_locations:
   - dir: /var/lib/backup_lists_rdo/bup
