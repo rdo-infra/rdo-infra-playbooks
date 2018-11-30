@@ -42,7 +42,7 @@
 - hosts: www.rdoproject.org
   vars:
     use_ssl: True
-    force_ssl: True
+    use_hsts: False
     use_letsencrypt: True
   tasks:
     - name: create web builder's user
