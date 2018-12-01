@@ -1,0 +1,17 @@
+---
+- hosts: rdorepro.local
+  gather_facts: false
+  tasks:
+    - name: Create backup
+      command: ansible-playbook /var/lib/software-factory/ansible/sf_backup.yml
+
+    - name: Archive
+      archive:
+        path: /var/lib/software-factory/backup
+        dest: backup.tgz
+
+    - name: Fetch
+      fetch:
+        src: backup.tgz
+        dest: backup.tgz
+        flat: yes

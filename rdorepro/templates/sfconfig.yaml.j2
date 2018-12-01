@@ -1,0 +1,111 @@
+---
+fqdn: rdorepro.local
+default-tenant-name: "local"
+debug: false
+welcome_page_path: "zuul/t/rdorepro/status"
+network:
+  use_letsencrypt: false
+  smtp_relay:
+  ntp_main_server: pool.ntp.org
+  admin_mail_forward: root@localhost
+  static_hostnames: []
+  koji_host: ""
+  disable_external_resources: false
+  tls_cert_file: ""
+  tls_chain_file: ""
+  tls_key_file: ""
+
+tenant-deployment:
+
+config-locations:
+  config-repo:
+  jobs-repo:
+  strategy:
+    sync: push
+    user: git
+
+authentication:
+  admin_password: CHANGE_ME
+  sso_cookie_timeout: 43200
+  authenticated_only: false
+  differentiate_usernames: false
+  ldap:
+    disabled: true
+  active_directory:
+    disabled: true
+  oauth2:
+    github:
+      disabled: false
+      client_id: {{ github_client_id }}
+      client_secret: {{ github_client_secret }}
+      github_allowed_organizations:
+    google:
+      disabled: true
+    bitbucket:
+      disabled: true
+  openid:
+    disabled: true
+  openid_connect:
+    disabled: true
+  SAML2:
+    disabled: true
+
+theme:
+  loginpage_custom_footer: ""
+  topmenu_custom_entry: '<li><a href="/docs/" target="_top">Documentation</a></li>'
+
+nodepool:
+  clouds_file: /etc/software-factory/clouds.yaml
+  kube_file:
+  providers: []
+
+elasticsearch:
+  heap_size: 512m
+  replicas: 0
+
+logstash:
+  retention_days: 60
+
+logs:
+  expiry: 60
+
+zuul:
+  default_nodeset_name: container
+  default_nodeset_label: runc-centos
+  default_retry_attempts: 3
+  periodic_pipeline_mail_rcpt: "root@localhost"
+  success_log_url: ""
+  ara_report: true
+  failure_log_url: ""
+  prerelease_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9alpha|beta|rc.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
+  release_regexp: '([0-9]+)\.([0-9]+)\.([0-9]+)(?:-([0-9a-zA-Z.-]+))?(?:\+([0-9a-zA-Z.-]+))?'
+  gerrit_connections:
+   - name: "softwarefactory-project.io"
+     hostname: softwarefactory-project.io
+     port: 29418
+     puburl: https://softwarefactory-project.io/r/
+     username: {{ sf_gerrit_username }}
+
+   - name: "rdoproject.org"
+     hostname: review.rdoproject.org
+     port: 29418
+     puburl: https://review.rdoproject.org/r/
+     username: {{ rdo_gerrit_username }}
+
+  github_connections: []
+
+  git_connections:
+    - name: "git.openstack.org"
+      baseurl: "https://git.openstack.org/"
+      poll_delay: 17200
+    - name: "github.com"
+      baseurl: "https://github.com/"
+      poll_delay: 17200
+
+  upstream_zuul_jobs: false
+
+gerritbot:
+  disabled: true
+
+mumble:
+  password: false

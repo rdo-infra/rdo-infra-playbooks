@@ -1,0 +1,21 @@
+---
+labels:
+  - name: upstream-centos-7
+
+providers:
+  - name: default
+    cloud: default
+    clean-floating-ips: true
+    boot-timeout: 240
+    rate: 0.25
+    cloud-images:
+      - name: upstream-centos-7
+        image-name: {{ rdo_cloud_image_upstream_centos_name }}
+        username: zuul
+    pools:
+      - name: main
+        max-servers: 1
+        labels:
+          - name: upstream-centos-7
+            min-ram: 1024
+            cloud-image: upstream-centos-7

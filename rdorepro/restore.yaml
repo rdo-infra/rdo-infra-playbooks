@@ -1,0 +1,44 @@
+---
+- hosts: rdorepro.local
+  gather_facts: false
+  tasks:
+    - include_vars: secrets.yaml
+    - fail:
+        msg: Invalid zuul ssh key
+      when: '"MII" not in zuul_ssh_private_key'
+
+    - name: Set hostname
+      command: hostnamectl set-hostname rdorepro.local
+
+    - name: Install sf-repo
+      yum:
+        name: https://softwarefactory-project.io/repos/sf-release-3.2.rpm
+
+    - name: Update system
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install sf-config
+      yum:
+        name: 'sf-config'
+
+    - name: Extract backup
+      unarchive:
+        src: backup.tgz
+        dest: /var/lib/software-factory/
+
+    - name: Setup sfconfig.yaml
+      template:
+        src: sfconfig.yaml.j2
+        dest: /var/lib/software-factory/backup/install-server/etc/software-factory/sfconfig.yaml
+        mode: 0600
+
+    - name: Setup clouds.yaml
+      template:
+        src: clouds.yaml.j2
+        dest: /var/lib/software-factory/backup/install-server/etc/software-factory/clouds.yaml
+        mode: 0600
+
+    - name: Restore backup
+      command: sfconfig --recover

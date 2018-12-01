@@ -1,0 +1,2 @@
+[rdorepro.local]
+38.145.35.71 ansible_user=centos ansible_become=yes

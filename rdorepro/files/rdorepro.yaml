@@ -1,0 +1,24 @@
+---
+resources:
+  tenants:
+    rdorepro:
+      description: "The RDO reproducer tenant."
+      url: "https://rdorepro.local/manage"
+      default-connection: gerrit
+
+  projects:
+    rdorepro:
+      tenant: rdorepro
+      description: RDO reproducer config
+      source-repositories:
+        - rdorepro-config:
+            zuul/config-project: True
+        - rdorepro-demo
+
+  repos:
+    rdorepro-config:
+      description: reproducer config project
+      acl: config-acl
+    rdorepro-demo:
+      description: reproducer untrusted project
+      acl: config-acl

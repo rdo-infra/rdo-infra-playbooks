@@ -1,0 +1,146 @@
+---
+- hosts: rdorepro.local
+  gather_facts: false
+  tasks:
+    - include_vars: secrets.yaml
+    - fail:
+        msg: Invalid zuul ssh key
+      when: '"MII" not in zuul_ssh_private_key'
+
+    # First let's deploy zuul, nodepool, gerrit, logserver, ara, ...
+    - name: Set hostname
+      command: hostnamectl set-hostname rdorepro.local
+
+    - name: Install sf-repo
+      yum:
+        name: https://softwarefactory-project.io/repos/sf-release-3.2.rpm
+
+    - name: Update system
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install sf-config
+      yum:
+        name: 'sf-config'
+
+    - name: Setup sfconfig.yaml
+      template:
+        src: sfconfig.yaml.j2
+        dest: /etc/software-factory/sfconfig.yaml
+        mode: 0600
+
+    - name: Setup clouds.yaml
+      template:
+        src: clouds.yaml.j2
+        dest: /etc/software-factory/clouds.yaml
+        mode: 0600
+
+    - name: Create bootstrap-data
+      file:
+        path: /var/lib/software-factory/bootstrap-data/ssh_keys/
+        state: directory
+        mode: 0700
+
+    - name: Copy zuul ssh public key
+      copy:
+        content: "{{ zuul_ssh_public_key }}"
+        dest: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_rsa.pub
+        mode: 0644
+
+    - name: Copy zuul ssh private key
+      copy:
+        content: "{{ zuul_ssh_private_key }}"
+        dest: /var/lib/software-factory/bootstrap-data/ssh_keys/zuul_rsa
+        mode: 0600
+      no_log: true
+
+    - name: Run sfconfig
+      command: sfconfig
+
+    # Then let's import rdoproject.org zuul tenant configuration
+    - name: Install ruamel.yaml
+      command: >
+        /opt/rh/rh-python35/root/bin/pip3 install --user --upgrade ruamel.yaml
+
+    - name: Setup resource
+      copy:
+        src: rdorepro.yaml
+        dest: /root/config/resources/rdorepro.yaml
+
+    - name: Fetch rdo config
+      get_url:
+        url: https://softwarefactory-project.io/cgit/config/plain/zuul/rdo.yaml
+        dest: /root/config/rdo.yaml
+        mode: 0440
+
+    - name: Copy rdorepro-config script
+      copy:
+        src: rdorepro-config.py
+        dest: /root/config/rdorepro-config.py
+        mode: 0555
+
+    - name: Run rdorepro-config script
+      command: ./rdorepro-config.py
+      args:
+        chdir: /root/config
+
+    - name: Setup nodepool configuration
+      template:
+        src: nodepool.yaml.j2
+        dest: /root/config/nodepool/nodepool.yaml
+
+    - name: Commit config repo
+      command: "git {{ item }}"
+      with_items:
+        - add resources/rdorepro.yaml zuul/rdorepro.yaml nodepool/nodepool.yaml
+        - commit -m "Add rdopro config"
+        - push git+ssh://gerrit/config master
+      args:
+        chdir: /root/config
+
+    # Finaly let's import and adapt rdoproject.org zuul config
+    - name: Clone rdorepro-config
+      git:
+        repo: git+ssh://gerrit/rdorepro-config
+        dest: /root/rdorepro-config
+        force: yes
+        update: yes
+      register: _clone
+      retries: 30
+      delay: 10
+      until: _clone is not failed
+
+    - name: Prepare rdorepro-config
+      command: "git {{ item }}"
+      # Ignore errors when merge is already done
+      ignore_errors: yes
+      with_items:
+        - remote add upstream https://review.rdoproject.org/r/config
+        - fetch upstream
+        - merge upstream/master master
+        - checkout --ours .gitreview
+        - add .gitreview
+        - commit -m update
+      args:
+        chdir: /root/rdorepro-config
+
+    - name: Copy rdorepro-zuul-config script
+      copy:
+        src: rdorepro-zuul-config.py
+        dest: /root/rdorepro-config/rdorepro-zuul-config.py
+        mode: 0555
+
+    - name: Run rdorepro-zuul-config script
+      command: ./rdorepro-zuul-config.py
+      args:
+        chdir: /root/rdorepro-config
+
+    - name: Commit updates
+      command: "git {{ item }}"
+      with_items:
+        - add -A .
+        - commit -a -m "Update rdo zuul config for rdorepro"
+        - push git+ssh://gerrit/rdorepro-config master
+      args:
+        chdir: /root/rdorepro-config
