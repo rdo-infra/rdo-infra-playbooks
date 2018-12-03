@@ -95,3 +95,62 @@
     hour: "5"
     day: "*/2"
     job: 'ansible-playbook /root/sf-ops/backup/ansible/backup.yml'
+
+- name: Create the sf-project.io directories
+  file:
+    path: /root/sf-project-backup/group_vars
+    state: directory
+    mode: 0755
+
+- name: Deploy the sf-project.io variables
+  copy:
+    src: sf-project-all.yml
+    dest: /root/sf-project-backup/group_vars/all.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy backup.yml playbook for sf-project.io
+  copy:
+    src: /root/sf-ops/backup/ansible/backup.yml
+    dest: /root/sf-project-backup/backup.yml
+    owner: root
+    group: root
+    mode: 0644
+    remote_src : yes
+
+- name: Add MAILTO address for SF related backups
+  cron:
+    name: MAILTO
+    user: root
+    env: yes
+    value: softwarefactory-operations-team@redhat.com
+    cron_file: sf-backup
+
+- name: Create crontab entry for sf-project.io
+  cron:
+    name: "Run backup for sf-project.io"
+    user: root
+    minute: "0"
+    hour: "1"
+    day: "*/2"
+    job: 'ansible-playbook -vv /root/sf-project-backup/backup.yml'
+    cron_file: sf-backup
+
+- name: Deploy the koji.sf-project.io variables
+  copy:
+    src: koji-all.yml
+    dest: /root/sf-ops/backup-koji/ansible/group_vars/all.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create crontab entry for koji.sf-project.io
+  cron:
+    name: "Run backup for koji.sf-project.io"
+    user: root
+    minute: "0"
+    hour: "3"
+    day: "*/2"
+    job: 'ansible-playbook -vv /root/sf-ops/backup-koji/ansible/backup.yml'
+    cron_file: sf-backup
