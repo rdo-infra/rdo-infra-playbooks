@@ -27,3 +27,6 @@
 
 - name: Configure SF koji backup
   include_tasks: sfkoji.yml
+
+- name: Configure SF backup
+  include_tasks: sfbackup.yml
