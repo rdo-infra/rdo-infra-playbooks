@@ -46,6 +46,7 @@ rdo_domains:
 # Domains where we only expect http enabled
 rdo_domains_httponly:
   - mirror.regionone.rdo-cloud.rdoproject.org
+  - mirror.ca-ymq-1.vexxhost-rdo.rdoproject.org
 
 rdo_backup_locations:
   - dir: /var/lib/backup_lists_rdo/bup
