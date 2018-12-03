@@ -14,19 +14,11 @@
 #   under the License.
 #
 
-- name: Install required packages
-  package:
-    name: "{{ backup_packages }}"
-    state: installed
+- name: Create the sfbackup directory
+  file:
+    path:  /var/lib/sfbackup
+    state: directory
+    mode: 0755
+    owner: sfrepos
+    group: sfrepos
 
-- name: Set up storage
-  include_tasks: storage.yml
-
-- name: Deploy bup
-  include_tasks: bup.yml
-
-- name: Configure SF koji backup
-  include_tasks: sfkoji.yml
-
-- name: Configure SF backup
-  include_tasks: sfbackup.yml
