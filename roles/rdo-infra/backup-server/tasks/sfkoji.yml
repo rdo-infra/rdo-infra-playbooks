@@ -19,11 +19,6 @@
     name: sfrepos
     state: present
 
-- name: Setup authorized keys for sfrepos
-  authorized_key:
-    user: sfrepos
-    key: "{{ sfkoji_authkey }}"
-
 - name: Create the sfkoji backup directory
   file:
     path:  /var/www/html/sfkoji
@@ -59,3 +54,37 @@
     name: "httpd"
     state: "started"
     enabled: "yes"
+
+- name: Create the sfbackup directory
+  file:
+    path:  /var/lib/sfbackup
+    state: directory
+    mode: 0755
+    owner: sfrepos
+    group: sfrepos
+
+- name: Deploy the koji.sf-project.io variables
+  copy:
+    src: koji-all.yml
+    dest: /root/sf-ops/backup-koji/ansible/group_vars/all.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Add MAILTO address for SF related backups
+  cron:
+    name: MAILTO
+    user: root
+    env: yes
+    value: softwarefactory-operations-team@redhat.com
+    cron_file: sf-backup
+
+- name: Create crontab entry for koji.sf-project.io
+  cron:
+    name: "Run backup for koji.sf-project.io"
+    user: root
+    minute: "0"
+    hour: "3"
+    day: "*/2"
+    job: 'ansible-playbook -vv /root/sf-ops/backup-koji/ansible/backup.yml'
+    cron_file: sf-backup

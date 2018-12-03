@@ -31,6 +31,12 @@
     lv: lv_sf_koji
     size: "{{ backup_koji_size }}"
 
+- name: Create lvol for sf.io backup
+  lvol:
+    vg: vgbackup
+    lv: lv_sfbackup
+    size: "{{ backup_sfio_size }}"
+
 - name: Create file systems
   filesystem:
     fstype: xfs
@@ -38,6 +44,7 @@
   with_items:
     - /dev/vgbackup/lv_review_rdo
     - /dev/vgbackup/lv_sf_koji
+    - /dev/vgbackup/lv_sfbackup
 
 - name: Mount review.rdo backup volume
   mount:
@@ -51,6 +58,14 @@
   mount:
     path: /var/www/html/sfkoji
     src: /dev/vgbackup/lv_sf_koji
+    fstype: xfs
+    opts: noatime
+    state: mounted
+
+- name: Mount sf.io backup volume
+  mount:
+    path: /var/lib/sfbackup
+    src: /dev/vgbackup/lv_sfbackup
     fstype: xfs
     opts: noatime
     state: mounted
