@@ -1,0 +1,64 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Create the sfbackup directory
+  file:
+    path:  /var/lib/sfbackup
+    state: directory
+    mode: 0755
+    owner: sfrepos
+    group: sfrepos
+
+- name: Create the sf-project.io directories
+  file:
+    path: /root/sf-project-backup/group_vars
+    state: directory
+    mode: 0755
+
+- name: Deploy the sf-project.io variables
+  copy:
+    src: sf-project-all.yml
+    dest: /root/sf-project-backup/group_vars/all.yml
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Copy backup.yml playbook for sf-project.io
+  copy:
+    src: /root/sf-ops/backup/ansible/backup.yml
+    dest: /root/sf-project-backup/backup.yml
+    owner: root
+    group: root
+    mode: 0644
+    remote_src : yes
+
+- name: Add MAILTO address for SF related backups
+  cron:
+    name: MAILTO
+    user: root
+    env: yes
+    value: softwarefactory-operations-team@redhat.com
+    cron_file: sf-backup
+
+- name: Create crontab entry for sf-project.io
+  cron:
+    name: "Run backup for sf-project.io"
+    user: root
+    minute: "0"
+    hour: "1"
+    day: "*/2"
+    job: 'ansible-playbook -vv /root/sf-project-backup/backup.yml'
+    cron_file: sf-backup
