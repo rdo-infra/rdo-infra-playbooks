@@ -55,3 +55,56 @@
     hour: 1
     user: root
     job: '/usr/local/bin/prune_tripleo_images.sh'
+
+- name: Create base directories for images
+  file:
+    path: "/var/www/html/images/{{ item }}/"
+    state: directory
+    mode: 0755
+    owner: uploader
+    group: uploader
+    setype: httpd_sys_content_t
+  with_items:
+    - centos7
+    - fedora28
+
+- name: Create old base directories for CentOS 7 images
+  file:
+    path: "/var/www/html/images/{{ item }}/delorean"
+    state: directory
+    mode: 0755
+    owner: uploader
+    group: uploader
+    setype: httpd_sys_content_t
+  with_items: "{{ centos7_releases }}"
+
+- name: Create symlink from rdo_trunk to delorean (CentOS 7)
+  file:
+    path: "/var/www/html/images/{{ item }}/rdo_trunk"
+    src: "/var/www/html/images/{{ item }}/delorean"
+    state: link
+  with_items: "{{ centos7_releases }}"
+
+- name: Create symlink from base directory to old base (CentOS 7)
+  file:
+    path: "/var/www/html/images/centos7/{{ item }}"
+    src: "/var/www/html/images/{{ item }}"
+    state: link
+  with_items: "{{ centos7_releases }}"
+
+- name: Create delorean directory for fedora28
+  file:
+    path: "/var/www/html/images/fedora28/{{ item }}/delorean"
+    state: directory
+    mode: 0755
+    owner: uploader
+    group: uploader
+    setype: httpd_sys_content_t
+  with_items: "{{ fedora28_releases }}"
+
+- name: Create symlink from rdo_trunk to delorean
+  file:
+    path: "/var/www/html/images/fedora28/{{ item }}/rdo_trunk"
+    src: "/var/www/html/images/fedora28/{{ item }}/delorean"
+    state: link
+  with_items: "{{ fedora28_releases }}"
