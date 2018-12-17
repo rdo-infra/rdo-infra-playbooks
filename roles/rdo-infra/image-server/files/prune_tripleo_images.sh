@@ -22,7 +22,7 @@ function log () {
 
 ROOT="/var/www/html/images"
 # Trailing slashes are on purpose, those can be symlinks.
-DIRS="master/rdo_trunk/ rocky/rdo_trunk/ queens/rdo_trunk/ pike/rdo_trunk/ ocata/rdo_trunk/ newton/rdo_trunk/"
+DIRS="fedora28/master/rdo_trunk centos7/master/rdo_trunk/ centos7/rocky/rdo_trunk/ centos7/queens/rdo_trunk/ centos7/pike/rdo_trunk/ centos7/ocata/rdo_trunk/ centos7/newton/rdo_trunk/"
 RETENTION=15
 
 for imagedir in $DIRS
@@ -45,7 +45,7 @@ do
 
         for dir in $candidates
         do
-            # rm -rf $dir
+            rm -rf $dir
             echo "Deleted ${dir}" | log
         done
     fi
