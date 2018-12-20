@@ -35,4 +35,7 @@
   name: swap_file
 - src: git+https://gitlab.com/osas/ansible-role-httpd_wsgi.git
   name: httpd_wsgi
+- src: git+https://github.com/centos-opstools/opstools-ansible.git
+  name: opstools-ansible
+  version: f111941
 

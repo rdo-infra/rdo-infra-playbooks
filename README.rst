@@ -20,11 +20,6 @@ Dependencies
 
     ansible-galaxy install -r registry-requirements.yml
 
-- For the monitoring roles, you will need to fetch the opstools-ansible role::
-
-    cd roles/opstools-ansible
-    git submodule update --init --recursive
-
 Dealing with Secrets
 ====================
 
