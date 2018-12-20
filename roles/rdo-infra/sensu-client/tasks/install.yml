@@ -58,7 +58,7 @@
 - name: Setup custom Sensu plugins
   copy:
     src: "{{ item }}"
-    dest: "/opt/sensu/embedded/bin/{{item}}"
+    dest: "/opt/sensu/embedded/bin/{{ item }}"
     mode: "0755"
     owner: "sensu"
     group: "sensu"
