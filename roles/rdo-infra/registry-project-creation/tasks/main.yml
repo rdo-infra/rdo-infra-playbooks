@@ -24,6 +24,3 @@
 
 - name: Prepare the RDO configuration
   include: rdo.yml
-
-- name: Prepare the OSP/DCI configuration
-  include: osp.yml

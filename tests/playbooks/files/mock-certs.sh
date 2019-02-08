@@ -4,8 +4,7 @@
 set -eux
 domains="registry.rdoproject.org \
  trunk.registry.rdoproject.org \
- console.registry.rdoproject.org \
- registry.distributed-ci.io"
+ console.registry.rdoproject.org"
 
 for bin in cfssl cfssljson; do
     [ -f ${bin} ] || curl -o ${bin} https://pkg.cfssl.org/R1.2/${bin}_linux-amd64
