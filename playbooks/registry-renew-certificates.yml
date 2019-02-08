@@ -88,15 +88,3 @@
         cacert_path: '/etc/letsencrypt/live/console.registry.rdoproject.org/chain.pem'
         key_path: '/etc/letsencrypt/live/console.registry.rdoproject.org/privkey.pem'
         dest_cacert_path: '/etc/origin/master/ca.crt'
-
-    - name: Update the registry.distributed-ci.io route
-      oc_route:
-        name: docker-registry-dci
-        namespace: default
-        service_name: docker-registry
-        tls_termination: 'reencrypt'
-        host: 'registry.distributed-ci.io'
-        cert_path: '/etc/letsencrypt/live/registry.distributed-ci.io/cert.pem'
-        cacert_path: '/etc/letsencrypt/live/registry.distributed-ci.io/chain.pem'
-        key_path: '/etc/letsencrypt/live/registry.distributed-ci.io/privkey.pem'
-        dest_cacert_path: '/etc/origin/master/ca.crt'
