@@ -6,6 +6,5 @@ host_automation:
   base: "https://github.com/rdo-infra/rdo-infra-playbooks"
   service:
     - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/registry-host-preparation.yml"
-    - "roles/openshift/openshift-ansible/playbooks/byo/openshift-node/network_manager.yml"
-    - "roles/openshift/openshift-ansible/playbooks/byo/config.yml"
+    - "roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml"
     - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/registry-project-creation.yml"
