@@ -23,7 +23,6 @@ host_preparation_packages:
   - bridge-utils
   - bash-completion
   - kexec-tools
-  - docker
   - sos
   - psacct
 

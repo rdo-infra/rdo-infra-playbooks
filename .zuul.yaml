@@ -38,10 +38,6 @@
     description: |
       OpenShift Registry integration job
     run: tests/playbooks/registry-run.yaml
-    # NOTE(jpena) temp. setting this to non-voting, since Origin 3.7 has known
-    # issues with iptables-restore from CentOS 7.6.
-    # See https://bugzilla.redhat.com/show_bug.cgi?id=1616150 for details
-    voting: false
 
 - project:
     check:
