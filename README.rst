@@ -87,10 +87,9 @@ Setup RDO Registry
     virtualenv ~/.venv
     . ~/.venv/bin/activate
     pip install -r roles/openshift/openshift-ansible/requirements.txt
-    ansible-playbook -b -i inventory.yaml playbooks/registry-host-preparation.yml
-    ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/openshift-node/network_manager.yml
-    ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/config.yml
-    ansible-playbook -b -i inventory.yaml playbooks/registry-project-creation.yml
+    ansible-playbook -b -i hosts.yaml playbooks/registry-host-preparation.yml
+    ansible-playbook -b -i hosts.yaml roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml
+    ansible-playbook -b -i hosts.yaml playbooks/registry-project-creation.yml
 
 Setup Websites
 ==============

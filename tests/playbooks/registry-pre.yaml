@@ -39,8 +39,8 @@
 
     - name: Set up openshift-ansible in the role path
       git:
-        repo: https://github.com/rdo-infra/openshift-ansible
-        version: rdo-3.7
+        repo: https://github.com/openshift/openshift-ansible
+        version: release-3.11
         dest: "{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible"
 
     - name: Create a virtual environment with openshift-ansible requirements
