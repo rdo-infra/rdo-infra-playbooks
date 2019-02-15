@@ -45,20 +45,12 @@
           ansible-playbook -b -i inventory.yaml playbooks/registry-host-preparation.yml
         chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
 
-    - name: Run network manager playbook
-      shell:
-        cmd: |
-          . /opt/openshift-ansible/bin/activate
-          export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/openshift-node/network_manager.yml
-        chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
-
     - name: Run registry configuration playbook
       shell:
         cmd: |
           . /opt/openshift-ansible/bin/activate
           export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/byo/config.yml
+          ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml
         chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
 
     - name: Run project creation playbook

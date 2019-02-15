@@ -3,7 +3,6 @@
 
 # Tag deletion must be completed as admin
 oc login -u system:admin --config=/etc/origin/master/admin.kubeconfig
-oadm config use-context default-system:admin
 
 for release in {{ pruner_namespaces | join (' ') }}
 do
@@ -12,4 +11,4 @@ done
 
 # Pruning is done with the rdo.pruner user
 oc login --token $(oc sa get-token rdo.pruner) registry.rdoproject.org:8443
-oadm prune images --keep-younger-than=24h --keep-tag-revisions=2 --confirm
+oc adm prune images --keep-younger-than=24h --keep-tag-revisions=2 --confirm
