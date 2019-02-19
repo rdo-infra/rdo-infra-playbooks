@@ -37,34 +37,25 @@
             fi
         chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
 
-    - name: Run registry host preparation playbook
-      shell:
-        cmd: |
-          . /opt/openshift-ansible/bin/activate
-          export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml playbooks/registry-host-preparation.yml
-        chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
+    - name: Get ARA callback plugin path
+      command: "/opt/openshift-ansible/bin/python -m ara.setup.callback_plugins"
+      register: ara_callback_plugin
 
-    - name: Run registry configuration playbook
-      shell:
-        cmd: |
-          . /opt/openshift-ansible/bin/activate
-          export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml
-        chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
+    - environment:
+        ANSIBLE_CALLBACK_PLUGINS: "{{ ara_callback_plugin.stdout }}"
+        ANSIBLE_ASK_VAULT_PASS: false
+      vars:
+        ansible_playbook: "/opt/openshift-ansible/bin/ansible-playbook -b -i inventory.yaml"
+        src_dir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
+      block:
+        - name: Run registry host preparation playbook
+          command: "{{ ansible_playbook }} {{ src_dir }}/playbooks/registry-host-preparation.yml"
 
-    - name: Run project creation playbook
-      shell:
-        cmd: |
-          . /opt/openshift-ansible/bin/activate
-          export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml playbooks/registry-project-creation.yml
-        chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
+        - name: Run registry configuration playbook
+          command: "{{ ansible_playbook }} {{ src_dir }}/roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml"
 
-    - name: Run post-setup checks
-      shell:
-        cmd: |
-          . /opt/openshift-ansible/bin/activate
-          export ANSIBLE_ASK_VAULT_PASS=false
-          ansible-playbook -b -i inventory.yaml tests/playbooks/registry-validate.yaml
-        chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
+        - name: Run project creation playbook
+          command: "{{ ansible_playbook }} {{ src_dir }}/playbooks/registry-project-creation.yml"
+
+        - name: Run post-setup checks
+          command: "{{ ansible_playbook }} {{ src_dir }}/tests/playbooks/registry-validate.yaml

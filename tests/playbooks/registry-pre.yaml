@@ -48,6 +48,12 @@
         requirements: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible/requirements.txt"
         virtualenv: /opt/openshift-ansible
 
+    - name: Install ARA for openshift-ansible reporting
+      pip:
+        name: ara
+        state: present
+        virtualenv: /opt/openshift-ansible
+
     - name: Ensure openssl is installed
       package:
         name: openssl

@@ -35,6 +35,7 @@
     description: |
       OpenShift Registry integration job
     run: tests/playbooks/registry-run.yaml
+    post-run: tests/playbooks/registry-post.yaml
 
 - project:
     check:
