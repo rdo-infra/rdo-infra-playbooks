@@ -1,0 +1,10 @@
+Code-Review+1: Gonéri Le Bouder <goneri@lebouder.net>
+Code-Review+1: Dimitri Savineau <savineau.dimitri@gmail.com>
+Code-Review+2: David Moreau Simard <dmsimard@redhat.com>
+Workflow+1: David Moreau Simard <dmsimard@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Wed, 20 Feb 2019 14:30:01 +0000
+Reviewed-on: https://review.rdoproject.org/r/18782
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
