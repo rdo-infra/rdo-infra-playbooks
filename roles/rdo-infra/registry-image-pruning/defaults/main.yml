@@ -6,6 +6,7 @@ pruner_extended_whitelist:
   - tripleo-ci-testing
 pruner_namespaces:
   - tripleomaster
+  - tripleostein
   - tripleorocky
   - tripleoqueens
   - tripleopike
@@ -13,4 +14,5 @@ pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens
   - api-centos-rocky
+  - api-centos-stein
   - api-centos-master-uc

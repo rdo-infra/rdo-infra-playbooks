@@ -22,7 +22,7 @@ function log () {
 
 ROOT="/var/www/html/images"
 # Trailing slashes are on purpose, those can be symlinks.
-DIRS="master/rdo_trunk/ rocky/rdo_trunk/ queens/rdo_trunk/ pike/rdo_trunk/ ocata/rdo_trunk/ newton/rdo_trunk/"
+DIRS="master/rdo_trunk/ stein/rdo_trunk/ rocky/rdo_trunk/ queens/rdo_trunk/ pike/rdo_trunk/ ocata/rdo_trunk/ newton/rdo_trunk/"
 RETENTION=15
 
 for imagedir in $DIRS
