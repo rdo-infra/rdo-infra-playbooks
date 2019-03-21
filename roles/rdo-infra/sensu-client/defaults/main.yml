@@ -54,6 +54,8 @@ rdo_sensu_plugins:
     creates: "/opt/sensu/embedded/bin/metrics-iostat-extended.rb"
   uchiwa:
     creates: "/opt/sensu/embedded/bin/check-uchiwa-health.rb"
+  systemd:
+    creates: "/opt/sensu/embedded/bin/check-systemd.rb"
 
 rdo_custom_sensu_plugins:
   - check-delorean-builds.py
