@@ -152,6 +152,18 @@ additional_checks:
   check-afs-centos:
     command: '/opt/sensu/embedded/bin/check-http-json.rb -u "http://graphite.openstack.org/render?target=stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation&format=json&from=-10min&noNullPoints=True&maxDataPoints=2" --key "[0].datapoints[0][0]" --value-greater-than $(date +%s --date=yesterday)'
     subscribers: 'monitoring_master'
+  check-postfix:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "postfix"'
+    subscribers: 'lists_rdo'
+  check-mailman:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "mailmanctl"'
+    subscribers: 'lists_rdo'
+  check-spamassassin:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "spamassassin"'
+    subscribers: 'lists_rdo'
+  check-dovecot:
+    command: '/opt/sensu/embedded/bin/check-process.rb -p "dovecot"'
+    subscribers: 'lists_rdo'
 
 rdo_additional_checks: "{{ additional_checks | combine(delorean_checks) | combine(http_checks) | combine(backup_checks) }}"
 
