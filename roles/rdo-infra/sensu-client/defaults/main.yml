@@ -59,6 +59,7 @@ rdo_custom_sensu_plugins:
   - check-delorean-builds.py
   - check-http-file-age.sh
   - check-bup-backup-age.sh
+  - check-yum-update.sh
 
 rdo_checks_defaults:
   occurrences: '3'
@@ -88,6 +89,8 @@ rdo_checks:
     command: '/opt/sensu/embedded/bin/check-fstab-mounts.rb'
   check-dns:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
+  check-yum-update:
+    command: '/opt/sensu/embedded/bin/check.yum-update.sh'
 
 rdo_additional_checks: {}
 
