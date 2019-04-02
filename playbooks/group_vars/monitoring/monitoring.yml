@@ -160,7 +160,7 @@ additional_checks:
     command: '/opt/sensu/embedded/bin/check-systemd.rb -s postgrey.service'
     subscribers: 'lists_rdo'
   check-mailman:
-    command: '/opt/sensu/embedded/bin/check-systemd.rb -s mailmanctl.service'
+    command: '/opt/sensu/embedded/bin/check-systemd.rb -s mailman.service'
     subscribers: 'lists_rdo'
   check-spamassassin:
     command: '/opt/sensu/embedded/bin/check-systemd.rb -s spamassassin.service'
