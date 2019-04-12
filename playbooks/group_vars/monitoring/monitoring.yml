@@ -87,7 +87,7 @@ http_checks: >
     {% endfor -%}
     {% for domain in rdo_domains_httponly -%}
       {% set _ = checks.update({ "check-http-" ~ domain | replace(".", "-") | replace(":8443", ""): {
-                  "command": "/opt/sensu/embedded/bin/check-http.rb -u http://" ~ domain,
+                  "command": "/opt/sensu/embedded/bin/check-http.rb -r -u http://" ~ domain,
                   "subscribers": "monitoring_master",
               }
           })
@@ -151,7 +151,7 @@ additional_checks:
     interval: '14400'
     ttl: '43200'
   check-afs-centos:
-    command: '/opt/sensu/embedded/bin/check-http-json.rb -u "http://graphite.openstack.org/render?target=stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation&format=json&from=-10min&noNullPoints=True&maxDataPoints=2" --key "[0].datapoints[0][0]" --value-greater-than $(date +%s --date=yesterday)'
+    command: '/opt/sensu/embedded/bin/check-http-json.rb -u "https://graphite01.opendev.org/render?target=stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation&amp;format=json&amp;from=-10min&amp;noNullPoints=True&amp;maxDataPoints=2" --key "[0].datapoints[0][0]" --value-greater-than $(date +%s --date=yesterday)'
     subscribers: 'monitoring_master'
   check-postfix:
     command: '/opt/sensu/embedded/bin/check-systemd.rb -s postfix.service'
