@@ -21,6 +21,7 @@ registry_admins:
   - zcaplovi
 
 rdo_branches:
+  - rhel
   - master
   - pike
   - queens
