@@ -21,18 +21,46 @@
     line: "Port {{ configured_port }}"
   notify: "Restart sshd"
 
-- name: Setup PermitRootLogin without-password
-  lineinfile:
-    dest: "/etc/ssh/sshd_config"
-    regexp: "^PermitRootLogin"
-    line: "PermitRootLogin without-password"
-  notify: "Restart sshd"
-
 - name: Setup PasswordAuthentication no
   lineinfile:
     dest: "/etc/ssh/sshd_config"
     regexp: "^PasswordAuthentication"
     line: "PasswordAuthentication no"
+  notify: "Restart sshd"
+
+- name: Setup GSSAPIAuthentication no
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^GSSAPIAuthentication"
+    line: "GSSAPIAuthentication no"
+  notify: "Restart sshd"
+
+- name: Setup GSSAPICleanupCredentials no
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^GSSAPICleanupCredentials"
+    line: "GSSAPICleanupCredentials no"
+  notify: "Restart sshd"
+
+- name: Setup KexAlgorithms
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^KexAlgorithms"
+    line: "KexAlgorithms diffie-hellman-group-exchange-sha256"
+  notify: "Restart sshd"
+
+- name: Setup MACs
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^MACs"
+    line: "MACs hmac-sha2-512,hmac-sha2-256"
+  notify: "Restart sshd"
+
+- name: Setup Ciphers
+  lineinfile:
+    dest: "/etc/ssh/sshd_config"
+    regexp: "^Ciphers"
+    line: "Ciphers aes256-ctr,aes192-ctr,aes128-ctr"
   notify: "Restart sshd"
 
 - name: Setup selinux for alternate SSH port
