@@ -51,9 +51,15 @@ review.rdoproject.org/periodic/review.rdoproject.org/openstack/octavia/stable/li
 review.rdoproject.org/periodic/review.rdoproject.org/openstack/octavia/stable/mitaka
 review.rdoproject.org/periodic/review.rdoproject.org/openstack/octavia/newton-rdo-patches
 review.rdoproject.org/periodic/review.rdoproject.org/openstack/octavia/pike-rdo-patches
+review.rdoproject.org/opendev.org/openstack/octavia/master
+review.rdoproject.org/opendev.org/openstack/octavia/stable/queens
 review.rdoproject.org/openstack-periodic/git.openstack.org
 review.rdoproject.org/openstack-periodic/git.openstack.org/openstack-infra
 review.rdoproject.org/openstack-periodic/git.openstack.org/openstack-infra/tripleo-ci/master
+review.rdoproject.org/openstack-periodic-24hr/opendev.org
+review.rdoproject.org/openstack-periodic-24hr/opendev.org/openstack
+review.rdoproject.org/openstack-periodic-24hr/opendev.org/openstack/tripleo-ci
+review.rdoproject.org/openstack-periodic-24hr/opendev.org/openstack/tripleo-ci/master
 review.rdoproject.org/openstack-periodic-24hr/git.openstack.org
 review.rdoproject.org/openstack-periodic-24hr/git.openstack.org/openstack-infra
 review.rdoproject.org/openstack-periodic-24hr/git.openstack.org/openstack-infra/tripleo-ci
