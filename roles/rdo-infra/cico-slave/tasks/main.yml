@@ -104,6 +104,15 @@
     owner: "jenkins"
     group: "jenkins"
 
+- name: Add RDO Registry token to /home/jenkins/.bashrc
+  lineinfile:
+    dest: "/home/jenkins/.bashrc"
+    regexp: "^export RDO_REGISTRY_TOKEN.*"
+    line: "export RDO_REGISTRY_TOKEN={{ cico_rdoregistry_token }}"
+    mode: "0644"
+    owner: "jenkins"
+    group: "jenkins"
+
 - name: Create git email configuration for jenkins user
   git_config:
     name: user.email
