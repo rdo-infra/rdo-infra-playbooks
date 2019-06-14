@@ -48,6 +48,14 @@
     group: root
     mode: 0755
 
+- name: Deploy Octavia image pruner script
+  copy:
+    src: prune_octavia_images.sh
+    dest: /usr/local/bin/prune_octavia_images.sh
+    owner: root
+    group: root
+    mode: 0755
+
 - name: Create cron job to run the pruner script
   cron:
     name: prune_tripleo_images
@@ -55,3 +63,11 @@
     hour: 1
     user: root
     job: '/usr/local/bin/prune_tripleo_images.sh'
+
+- name: Create cron job to run the Octavia pruner script
+  cron:
+    name: prune_tripleo_images
+    minute: 0
+    hour: 13
+    user: root
+    job: '/usr/local/bin/prune_octavia_images.sh'
