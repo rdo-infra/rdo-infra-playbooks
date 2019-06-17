@@ -42,29 +42,29 @@
         - name: Get a TripleO service account token (first output)
           oc_secret:
             state: list
-            name: "{{ sa_secret['results'][0]['name'] }}"
+            name: "{{ sa_secret['module_results'][0]['name'] }}"
             namespace: default
           register: sa_token
           no_log: yes
 
         - name: Set registry_token fact, case 1
           set_fact:
-            registry_token: "{{ sa_token['results']['results'][0]['metadata']['annotations']['openshift.io/token-secret.value'] }}"
-      when: sa_secret['results'][0]['name'] | search("tripleo.service-dockercfg")
+            registry_token: "{{ sa_token['module_results']['results'][0]['metadata']['annotations']['openshift.io/token-secret.value'] }}"
+      when: sa_secret['module_results'][0]['name'] is search("tripleo.service-dockercfg")
 
     - block:
         - name: Get a TripleO service account token (second output)
           oc_secret:
             state: list
-            name: "{{ sa_secret['results'][1]['name'] }}"
+            name: "{{ sa_secret['module_results'][1]['name'] }}"
             namespace: default
           register: sa_token
           no_log: yes
 
         - name: Set registry_token fact, case 2
           set_fact:
-            registry_token: "{{ sa_token['results']['results'][0]['metadata']['annotations']['openshift.io/token-secret.value'] }}"
-      when: sa_secret['results'][1]['name'] | search("tripleo.service-dockercfg")
+            registry_token: "{{ sa_token['module_results']['results'][0]['metadata']['annotations']['openshift.io/token-secret.value'] }}"
+      when: sa_secret['module_results'][1]['name'] is search("tripleo.service-dockercfg")
 
     - name: Download an image locally
       command: docker pull fedora
