@@ -15,6 +15,15 @@ is 1.6.16.
 Setup steps
 ***********
 
+* Update system
+
+.. code-block:: shell-session
+
+  # yum -y update
+
+If kernel is updated, you have to reboot the system to ensure afs kernel module
+could be built.
+
 * Install puppet 3.6.2 from EPEL (the OpenStack Infra puppet modules do not support puppet 4)
 
 .. code-block:: shell-session
@@ -28,8 +37,8 @@ Setup steps
 
   # git clone https://github.com/openstack-infra/puppet-openstackci
   # cd puppet-openstackci
-  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/76/529376/17 && git cherry-pick FETCH_HEAD
-  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/39/528739/23 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/76/529376/24 && git cherry-pick FETCH_HEAD
+  # git fetch https://git.openstack.org/openstack-infra/puppet-openstackci refs/changes/39/528739/31 && git cherry-pick FETCH_HEAD
 
 * Install puppet module. Do not use puppet module build/puppet module install, since the openstackci module may pull way more requirements than needed for the AFS mirror setup.
 
@@ -44,6 +53,7 @@ Setup steps
 
 .. code-block:: shell-session
 
+  # cd ${HOME}
   # git clone https://github.com/openstack-infra/puppet-httpd
   # git clone https://github.com/openstack-infra/puppet-logrotate
   # git clone https://github.com/openstack-infra/puppet-kerberos
@@ -80,7 +90,7 @@ Setup steps
         'kdc01.openstack.org',
         'kdc02.openstack.org',
       ],
-    } 
+    }
 
 * Then apply the manifest:
 
