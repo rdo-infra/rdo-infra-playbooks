@@ -1,0 +1,16 @@
+---
+version: 0.1
+log:
+  fields:
+    service: registry
+storage:
+    cache:
+        layerinfo: inmemory
+    filesystem:
+        rootdirectory: /data/registry_data
+http:
+    addr: {{ rcm_ip }}:{{ rcm_port }}
+    net: tcp
+    tls:
+        certificate: {{ cert_dir }}registry.crt
+        key: {{ cert_dir }registry.key

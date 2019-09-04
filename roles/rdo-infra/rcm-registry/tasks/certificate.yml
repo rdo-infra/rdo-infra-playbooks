@@ -1,0 +1,53 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Add subjectAltName to v3_req section
+  lineinfile:
+    path: /etc/pki/tls/openssl.cnf
+    insertafter: '^keyUsage '
+    line: subjectAltName = @alt_names
+    state: present
+
+- name: Add alt_names section
+  blockinfile:
+    path: /etc/pki/tls/openssl.cnf
+    insertafter: "@alt_names"
+    block: |
+      [alt_names]
+      IP = "{{ rcm_floating }}"
+
+- name: Create the cert directory
+  file:
+    path: "{{ cert_dir }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+
+- name: Generate self-signed SSL cert
+  command: >
+    openssl req 
+    -newkey 
+    rsa:4096
+    -nodes
+    -subj '/=US/ST=North Carolina/L=Raleigh/O=Red Hat, Inc./OU=OpenStack Engineering/CN=rcm-registry'
+    -sha256
+    -keyout {{ cert_dir }}registry.key
+    -x509
+    -days 730
+    -out {{ cert_dir }}registry.crt
+    -config /etc/pki/tls/openssl.cnf
+    -extensions 'v3_req'
