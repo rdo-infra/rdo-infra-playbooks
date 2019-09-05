@@ -1,0 +1,8 @@
+Code-Review+2: Alan Pevec <alan.pevec@redhat.com>
+Workflow+1: Alan Pevec <alan.pevec@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Thu, 05 Sep 2019 10:31:02 +0000
+Reviewed-on: https://review.rdoproject.org/r/22059
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
