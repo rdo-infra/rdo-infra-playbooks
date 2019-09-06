@@ -27,8 +27,10 @@ rdo_branches:
   - queens
   - rocky
   - stein
+  - train
   - tripleomaster
   - tripleopike
   - tripleoqueens
   - tripleorocky
   - tripleostein
+  - tripleotrain
