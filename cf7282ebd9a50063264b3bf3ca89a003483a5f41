@@ -1,0 +1,9 @@
+Code-Review+1: Carlos Goncalves <cgoncalves@redhat.com>
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Workflow+1: Javier Peña <jpena@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Fri, 06 Sep 2019 12:15:37 +0000
+Reviewed-on: https://review.rdoproject.org/r/21143
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
