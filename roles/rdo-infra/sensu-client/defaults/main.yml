@@ -92,7 +92,7 @@ rdo_checks:
   check-dns:
     command: '/opt/sensu/embedded/bin/check-dns.rb -d rdoproject.org'
   check-yum-update:
-    command: '/opt/sensu/embedded/bin/check.yum-update.sh'
+    command: '/opt/sensu/embedded/bin/check-yum-update.sh'
 
 rdo_additional_checks: {}
 
