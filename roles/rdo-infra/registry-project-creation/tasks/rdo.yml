@@ -57,12 +57,3 @@
     state: present
     namespace: '{{ item }}'
   with_items: '{{ rdo_branches }}'
-
-- name: Allow unauthenticated users to browse the TripleO projects
-  oc_adm_policy_group:
-    group: system:unauthenticated
-    resource_kind: role
-    resource_name: registry-viewer
-    state: present
-    namespace: '{{ item }}'
-  with_items: '{{ rdo_branches }}'
