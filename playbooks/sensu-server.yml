@@ -29,12 +29,12 @@
 
     - name: Install the RDO repository for RabbitMQ and Redis
       package:
-        name: "https://rdoproject.org/repos/openstack-pike/rdo-release-pike.rpm"
+        name: "https://rdoproject.org/repos/openstack-queens/rdo-release-queens.rpm"
         state: installed
 
     # We're keeping it enabled only for the duration of this playbook
     - name: Ensure RDO repository is enabled for RabbitMQ and Redis
-      command: yum-config-manager --enable centos-openstack-pike
+      command: yum-config-manager --enable centos-openstack-queens
 
     - block:
         - name: Include prereqs setup from opstools
