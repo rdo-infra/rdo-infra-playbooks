@@ -15,6 +15,8 @@
 #
 
 - name: Install and configure the Sensu server
+  vars:
+    rdo_version: queens
   hosts: monitoring
   become: yes
   become_user: root
@@ -29,12 +31,12 @@
 
     - name: Install the RDO repository for RabbitMQ and Redis
       package:
-        name: "https://rdoproject.org/repos/openstack-pike/rdo-release-pike.rpm"
+        name: "https://rdoproject.org/repos/openstack-{{ rdo_version }}/rdo-release-{{ rdo_version }}.rpm"
         state: installed
 
     # We're keeping it enabled only for the duration of this playbook
     - name: Ensure RDO repository is enabled for RabbitMQ and Redis
-      command: yum-config-manager --enable centos-openstack-pike
+      command: "yum-config-manager --enable centos-openstack-{{ rdo_version }}"
 
     - block:
         - name: Include prereqs setup from opstools
@@ -62,7 +64,7 @@
             name: uchiwa/proxy
       always:
         - name: Ensure RDO repository is disabled
-          command: yum-config-manager --disable centos-openstack-pike
+          command: "yum-config-manager --disable centos-openstack-{{ rdo_version }}"
 
 - import_playbook: sensu-rdo-bot.yml
 
