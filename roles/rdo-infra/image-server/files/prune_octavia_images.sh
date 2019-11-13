@@ -29,8 +29,7 @@ RETENTION=15
 
 for imagedir in $(ls -d ${ROOT}/*)
 do
-  path="${ROOT}/${imagedir}"
-  find $path -type f -mtime +${RETENTION} | grep -v $WHITELIST_FILE | while read file
+  find $imagedir -type f -mtime +${RETENTION} | grep -v $WHITELIST_FILE | while read file
   do
     echo $file >> $LOGFILE
     rm -f $file 
