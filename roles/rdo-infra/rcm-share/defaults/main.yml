@@ -16,4 +16,3 @@
 
 rcm_packages:
   - httpd
-  - vim-enhanced

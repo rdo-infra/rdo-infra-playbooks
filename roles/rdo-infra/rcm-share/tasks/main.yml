@@ -14,9 +14,6 @@
 #   under the License.
 #
 
-- name: Update and reboot system
-  include_tasks: update.yml
-
 - name: Install required packages
   package:
     name: "{{ rcm_packages }}"
