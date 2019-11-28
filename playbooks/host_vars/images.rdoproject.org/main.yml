@@ -19,3 +19,4 @@ ssl_cert_options:
   cert1:
     email: "jpena@redhat.com"
     domain: "images.rdoproject.org"
+    webroot: "/var/www/html/images"
