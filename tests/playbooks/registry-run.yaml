@@ -61,6 +61,8 @@
           ansible-playbook -b -i inventory.yaml playbooks/registry-project-creation.yml
         chdir: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}"
 
+    - fail:
+
     - name: Run post-setup checks
       shell:
         cmd: |
