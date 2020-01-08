@@ -1,0 +1,8 @@
+Code-Review+2: David Moreau Simard <dmsimard@redhat.com>
+Workflow+1: David Moreau Simard <dmsimard@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Wed, 08 Jan 2020 20:26:25 +0000
+Reviewed-on: https://review.rdoproject.org/r/24423
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
