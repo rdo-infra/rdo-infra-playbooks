@@ -39,8 +39,8 @@
 
     - name: Set up openshift-ansible in the role path
       git:
-        repo: https://github.com/openshift/openshift-ansible
-        version: release-3.11
+        repo: https://github.com/rdo-infra/openshift-ansible
+        version: rdo-3.11-dns-mismatch
         dest: "{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible"
 
     - name: Create a virtual environment with openshift-ansible requirements
@@ -73,12 +73,12 @@
   hosts: master
   become: true
   tasks:
-    - name: Set up /etc/hosts for registry integration tests
+    - name: Ensure endpoints resolve to the right hosts
       lineinfile:
         dest: /etc/hosts
-        line: 127.0.0.1
+        line: "{{ item }}"
         insertafter: EOF
       with_items:
-        - registry.rdoproject.org
-        - console.registry.rdoproject.org
-        - trunk.registry.rdoproject.org
+        - "127.0.0.1 internal.registry.rdoproject.org"
+        - "127.0.0.1 trunk.registry.rdoproject.org"
+        - "{{ ansible_default_ipv4 }} registry.rdoproject.org"
