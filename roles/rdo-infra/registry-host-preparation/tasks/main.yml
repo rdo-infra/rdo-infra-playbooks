@@ -19,16 +19,14 @@
     name: "{{ host_preparation_packages }}"
     state: "present"
 
-- name: Ensure hostnames properly resolve to localhost
+- name: Ensure endpoints resolve to the right hosts
   lineinfile:
-    dest: "/etc/hosts"
-    line: "127.0.0.1 {{ item }}"
+    dest: /etc/hosts
+    line: "{{ item }}"
     insertafter: EOF
   with_items:
-    - "{{ openshift_master_cluster_public_hostname }}"
-    - "{{ openshift_hosted_registry_routehost }}"
-    - "{{ openshift_hosted_registry_console_routehost }}"
-    - "{{ ansible_fqdn }}"
+    - "127.0.0.1 {{ openshift_master_cluster_hostname }}"
+    - "{{ ansible_default_ipv4.address }} {{ openshift_master_cluster_public_hostname }}"
 
 - name: Configure mounts fact
   set_fact:

@@ -13,10 +13,12 @@ openshift_node_sdn_mtu: 1400
 openshift_deployment_type: origin
 deployment_subtype: registry
 openshift_release: 3.11
-# The dash prefix is on purpose, the matching is weird, see https://github.com/openshift/openshift-ansible/issues/8191
-# openshift_pkg_version: -3.7.2-1.el7.git.0.cd74924
-# openshift_image_tag: v3.7.0
-# openshift_repos_enable_testing: true
+
+# The following services are deployed by default in 3.11, disable them
+openshift_cluster_monitoring_operator_install: false
+ansible_service_broker_install: false
+template_service_broker_install: false
+openshift_hosted_manage_registry_console: false
 
 # OpenShift persistent registry volume and claim on local filesystem
 openshift_hosted_registry_storage_kind: hostpath
@@ -53,8 +55,11 @@ openshift_master_identity_providers:
       - rdo-infra/registry-rdoproject-org
 
 # Endpoint DNS and SSL
+openshift_master_cluster_hostname: internal.registry.rdoproject.org
 openshift_master_cluster_public_hostname: registry.rdoproject.org
 openshift_master_default_subdomain: apps.registry.rdoproject.org
+openshift_master_public_api_url: https://registry.rdoproject.org:8443
+openshift_master_api_url: https://internal.registry.rdoproject.org:8443
 openshift_master_overwrite_named_certificates: true
 openshift_master_named_certificates:
   - certfile: /etc/letsencrypt/live/registry.rdoproject.org/registry.rdoproject.org-fullchain.pem
@@ -73,10 +78,3 @@ openshift_hosted_registry_routecertificates:
   certfile: "/etc/letsencrypt/live/trunk.registry.rdoproject.org/trunk.registry.rdoproject.org-cert.pem"
   keyfile: "/etc/letsencrypt/live/trunk.registry.rdoproject.org/trunk.registry.rdoproject.org-privkey.pem"
   cafile: "/etc/letsencrypt/live/trunk.registry.rdoproject.org/trunk.registry.rdoproject.org-chain.pem"
-
-openshift_hosted_registry_console_routehost: console.registry.rdoproject.org
-openshift_hosted_registry_console_routetermination: reencrypt
-openshift_hosted_registry_console_routecertificates:
-  certfile: "/etc/letsencrypt/live/console.registry.rdoproject.org/console.registry.rdoproject.org-cert.pem"
-  keyfile: "/etc/letsencrypt/live/console.registry.rdoproject.org/console.registry.rdoproject.org-privkey.pem"
-  cafile: "/etc/letsencrypt/live/console.registry.rdoproject.org/console.registry.rdoproject.org-chain.pem"
