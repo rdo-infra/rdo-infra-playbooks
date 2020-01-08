@@ -22,12 +22,6 @@ registry_admins:
 
 rdo_branches:
   - rhel
-  - master
-  - pike
-  - queens
-  - rocky
-  - stein
-  - train
   - tripleomaster
   - tripleopike
   - tripleoqueens
