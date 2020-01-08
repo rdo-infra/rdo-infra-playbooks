@@ -20,3 +20,4 @@ pruner_dlrn_endpoints:
   - api-centos-master-uc
   - api-rhel8-master
   - api-rhel8-train
+pruner_days: 3

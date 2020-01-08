@@ -6,7 +6,7 @@ oc login -u system:admin --config=/etc/origin/master/admin.kubeconfig
 
 for release in {{ pruner_namespaces | join (' ') }}
 do
-    /usr/local/bin/openshift_tag_pruner --whitelist "$(/usr/local/bin/openshift_tag_whitelist)" $release --confirm
+    /usr/local/bin/openshift_tag_pruner --days {{ pruner_days }} --whitelist "$(/usr/local/bin/openshift_tag_whitelist)" $release --confirm
 done
 
 # Pruning is done with the rdo.pruner user
