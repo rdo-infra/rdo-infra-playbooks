@@ -7,6 +7,7 @@
 
 releases="{{ pruner_dlrn_endpoints | join(' ') }}"
 names="{{ pruner_extended_whitelist | join(' ') }}"
+architectures="{{ pruner_architectures | join(' ') }}"
 
 [[ ! -d /tmp/dlrnapi ]] && virtualenv /tmp/dlrnapi >/dev/null
 source /tmp/dlrnapi/bin/activate
@@ -17,7 +18,15 @@ pip install dlrnapi_client >/dev/null
 do
   for name in $names
   do
+     # Whitelist named tag (ex: current-tripleo)
      echo $name
-     dlrnapi --url https://trunk.rdoproject.org/${release} promotion-get --promote-name ${name} --limit 1 | jq -r '.[0] | (.repo_hash)'
+     # Whitelist the resolved DLRN hash from the named tag (ex: f31e00b220162890eac1de06ba1d1f89e4ec9d44_bbaf1d8e)
+     repo_hash=$(dlrnapi --url https://trunk.rdoproject.org/${release} promotion-get --promote-name ${name} --limit 1 | jq -r '.[0] | (.repo_hash)')
+     echo $repo_hash
+     for arch in $architectures
+     do
+        # Include architecture suffixes in the whitelist (ex: f31e00b220162890eac1de06ba1d1f89e4ec9d44_bbaf1d8e_x86_64)
+        echo "${repo_hash}_${arch}"
+     done
   done
 done) | sort | uniq |paste -sd ','
