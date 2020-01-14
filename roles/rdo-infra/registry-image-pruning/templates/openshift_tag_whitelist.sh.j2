@@ -7,6 +7,7 @@
 
 releases="{{ pruner_dlrn_endpoints | join(' ') }}"
 names="{{ pruner_extended_whitelist | join(' ') }}"
+architectures="{{ pruner_architectures | join(' ') }}"
 
 [[ ! -d /tmp/dlrnapi ]] && virtualenv /tmp/dlrnapi >/dev/null
 source /tmp/dlrnapi/bin/activate
@@ -18,6 +19,11 @@ do
   for name in $names
   do
      echo $name
-     dlrnapi --url https://trunk.rdoproject.org/${release} promotion-get --promote-name ${name} --limit 1 | jq -r '.[0] | (.repo_hash)'
+     repo_hash=$(dlrnapi --url https://trunk.rdoproject.org/${release} promotion-get --promote-name ${name} --limit 1 | jq -r '.[0] | (.repo_hash)')
+     echo $repo_hash
+     for arch in $architectures
+     do
+        echo "${repo_hash}_${arch}"
+     done
   done
 done) | sort | uniq |paste -sd ','
