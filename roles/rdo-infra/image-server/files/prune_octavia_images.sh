@@ -25,7 +25,7 @@ ROOT="/var/www/html/images/octavia"
 WHITELIST_FILE="amphora-x64-haproxy-centos.qcow2"
 LOGFILE="/var/log/prunes/prune_octavia_$(date +%s).log"
 
-RETENTION=15
+RETENTION=7
 
 for imagedir in $(ls -d ${ROOT}/*)
 do
