@@ -8,7 +8,6 @@ RDO Trunk repositories are composed of several servers:
 * ``trunk-primary.rdoproject.org`` is the main builder instance, where all
   CentOS packages for the different OpenStack releases supported by RDO are
   built.
-* ``trunk-fedora.rdoproject.org`` is the builder instance for Fedora packages.
 
 Each builder is associated to a user , so all repos and log files are found in
 the home directory of that user. For example, user ``centos-queens`` contains
