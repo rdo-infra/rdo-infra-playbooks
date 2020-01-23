@@ -18,6 +18,7 @@
   package:
     name: "{{ image_packages }}"
     state: installed
+  become: true
 
 - name: Set up uploader user
   include_tasks: uploader.yml
