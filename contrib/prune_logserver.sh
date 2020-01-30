@@ -17,6 +17,7 @@
 # This script prunes logs from the logs.rdoproject.org server.
 function log () {
     # Print something to screen and log it to journalctl
+    # To follow the result type: journalctl -f -u prune_logserver.sh
     cat - | tee | systemd-cat -t "$(basename $0)" -p info
 }
 
@@ -35,7 +36,8 @@ fi
 
 # Make sure log directory exists
 mkdir -p "${LOGDIR}"
-export LOGFILE="${LOGDIR}/logserver_$(date +%s).log"
+LOGFILE="${LOGDIR}/logserver_$(date +%s).log"
+export LOGFILE
 echo "Log file: ${LOGFILE}" | log
 
 ROOT="/var/www/html"
@@ -120,12 +122,15 @@ result_count $LOGFILE | log
 
 echo "Starting deletion..." | log
 count=0
-for dir in $(cat $LOGFILE |sort |uniq)
-do
-    # rm -rf $dir
+for dir in $(cat $LOGFILE |sort |uniq); do
+
+    rm -rf "${dir}" &
+
     count=$(($count+1))
-    if (( $count % 1000 == 0 )); then
-        echo "${count} directories pruned..." | log
+    if (( $count % 10 == 0 )); then
+        # wait for removing 10 dirs
+        wait
+        echo "${count} directories pruned..."
     fi
 done
 
