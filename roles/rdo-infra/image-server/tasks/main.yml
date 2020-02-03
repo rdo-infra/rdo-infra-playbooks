@@ -24,3 +24,6 @@
 
 - name: Set up images directory and vhost
   include_tasks: images.yml
+
+- name: Setup sync user and tools related to
+  include_tasks: sync.yml

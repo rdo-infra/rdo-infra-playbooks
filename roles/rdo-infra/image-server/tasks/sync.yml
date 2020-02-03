@@ -1,0 +1,49 @@
+---
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+- name: Create sync user and tools
+  when: sync_servers | default('false') | bool
+  block:
+    - name: Create dedicated user for sync
+      user:
+        comment: User for synchronize images between servers
+        name: {{ sync_user }}
+        group: uploader
+        generate_ssh_key: yes
+        ssh_key_bits: 2048
+        ssh_key_file: .ssh/id_rsa
+        home: "/home/{{ sync_user }}"
+
+    - name: Get remote host ssh key
+      known_hosts:
+        path: "/home/{{ sync_user }}/.ssh/known_hosts"
+        name: "{{ src_sync_host }}"
+
+    - name: Deploy sync_images script
+      copy:
+        src: sync_images.sh
+        dest: /usr/local/bin/sync_images.sh
+        owner: root
+        group: root
+        mode: 0755
+
+    - name: Create cron job to execute sync_images and add required params
+      cron:
+        name: sync_images
+        minute: 0
+        hour: 6
+        user: {{ sync_user }}
+        job: "SRC_HOST={{ src_sync_host }}; /usr/local/bin/sync_images.sh"
