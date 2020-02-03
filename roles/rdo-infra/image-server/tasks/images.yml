@@ -71,3 +71,19 @@
     hour: 13
     user: root
     job: '/usr/local/bin/prune_octavia_images.sh'
+
+- name: Deploy sync_images script
+  copy:
+    src: sync_images.sh
+    dest: /usr/local/bin/sync_images.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Create cron job to execute sync_images and add required params
+  cron:
+    name: sync_images
+    minute: 0
+    hour: 6
+    user: centos
+    job: 'SRC_HOST=images.rdoproject.org; bash /usr/local/bin/sync_images.sh .ssh/sync-key | tee -a sync_images.log'
