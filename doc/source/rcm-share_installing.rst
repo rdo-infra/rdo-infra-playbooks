@@ -4,33 +4,9 @@ Technical details of the instance used for mirroring of RHOS Content in RDO Clou
 Info
 ----
 
-This document provides technical details of the instance described in Mirror of RHOS Content in RDO Cloud. The intention is to split info about the usage of the instance and description of the technical background (which is not needed if you are looking for the info how to use the share).
-
-
-Technical details
------------------
-
-**Info about the instance**
-
-==========  ==============================
-**Name**    rcm-share
-**Flavor**  m1.small
-**VCPUs**   1 VCPU
-**RAM**     2GB
-**Disk**    20 GB (attached on */dev/vda*)
-**OS**      CentOS Linux 7
-==========  ==============================
-
-**Data volume**
-
-===============  ============================
-**Name**         rcm-share
-**Description**  Shared content of RHOS RCN
-**Size**         1024 GiB
-**Bootable**     No
-**Encrypted**    No
-**Attached On**  */dev/vdb*
-===============  ============================
+This document provides technical details of the instance described in Mirror of RHOS Content in RDO Cloud.
+The intention is to split info about the usage of the instance and description of the technical background
+(which is not needed if you are looking for the info how to use the share).
 
 
 Access & Security
@@ -40,12 +16,12 @@ Access & Security
 
 Instance uses the default rules (Security Group: default) and there are two specific rules (Security Group: rcm-share)
 
-=========   ==========    ===========   ==========  ================
-Direction   Ether Type    IP Protocol   Port Range  Remote IP Prefix
-=========   ==========    ===========   ==========  ================
-Ingress     IPv4      	  TCP	          22 (SSH)    0.0.0.0/0
-Ingress     IPv4          TCP           80 (HTTP)   38.145.32.0/22 (floating IP range of RDO cloud instances)
-=========   ==========    ===========   ==========  ================
+=========   ==========    ===========   ============  ================
+Direction   Ether Type    IP Protocol   Port Range    Remote IP Prefix
+=========   ==========    ===========   ============  ================
+Ingress     IPv4          TCP           22 (SSH)      0.0.0.0/0
+Ingress     IPv4          TCP           4433 (HTTPS)  38.145.32.0/22 (floating IP range of RDO cloud instances)
+=========   ==========    ===========   ============  ================
 
 
 **Key Pairs**
@@ -60,20 +36,16 @@ These SSH keys are in use:
 Installation steps
 ------------------
 
-Installation is done by Ansible playbook (which expects that you have created the instance manually setting the above listed parameters and added its IP to the inventory). Basic list of steps done:
+Installation is done by Ansible image-server playbook. Same playbook is
+configuring images server.
 
-- Update system
-- Install packages httpd and vim-enhanced
-- Update httpd configuration (place provided rcm-guest.conf to Apache config dir)
-- Prepare and mount the share (and add the entry to the /etc/fstab)
-- Adjust SELinux
-- Start Apache
-- Create symlink (needed for the push script - it expects same mountpoint as on the source)
 
 Content sync
 ------------
 
 **Crontab**
+
+<< FIXME >>
 
 Following crontab entries were created for the sync (and cleanup) on the host *rcm-guest.app.eng.bos.redhat.com*:
 
