@@ -39,9 +39,9 @@ rdo_domains:
   - trunk.rdoproject.org
   - review.rdoproject.org
   - www.rdoproject.org
-  - logs.rdoproject.org
+  - logserver.rdoproject.org
   - thirdparty.logs.rdoproject.org
-  - centos.logs.rdoproject.org
+  - centos.logserver.rdoproject.org
   - uchiwa.monitoring.rdoproject.org
   - lists.rdoproject.org
 
