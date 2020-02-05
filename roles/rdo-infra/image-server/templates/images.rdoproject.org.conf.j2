@@ -7,6 +7,11 @@
         Allow from all
     </Directory>
 
+    <Directory /var/www/html/images/rhel>
+         order deny,allow
+         Deny From All
+    </Directory>
+
     # Alias https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo/stable/ to https://images.rdoproject.org/$RELEASE/rdo_trunk/current-tripleo-rdo
     RewriteEngine On
     RewriteCond %{REQUEST_URI} !^aarch64
@@ -22,6 +27,12 @@
         Order deny,allow
         Allow from all
     </Directory>
+
+    <Directory /var/www/html/images/rhel>
+         order deny,allow
+         Deny From All
+    </Directory>
+
     SSLEngine on
     SSLProtocol             ALL -SSLv2 -SSLv3
     SSLCertificateFile /etc/letsencrypt/live/{{ inventory_hostname }}/cert.pem
