@@ -1,0 +1,46 @@
+---
+- name: Create user dedicated for rcn-share
+  user:
+    name: "{{ rcn_user }}"
+    group: "{{ rcn_user }}"
+
+- name: Create the mountpoint
+  file:
+    path: /var/www/html/images/rhel
+    state: directory
+    mode: 0755
+    owner: "{{ rcn_user }}"
+    group: "{{ rcn_user }}"
+    setype: httpd_sys_content_t
+
+- name: "Allow Apache to listen on tcp port {{ rcn_vhost_port }}"
+  seport:
+    ports: "{{ rcn_vhost_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+# FIXME: Do we want to create symlink?
+# https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/roles/rdo-infra/rcm-share/tasks/share.yml#L46
+- name: Create symlink (needed for the push script)
+  file:
+    src: /var/www/html/images/rhel
+    dest: /mnt/rcm-guest
+    owner: root
+    group: root
+    state: link
+
+- name: Configure httpd vhost
+  template:
+    src: rcn_vhost.j2
+    dest: /etc/httpd/conf.d/rcn.vhost.conf
+  notify:
+    - restart httpd
+
+- name: Allow RDO cloud floating IP access
+  iptables:
+    chain: INPUT
+    jump: ACCEPT
+    protocol: tcp
+    destination_port: "{{ rcn_vhost_port }}"
+    src_range: "{{ rdo_floating_ips }}"

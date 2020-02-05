@@ -1,0 +1,25 @@
+Listen {{ rcn_vhost_port }}
+
+<VirtualHost *:{{ rcn_vhost_port }} >
+    DocumentRoot /var/www/html/images/rhel
+
+    Alias /rcm-guest /var/www/images/rhel
+
+    <Directory /var/www/html/images/rhel>
+        IndexOptions FancyIndexing FoldersFirst
+        Options MultiViews Indexes
+        AllowOverride None
+        Order deny,allow
+        Allow from all
+    </Directory>
+
+    SSLEngine on
+    SSLProtocol             ALL -SSLv2 -SSLv3
+    SSLCertificateFile /etc/letsencrypt/live/{{ inventory_hostname }}/cert.pem
+    SSLCertificateKeyFile /etc/letsencrypt/live/{{ inventory_hostname }}/privkey.pem
+    SSLCertificateChainFile /etc/letsencrypt/live/{{ inventory_hostname }}/chain.pem
+
+    ErrorLog "/var/log/httpd/error_rcn_log"
+    CustomLog "/var/log/httpd/access_rcn_log" combined
+</VirtualHost>
+
