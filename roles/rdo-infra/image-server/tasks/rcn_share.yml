@@ -1,4 +1,8 @@
 ---
+- name: Create group for rcn-share
+  group:
+    name: "{{ rcn_user }}"
+
 - name: Create user dedicated for rcn-share
   user:
     name: "{{ rcn_user }}"
