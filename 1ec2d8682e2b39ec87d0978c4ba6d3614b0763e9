@@ -1,0 +1,8 @@
+Code-Review+2: Nicolas HICHER <nhicher@redhat.com>
+Workflow+1: Nicolas HICHER <nhicher@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Mon, 10 Feb 2020 20:41:54 +0000
+Reviewed-on: https://review.rdoproject.org/r/24881
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
