@@ -3,11 +3,12 @@ Listen {{ rcn_vhost_port }}
 <VirtualHost *:{{ rcn_vhost_port }} >
     DocumentRoot /var/www/html/images/rhel
 
-    Alias /rcm-guest /var/www/images/rhel
+    Alias /rcm-guest /var/www/html/images/rhel
+    Alias /rcn-guest /var/www/html/images/rhel
 
     <Directory /var/www/html/images/rhel>
         IndexOptions FancyIndexing FoldersFirst
-        Options MultiViews Indexes
+        Options MultiViews Indexes FollowSymLinks
         AllowOverride None
         Order deny,allow
         Allow from all
@@ -22,4 +23,3 @@ Listen {{ rcn_vhost_port }}
     ErrorLog "/var/log/httpd/error_rcn_log"
     CustomLog "/var/log/httpd/access_rcn_log" combined
 </VirtualHost>
-
