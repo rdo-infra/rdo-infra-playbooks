@@ -24,6 +24,9 @@ Ingress     IPv4          TCP           4433 (HTTPS)  38.145.32.0/22 (floating I
 =========   ==========    ===========   ============  ================
 
 
+The iptables rules are also created for port 4433.
+
+
 **Key Pairs**
 
 These SSH keys are in use for rcn-uploader user:

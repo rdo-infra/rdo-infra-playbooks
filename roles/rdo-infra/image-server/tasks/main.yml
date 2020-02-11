@@ -25,5 +25,5 @@
 - name: Set up images directory and vhost
   include_tasks: images.yml
 
-- name: Set up rcn_share
-  include_tasks: rcn_share.yml
+- name: Set up rcm_share
+  include_tasks: rcm_share.yml

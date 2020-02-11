@@ -1,25 +1,25 @@
 ---
-- name: Create group for rcn-share
+- name: Create group for rcm-share
   group:
-    name: "{{ rcn_user }}"
+    name: "{{ rcm_user }}"
 
-- name: Create user dedicated for rcn-share
+- name: Create user dedicated for rcm-share
   user:
-    name: "{{ rcn_user }}"
-    group: "{{ rcn_user }}"
+    name: "{{ rcm_user }}"
+    group: "{{ rcm_user }}"
 
 - name: Create the mountpoint
   file:
     path: /var/www/html/images/rhel
     state: directory
     mode: 0755
-    owner: "{{ rcn_user }}"
-    group: "{{ rcn_user }}"
+    owner: "{{ rcm_user }}"
+    group: "{{ rcm_user }}"
     setype: httpd_sys_content_t
 
-- name: "Allow Apache to listen on tcp port {{ rcn_vhost_port }}"
+- name: "Allow Apache to listen on tcp port {{ rcm_vhost_port }}"
   seport:
-    ports: "{{ rcn_vhost_port }}"
+    ports: "{{ rcm_vhost_port }}"
     proto: tcp
     setype: http_port_t
     state: present
@@ -36,8 +36,8 @@
 
 - name: Configure httpd vhost
   template:
-    src: rcn_vhost.j2
-    dest: /etc/httpd/conf.d/rcn.vhost.conf
+    src: rcm_vhost.j2
+    dest: /etc/httpd/conf.d/rcm.vhost.conf
   notify:
     - Restart httpd
 
@@ -46,5 +46,5 @@
     chain: INPUT
     jump: ACCEPT
     protocol: tcp
-    destination_port: "{{ rcn_vhost_port }}"
+    destination_port: "{{ rcm_vhost_port }}"
     src_range: "{{ rdo_floating_ips }}"
