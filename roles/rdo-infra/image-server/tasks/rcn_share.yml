@@ -38,8 +38,13 @@
   template:
     src: rcn_vhost.j2
     dest: /etc/httpd/conf.d/rcn.vhost.conf
-  notify:
-    - restart httpd
+  register: _rcn_vhost
+
+- name: Reload httpd service
+  service:
+    name: httpd
+    state: reloaded
+    when: _rcn_vhost.changed
 
 - name: Allow RDO cloud floating IP access
   iptables:
