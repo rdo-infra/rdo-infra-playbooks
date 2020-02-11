@@ -39,7 +39,7 @@
     src: rcn_vhost.j2
     dest: /etc/httpd/conf.d/rcn.vhost.conf
   notify:
-    - restart httpd
+    - Restart httpd
 
 - name: Allow RDO cloud floating IP access
   iptables:
