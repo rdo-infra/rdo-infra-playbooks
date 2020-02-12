@@ -10,5 +10,5 @@ do
 done
 
 # Pruning is done with the rdo.pruner user
-oc login --token $(oc sa get-token rdo.pruner) registry.rdoproject.org:8443
+oc login --token $(oc sa get-token rdo.pruner) {{ openshift_master_cluster_public_hostname | default('registry.rdoproject.org') }}:8443
 oc adm prune images --keep-younger-than=24h --keep-tag-revisions=2 --confirm
