@@ -1,0 +1,9 @@
+#!/bin/bash
+
+RETENTION_DAYS="{{ retention_days }}"
+BASE_DIR="{{ base_dir }}"
+
+[ ! -d "${BASE_DIR}" ] && exit 0
+
+find "${BASE_DIR}" -type f -mtime "+${RETENTION_DAYS}" -delete
+find "${BASE_DIR}" -type d -empty -delete
