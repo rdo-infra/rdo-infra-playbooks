@@ -14,26 +14,19 @@
 #   under the License.
 #
 
-# This script prunes logs from the images.rdoproject.org server.
+# This script has same structure as prune_tripleo_images.sh, but with
+# different retention and root path.
 function log () {
     # Print something to screen and log it to journalctl
     cat - | tee | systemd-cat -t "$(basename $0)" -p info
 }
 
-ROOT="/var/www/html/images"
+ROOT="{{ base_dir }}"
 # Trailing slashes are on purpose, those can be symlinks.
 DIRS="
 master/rdo_trunk/
-train/rdo_trunk/
-stein/rdo_trunk/
-rocky/rdo_trunk/
-queens/rdo_trunk/
-pike/rdo_trunk/
-ocata/rdo_trunk/
-newton/rdo_trunk/
-rhel/images/redhat8/master/rdo_trunk/
-rhel/images/redhat8/train/rdo_trunk/"
-RETENTION=3
+train/rdo_trunk/"
+RETENTION="{{ retention_days }}"
 
 for imagedir in $DIRS
 do
