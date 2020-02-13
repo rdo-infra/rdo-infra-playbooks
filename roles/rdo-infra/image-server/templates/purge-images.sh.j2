@@ -1,0 +1,13 @@
+#!/bin/bash
+
+RETENTION_DAYS="{{ retention_days }}"
+BASE_DIR="{{ base_dir }}"
+LOG_DIR=/var/log/$(basename "$0")
+
+[ ! -d "${BASE_DIR}" ] && exit 0
+
+echo "Searching files older than ${RETENTION_DAYS} in ${BASE_DIR}. Found files:"
+find "${BASE_DIR}" -type f -regextype egrep -regex ".*(ironic-python-agent|overcloud-full).(tar|tar.md5)$" -mtime "+${RETENTION_DAYS}" -delete | tee -a "${LOG_DIR}"
+
+echo "Searching for empty dirs"
+find "${BASE_DIR}" -type d -empty -delete | tee -a "${LOG_DIR}"
