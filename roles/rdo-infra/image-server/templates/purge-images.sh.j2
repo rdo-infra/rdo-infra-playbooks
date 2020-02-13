@@ -1,0 +1,65 @@
+#!/bin/bash
+#   Copyright Red Hat, Inc. All Rights Reserved.
+#
+#   Licensed under the Apache License, Version 2.0 (the "License"); you may
+#   not use this file except in compliance with the License. You may obtain
+#   a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+#   WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+#   License for the specific language governing permissions and limitations
+#   under the License.
+#
+
+# This script has same structure as prune_tripleo_images.sh, but with
+# different retention and root path.
+function log () {
+    # Print something to screen and log it to journalctl
+    cat - | tee | systemd-cat -t "$(basename $0)" -p info
+}
+
+ROOT="{{ base_dir }}"
+# Trailing slashes are on purpose, those can be symlinks.
+DIRS="
+master/rdo_trunk/
+train/rdo_trunk/"
+RETENTION="{{ retention_days }}"
+
+for imagedir in $DIRS
+do
+    path="${ROOT}/${imagedir}"
+    # Check if in directory exist symlinks, if not, skip thais dir.
+    # It is for avoid errors by using readlink command.
+    if [[ -z $(find -L "${path}"  -xtype l) ]]; then
+        echo "Can not find symlink in location. Skipping this dir" | log
+        continue
+    fi
+
+    # Build a list of patterns (symlink destinations) that will be used as a
+    # whitelist (egrep -v)
+    whitelist=$(find "${path}" -type l |xargs readlink |awk -F/ '{print $NF}' |sort |uniq |paste -sd '|')
+    echo "Whitelist: ${whitelist}" | log
+
+    # Get a list of candidates directories appropriate for deletion
+    candidates=$(find "${path}" -mindepth 1 -maxdepth 1 -type d -mtime +${RETENTION} |egrep -v "${whitelist}")
+
+    # Count how many candidates there are
+    if [ -z "${candidates}" ]; then
+        echo "No candidates for pruning in ${path}" | log
+    else
+        count=$(echo "${candidates}" |wc -l)
+        echo "Found ${count} eligible directories for pruning in ${path}" | log
+
+        for dir in $candidates
+        do
+            # To be sure, that we want to remove the directory,
+            # remove content inside the dir, then remove empty location.
+            find "${dir}" -type f -regextype egrep -regex ".*(ironic-python-agent|overcloud-full).(tar|tar.md5)$" -mtime +${RETENTION} -delete
+            find "${dir}" -type d -empty -delete
+            echo "Deleted ${dir}" | log
+        done
+    fi
+done

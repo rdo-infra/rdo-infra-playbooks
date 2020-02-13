@@ -15,7 +15,7 @@
     setype: http_port_t
     state: present
 
-# NOTE: Symlink can be created on non existing dir
+# NOTE: some TripleO scripts are using /mnt/rcm-gest path.
 - name: Create symlink (needed for the push script)
   file:
     src: /var/www/html/images/rhel
@@ -48,3 +48,19 @@
     protocol: tcp
     destination_port: "{{ rcm_vhost_port }}"
     src_range: "{{ rdo_floating_ips }}"
+
+- name: Create purge-script
+  vars:
+    base_dir: /var/www/html/images/rhel/images/redhat8
+  template:
+    src: purge-images.sh.j2
+    dest: /usr/local/bin/purge-rcm-images.sh
+    mode: 0755
+
+- name: Create cron job to run the rcm pruner script
+  cron:
+    name: prune_rcm_images
+    minute: 0
+    hour: 2
+    user: "{{ rcm_user }}"
+    job: '/usr/local/bin/purge-rcm-images.sh'
