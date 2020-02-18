@@ -8,15 +8,6 @@
     name: "{{ rcm_user }}"
     group: "{{ rcm_user }}"
 
-- name: Create the mountpoint
-  file:
-    path: /var/www/html/images/rhel
-    state: directory
-    mode: 0755
-    owner: "{{ rcm_user }}"
-    group: "{{ rcm_user }}"
-    setype: httpd_sys_content_t
-
 - name: "Allow Apache to listen on tcp port {{ rcm_vhost_port }}"
   seport:
     ports: "{{ rcm_vhost_port }}"
@@ -24,15 +15,24 @@
     setype: http_port_t
     state: present
 
-# FIXME: Do we want to create symlink?
-# https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/roles/rdo-infra/rcm-share/tasks/share.yml#L46
+# NOTE: Symlink can be created on non existing dir
 - name: Create symlink (needed for the push script)
   file:
     src: /var/www/html/images/rhel
     dest: /mnt/rcm-guest
-    owner: root
-    group: root
+    owner: "{{ rcm_user }}"
+    group: "{{ rcm_user }}"
     state: link
+
+- name: Create the rcm dir and allow apache to read content
+  file:
+    path: /var/www/html/images/rhel
+    state: directory
+    mode: 0750
+    owner: "{{ rcm_user }}"
+    group: "apache"
+    recurse: yes
+    setype: httpd_sys_content_t
 
 - name: Configure httpd vhost
   template:
