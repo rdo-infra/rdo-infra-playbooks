@@ -2,6 +2,7 @@ Listen {{ rcm_vhost_port }}
 
 <VirtualHost *:{{ rcm_vhost_port }} >
     DocumentRoot /var/www/html/images/rhel
+    ServerName {{ inventory_hostname }}
 
     Alias /rcm-guest /var/www/html/images/rhel
 
