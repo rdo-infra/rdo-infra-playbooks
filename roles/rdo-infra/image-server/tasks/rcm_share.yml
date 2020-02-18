@@ -8,14 +8,14 @@
     name: "{{ rcm_user }}"
     group: "{{ rcm_user }}"
 
-- name: Create the mountpoint
+- name: Create the rcm dir
   file:
     path: /var/www/html/images/rhel
     state: directory
-    mode: 0755
+    mode: 0750
     owner: "{{ rcm_user }}"
     group: "{{ rcm_user }}"
-    setype: httpd_sys_content_t
+    recurse: yes
 
 - name: "Allow Apache to listen on tcp port {{ rcm_vhost_port }}"
   seport:
@@ -30,8 +30,8 @@
   file:
     src: /var/www/html/images/rhel
     dest: /mnt/rcm-guest
-    owner: root
-    group: root
+    owner: "{{ rcm_user }}"
+    group: "{{ rcm_user }}"
     state: link
 
 - name: Configure httpd vhost
