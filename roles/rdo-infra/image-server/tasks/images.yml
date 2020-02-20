@@ -66,7 +66,7 @@
 
 - name: Create cron job to run the Octavia pruner script
   cron:
-    name: prune_tripleo_images
+    name: prune_octavia_images
     minute: 0
     hour: 13
     user: root
