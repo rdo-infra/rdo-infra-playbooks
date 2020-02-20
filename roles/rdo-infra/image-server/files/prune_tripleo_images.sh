@@ -45,7 +45,7 @@ do
 
         for dir in $candidates
         do
-            # rm -rf $dir
+            rm -rf $dir
             echo "Deleted ${dir}" | log
         done
     fi
