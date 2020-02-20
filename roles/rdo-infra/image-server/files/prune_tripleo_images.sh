@@ -45,7 +45,10 @@ do
 
         for dir in $candidates
         do
-            # rm -rf $dir
+            # To be sure, that we want to remove the directory,
+            # remove content inside the dir, then remove empty location.
+            find "${dir}" -type f -regextype egrep -regex ".*(artib-logs|delorean_hash|ironic-python-agent|overcloud-full|undercloud).(tar|tar.md5|tar.gz|tar.gz.md5|txt|qcow2|qcow2.md5)$" -mtime +${RETENTION} -delete
+            find "${dir}" -type d -empty -delete
             echo "Deleted ${dir}" | log
         done
     fi
