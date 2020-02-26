@@ -28,3 +28,8 @@ uploader_auth_keys:
 rcm_user: 'rcm-uploader'
 rcm_vhost_port: 4433
 rdo_floating_ips: 38.145.32.1-38.145.35.254
+
+excluded_content:
+  - rhel
+  - rhel7
+  - redhat7

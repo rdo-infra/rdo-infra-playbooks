@@ -1,0 +1,40 @@
+#!/usr/bin/env python3
+
+
+from os import listdir
+
+
+exclude = {{ excluded_content | list | to_json }}
+source_dir = "/var/www/html/images"
+page_file = "index.html"
+page_file_path = "%s/%s" % (source_dir, page_file)
+
+header = """
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Listing directories and files</title>
+</head>
+<body>
+<h1>Directory listing for {{ inventory_hostname }} /</h1>
+<hr>
+<ul>
+"""
+
+tail = """
+<c/ul>
+<hr>
+</body>
+</html>
+"""
+
+content = ""
+for f in listdir(source_dir):
+    if f not in exclude:
+        content += """<li><a href="%s">%s</a></li>\n""" % (f,f)
+
+with open(page_file_path, 'w') as index_file:
+    index_file.write(header)
+    index_file.write(content)
+    index_file.write(tail)
+    index_file.close()
