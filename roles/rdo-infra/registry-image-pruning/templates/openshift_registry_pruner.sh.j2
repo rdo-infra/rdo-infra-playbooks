@@ -3,6 +3,7 @@
 
 # Tag deletion must be completed as admin
 oc login -u system:admin --config=/etc/origin/master/admin.kubeconfig
+oc adm config use-context default/{{ openshift_master_cluster_hostname | replace('.','-') }}:8443/system:admin
 
 for release in {{ pruner_namespaces | join (' ') }}
 do
