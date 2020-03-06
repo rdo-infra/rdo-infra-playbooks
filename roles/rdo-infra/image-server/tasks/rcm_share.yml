@@ -49,6 +49,14 @@
     destination_port: "{{ rcm_vhost_port }}"
     src_range: "{{ rdo_floating_ips }}"
 
+- name: Allow Vexxhost cloud floating IP access
+  iptables:
+    chain: INPUT
+    jump: ACCEPT
+    protocol: tcp
+    destination_port: "{{ rcm_vhost_port }}"
+    src_range: "{{ vexxhost_floating_ips }}"
+
 - name: Create purge-script
   vars:
     base_dir: /var/www/html/images/rhel/images/redhat8

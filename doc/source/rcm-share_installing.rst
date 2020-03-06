@@ -21,6 +21,7 @@ Direction   Ether Type    IP Protocol   Port Range    Remote IP Prefix
 =========   ==========    ===========   ============  ================
 Ingress     IPv4          TCP           22 (SSH)      0.0.0.0/0
 Ingress     IPv4          TCP           4433 (HTTPS)  38.145.32.0/22 (floating IP range of RDO cloud instances)
+Ingress     IPv4          TCP           4433 (HTTPS)  38.102.83.0/24 (floating IP range of Vexxhost cloud instances)
 =========   ==========    ===========   ============  ================
 
 
