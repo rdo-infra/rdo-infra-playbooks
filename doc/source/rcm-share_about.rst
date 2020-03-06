@@ -23,7 +23,7 @@ For installation (QuickStart or RHOS) use following options:
 Access
 ------
 
-The content is accessible only from RDO cloud instances (38.145.32.0/22 network)
+The content is accessible only from RDO cloud instances (38.145.32.0/22 and 38.102.83.0/24 networks)
 
 You can access the content using floating IP of the instance - full URL is:
 
