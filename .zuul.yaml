@@ -2,9 +2,9 @@
     name: registry-centos-7
     nodes:
       - name: bastion
-        label: rdo-centos-7
+        label: rdo-centos-7-vexxhost
       - name: master
-        label: rdo-centos-7
+        label: rdo-centos-7-vexxhost
     groups:
       - name: openshift
         nodes:
