@@ -1,3 +1,6 @@
+# NOTE(dpawlik) This playbook doesn't work with Openshift 3.11.
+# After changing the way of deployment, whole functionality has been
+# moved to the registry-renew-certificates role.
 - name: Renew existing letsencrypt certificates
   hosts: masters
   become: yes

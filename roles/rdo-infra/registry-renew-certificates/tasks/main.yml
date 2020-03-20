@@ -1,0 +1,86 @@
+---
+# NOTE: Tasks in that role are taken from playbooks/registry-renew-certificates.
+- name: Check if registry_host is defined
+  fail:
+    msg: "registry_host is not defined!"
+  when: registry_host is not defined
+
+# TODO: Only scale down the router if one of the certificates has been
+# updated.
+# We need to temporarily scale down the router pod.
+# This allows certbot to bind port 80/443
+- name: Scale down router pod
+  oc_scale:
+    name: router
+    kind: dc
+    namespace: default
+    replicas: 0
+    state: present
+
+- name: Pause for router to settle
+  pause:
+    seconds: 5
+
+- name: Scale up router pod
+  oc_scale:
+    name: router
+    kind: dc
+    namespace: default
+    replicas: 1
+    state: present
+
+- name: Pause for router to settle
+  pause:
+    seconds: 5
+
+# NOTE: I'm not entirely positive this is necessary but it's something that
+# openshift-ansible does so let's not break its expectations
+- name: Copy API certificate files in named_certificates
+  copy:
+    remote_src: yes
+    src: "/etc/letsencrypt/live/{{ item }}"
+    dest: "/etc/origin/master/named_certificates/{{ item | dirname }}-{{ item | basename }}"
+    mode: 0600
+    backup: yes
+  notify:
+    - restart origin-node
+  with_items:
+    - "{{ registry_host }}/fullchain.pem"
+    - "{{ registry_host }}/privkey.pem"
+    - "{{ registry_host }}/cert.pem"
+
+- name: Copy certificate files in named_certificates
+  copy:
+    remote_src: yes
+    src: "/etc/letsencrypt/live/{{ item }}"
+    dest: "/etc/origin/master/named_certificates/{{ item | dirname }}-{{ item | basename }}"
+    mode: 0600
+    backup: yes
+  with_items:
+    - "trunk.{{ registry_host }}/fullchain.pem"
+    - "trunk.{{ registry_host }}/privkey.pem"
+    - "trunk.{{ registry_host }}/cert.pem"
+
+- name: Update the trunk.{{ registry_host }} route
+  oc_route:
+    name: docker-registry
+    namespace: default
+    service_name: docker-registry
+    tls_termination: 'reencrypt'
+    host: "trunk.{{ registry_host }}"
+    cert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/cert.pem"
+    cacert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/chain.pem"
+    key_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/privkey.pem"
+    dest_cacert_path: '/etc/origin/master/ca.crt'
+
+- name: Update the console.{{ registry_host }} route
+  oc_route:
+    name: registry-console
+    namespace: default
+    service_name: registry-console
+    tls_termination: 'reencrypt'
+    host: "console.{{ registry_host }}"
+    cert_path: "/etc/letsencrypt/live/console.{{ registry_host }}/cert.pem"
+    cacert_path: "/etc/letsencrypt/live/console.{{ registry_host }}/chain.pem"
+    key_path: "/etc/letsencrypt/live/console.{{ registry_host }}/privkey.pem"
+    dest_cacert_path: '/etc/origin/master/ca.crt'
