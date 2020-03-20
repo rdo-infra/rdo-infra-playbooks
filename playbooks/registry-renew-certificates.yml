@@ -1,10 +1,10 @@
-- name: Renew existing letsencrypt certificates
-  hosts: masters
-  become: yes
+---
+- hosts: "{{ registry_host | defualt('registry-vexxhost.rdoproject.org') }}"
+  become: true
   handlers:
-    - name: restart origin-master-api
+    - name: restart origin-node
       service:
-        name: origin-master-api
+        name: origin-node
         state: restarted
   tasks:
     # TODO: Only scale down the router if one of the certificates has been
@@ -38,6 +38,16 @@
       pause:
         seconds: 5
 
+    # NOTE(dpawlik) Copy new certs to the bridge host, because
+    # it will be copied back using Openshift Ansible, when some patch set
+    # will trigger sf-infra-configure-registry job.
+    - name: Copy generated certs to the bridge host
+      fetch:
+        src: /etc/letsencrypt
+        dest: /home/fedora/letsencrypt
+      delegate_to: "{{ bridge_name }}"
+      when: bridge_name is defined
+
     # NOTE: I'm not entirely positive this is necessary but it's something that
     # openshift-ansible does so let's not break its expectations
     - name: Copy API certificate files in named_certificates
@@ -48,10 +58,11 @@
         mode: 0600
         backup: yes
       notify:
-        - restart origin-master-api
+        - restart origin-node
       with_items:
-        - registry.rdoproject.org/fullchain.pem
-        - registry.rdoproject.org/privkey.pem
+        - "{{ registry_host }}/fullchain.pem"
+        - "{{ registry_host }}/privkey.pem"
+        - "{{ registry_host }}/cert.pem"
 
     - name: Copy certificate files in named_certificates
       copy:
@@ -61,30 +72,30 @@
         mode: 0600
         backup: yes
       with_items:
-        - trunk.registry.rdoproject.org/cert.pem
-        - trunk.registry.rdoproject.org/chain.pem
-        - trunk.registry.rdoproject.org/privkey.pem
+        - "trunk.{{ registry_host }}/fullchain.pem"
+        - "trunk.{{ registry_host }}/privkey.pem"
+        - "trunk.{{ registry_host }}/cert.pem"
 
-    - name: Update the trunk.registry.rdoproject.org route
+    - name: Update the trunk.{{ registry_host }} route
       oc_route:
         name: docker-registry
         namespace: default
         service_name: docker-registry
         tls_termination: 'reencrypt'
-        host: 'trunk.registry.rdoproject.org'
-        cert_path: '/etc/letsencrypt/live/trunk.registry.rdoproject.org/cert.pem'
-        cacert_path: '/etc/letsencrypt/live/trunk.registry.rdoproject.org/chain.pem'
-        key_path: '/etc/letsencrypt/live/trunk.registry.rdoproject.org/privkey.pem'
+        host: "trunk.{{ registry_host }}"
+        cert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/cert.pem"
+        cacert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/chain.pem"
+        key_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/privkey.pem"
         dest_cacert_path: '/etc/origin/master/ca.crt'
 
-    - name: Update the console.registry.rdoproject.org route
+    - name: Update the console.{{ registry_host }} route
       oc_route:
         name: registry-console
         namespace: default
         service_name: registry-console
         tls_termination: 'reencrypt'
-        host: 'console.registry.rdoproject.org'
-        cert_path: '/etc/letsencrypt/live/console.registry.rdoproject.org/cert.pem'
-        cacert_path: '/etc/letsencrypt/live/console.registry.rdoproject.org/chain.pem'
-        key_path: '/etc/letsencrypt/live/console.registry.rdoproject.org/privkey.pem'
+        host: "console.{{ registry_host }}"
+        cert_path: "/etc/letsencrypt/live/console.{{ registry_host }}/cert.pem"
+        cacert_path: "/etc/letsencrypt/live/console.{{ registry_host }}/chain.pem"
+        key_path: "/etc/letsencrypt/live/console.{{ registry_host }}/privkey.pem"
         dest_cacert_path: '/etc/origin/master/ca.crt'
