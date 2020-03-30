@@ -24,3 +24,6 @@
 
 - name: Prepare the RDO configuration
   include: rdo.yml
+
+- name: Prepare the RHEL configuration
+  include: rhel.yml
