@@ -27,3 +27,4 @@ rdo_branches:
   - tripleorocky
   - tripleostein
   - tripleotrain
+  - tripleo_centos8_train
