@@ -8,6 +8,7 @@ pruner_extended_whitelist:
 pruner_namespaces:
   - tripleomaster
   - tripleotrain
+  - tripleotraincentos8
   - tripleostein
   - tripleorocky
   - tripleoqueens
