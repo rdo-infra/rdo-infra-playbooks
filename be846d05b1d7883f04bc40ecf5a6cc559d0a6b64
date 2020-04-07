@@ -1,0 +1,11 @@
+Code-Review+2: Daniel Pawlik <pawlik.dan@gmail.com>
+Code-Review+1: User marios <marios@redhat.com>
+Code-Review+1: wes hayutin <weshayutin@gmail.com>
+Code-Review+2: Alan Pevec <alan.pevec@redhat.com>
+Workflow+1: Daniel Pawlik <pawlik.dan@gmail.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Tue, 07 Apr 2020 16:02:09 +0000
+Reviewed-on: https://review.rdoproject.org/r/26280
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
