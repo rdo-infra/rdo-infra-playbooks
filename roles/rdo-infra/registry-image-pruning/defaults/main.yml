@@ -5,6 +5,7 @@ pruner_extended_whitelist:
   - current-tripleo-rdo-internal
   - tripleo-ci-testing
   - promoted-components
+  - component-ci-testing
 pruner_namespaces:
   - tripleomaster
   - tripleotrain
@@ -21,6 +22,8 @@ pruner_dlrn_endpoints:
   - api-centos-train
   - api-centos-master-uc
   - api-centos8-master-uc
+  - api-centos8-ussuri
+  - api-centos8-train
   - api-rhel8-master
   - api-rhel8-train
 pruner_days: 3
