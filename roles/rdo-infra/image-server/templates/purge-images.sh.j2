@@ -40,7 +40,7 @@ do
 
     # Build a list of patterns (symlink destinations) that will be used as a
     # whitelist (egrep -v)
-    whitelist=$(find "${path}" -type l |xargs readlink |awk -F/ '{print $NF}' |sort |uniq |paste -sd '|')
+    whitelist=$(find "${path}" -type l |xargs readlink | sed 's/\/$//' |awk -F/ '{print $NF}' |sort |uniq |paste -sd '|')
     echo "Whitelist: ${whitelist}" | log
 
     # Get a list of candidates directories appropriate for deletion
