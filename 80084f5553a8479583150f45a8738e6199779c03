@@ -1,0 +1,9 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Code-Review+1: Szymon Datko <szymon.datko@gmail.com>
+Workflow+1: Daniel Pawlik <pawlik.dan@gmail.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Wed, 22 Apr 2020 15:30:48 +0000
+Reviewed-on: https://review.rdoproject.org/r/26643
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
