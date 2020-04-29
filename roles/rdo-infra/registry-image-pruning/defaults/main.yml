@@ -8,6 +8,7 @@ pruner_extended_whitelist:
   - component-ci-testing
 pruner_namespaces:
   - tripleomaster
+  - tripleoussuri
   - tripleotrain
   - tripleotraincentos8
   - tripleostein
@@ -24,6 +25,7 @@ pruner_dlrn_endpoints:
   - api-centos8-master-uc
   - api-centos8-ussuri
   - api-centos8-train
+  - api-centos8-ussuri
   - api-rhel8-master
   - api-rhel8-train
 pruner_days: 3
