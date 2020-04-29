@@ -1,3 +1,0 @@
-[submodule "roles/opstools-ansible"]
-	path = roles/opstools-ansible
-	url = https://github.com/centos-opstools/opstools-ansible.git

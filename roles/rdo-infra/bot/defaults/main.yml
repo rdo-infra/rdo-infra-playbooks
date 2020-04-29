@@ -23,8 +23,6 @@ rdobot_systemd_wrapper: "/usr/local/bin/rdobot.sh"
 
 rdobot_nickname: "rdobot"
 rdobot_nickserv_password: "changeme"
-rdobot_sensu_api: "http://127.0.0.1:4567"
-rdobot_sensu_password: "changeme"
 
 rdobot_base_packages:
   - python-setuptools
