@@ -1,0 +1,10 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Code-Review+1: Chandan Kumar <chkumar@redhat.com>
+Code-Review+2: Nicolas HICHER <nhicher@redhat.com>
+Workflow+1: Nicolas HICHER <nhicher@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Wed, 29 Apr 2020 13:38:07 +0000
+Reviewed-on: https://review.rdoproject.org/r/27001
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
