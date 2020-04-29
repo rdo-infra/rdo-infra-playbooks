@@ -47,8 +47,3 @@ status. Something like the following:
     09:17:18 	<rdobot>	 A = Activated, D = Deactivated, B = Blacklisted, C = Needs to be configured
     09:17:19 	<rdobot>	 Load 0.36, 0.41, 0.38
     09:17:20 	<rdobot>	GC 0->126 1->10 2->4
-
-Sensu posts data from a `handler <https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/roles/rdo-infra/sensu-server/tasks/main.yml#L26-L41>`_
-with this `script <https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/roles/rdo-infra/sensu-server/files/errbot.py>`_.
-
-The business logic for alerting is `here <https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/roles/rdo-infra/sensu-client/defaults/main.yml#L63-L90>`_ (occurrences vs reoccurrences) and there is also a `blog post <https://dmsimard.com/2016/03/21/tips-on-controlling-the-flow-of-notifications-in-sensu/>`_ about it.

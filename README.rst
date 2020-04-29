@@ -20,11 +20,6 @@ Dependencies
 
     ansible-galaxy install -r registry-requirements.yml
 
-- For the monitoring roles, you will need to fetch the opstools-ansible role::
-
-    cd roles/opstools-ansible
-    git submodule update --init --recursive
-
 Dealing with Secrets
 ====================
 
@@ -70,14 +65,6 @@ Setup base RDO server requirements
 Setup Jenkins slave for ci.centos.org environment
 =================================================
 - Setup machine: ``ansible-playbook -i hosts.yml playbooks/cico-slave.yml``
-
-Setup monitoring master
-=======================
-- Setup master: ``ansible-playbook -i hosts.yml playbooks/sensu-server.yml``
-
-Setup monitoring clients
-========================
-- Setup client(s): ``ansible-playbook -i hosts.yml playbooks/sensu-client.yml``
 
 Setup RDO Registry
 ==================
