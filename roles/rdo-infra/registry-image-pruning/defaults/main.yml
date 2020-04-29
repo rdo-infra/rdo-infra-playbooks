@@ -8,6 +8,7 @@ pruner_extended_whitelist:
   - component-ci-testing
 pruner_namespaces:
   - tripleomaster
+  - tripleoussuri
   - tripleotrain
   - tripleotraincentos8
   - tripleostein
