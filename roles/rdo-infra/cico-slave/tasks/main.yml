@@ -158,7 +158,7 @@
     name: "Start jenkins slave on reboot"
     special_time: reboot
     user: jenkins
-    job: "nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &"
+    job: "(. ~/.bashrc; nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &)"
 
 - name: Create cron job to clean up old workspaces
   cron:
