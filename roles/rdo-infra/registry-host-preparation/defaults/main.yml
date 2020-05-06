@@ -25,6 +25,7 @@ host_preparation_packages:
   - kexec-tools
   - sos
   - psacct
+  - centos-release-ansible-29
 
 # It is expected that the host has an additional cinder volume/disk for the
 # storage of containers and images.
