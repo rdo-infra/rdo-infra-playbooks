@@ -18,6 +18,7 @@
 rdo_releases:
   - "master-head"
   - "master"
+  - "ussuri"
   - "train"
   - "stein"
   - "rocky"
