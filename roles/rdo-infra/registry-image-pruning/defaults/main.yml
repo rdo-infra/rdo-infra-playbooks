@@ -6,6 +6,7 @@ pruner_extended_whitelist:
   - tripleo-ci-testing
   - promoted-components
   - component-ci-testing
+  - previous-current-tripleo
 pruner_namespaces:
   - tripleomaster
   - tripleoussuri
