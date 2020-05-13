@@ -56,6 +56,7 @@ rdo_admin_group: "rdo-admin"
 rdo_admin_users:
   dmsimard:
     name: "dmsimard"
+    state: "absent"
     ssh_keys:
       - "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBH7d5MTSlwAKp8ejbd0GNq0YUVXIzSunGXhFigNgl1oqrTapJIsJ6aGv3p400al5YKWua3Z/DzNftkz8VfermnsWli6SJAhcYPY7SDMTlFXKyTKLbG+k917v1QdtA2g6RqlfvfGSfYj6VwA7bNKjosrceN6GI+9HqY9nLcclQZ1xCr+wNShpfQrqlYKYBnI6JG26c8HfE/H3vSHKRsry4cscx+BDTlurMPF72zdrNGvbbV6LMxY6gbLj3xrCof1GxjU0PbXEMBdePWMxFqRb9do8+iz5noHUUTIElGIpFA2z40mdZ5w1FQYt/rYa1ehNTO25nXXhFTYgn2Y+fQb25"
   jpena:
