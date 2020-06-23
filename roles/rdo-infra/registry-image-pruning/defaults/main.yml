@@ -8,14 +8,22 @@ pruner_extended_whitelist:
   - component-ci-testing
   - previous-current-tripleo
 pruner_namespaces:
-  - tripleomaster
-  - tripleoussuri
-  - tripleotrain
-  - tripleotraincentos8
-  - tripleostein
-  - tripleorocky
-  - tripleoqueens
-  - tripleopike
+  - name: tripleomaster
+    pruner_days: 3
+  - name: tripleoussuri
+    pruner_days: 3
+  - name: tripleotrain
+    pruner_days: 3
+  - name: tripleotraincentos8
+    pruner_days: 3
+  - name: tripleostein
+    pruner_days: 3
+  - name: tripleorocky
+    pruner_days: 4
+  - name: tripleoqueens
+    pruner_days: 4
+  - name: tripleopike
+    pruner_days: 4
 pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens
@@ -28,4 +36,3 @@ pruner_dlrn_endpoints:
   - api-centos8-train
   - api-rhel8-master
   - api-rhel8-train
-pruner_days: 3
