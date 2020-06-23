@@ -7,17 +7,22 @@ pruner_extended_whitelist:
   - promoted-components
   - component-ci-testing
   - previous-current-tripleo
+# NOTE: if pruner_days key is not set for entries in pruner_namespaces,
+# script will take value from global pruner_days variable.
 pruner_namespaces:
-  - tripleomaster
-  - tripleoussuri
-  - tripleou
-  - tripleotrain
-  - tripleotraincentos8
-  - tripleostein
-  - tripleorocky
-  - tripleoqueens
-  - tripleopike
-  - testingmaster
+  - name: tripleomaster
+  - name: tripleoussuri
+  - name: tripleou
+  - name: tripleotrain
+  - name: tripleotraincentos8
+  - name: tripleostein
+  - name: tripleorocky
+    pruner_days: 4
+  - name: tripleoqueens
+    pruner_days: 4
+  - name: tripleopike
+    pruner_days: 4
+  - name: testingmaster
 pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens
