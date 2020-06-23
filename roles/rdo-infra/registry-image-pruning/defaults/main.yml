@@ -16,6 +16,7 @@ pruner_namespaces:
   - tripleorocky
   - tripleoqueens
   - tripleopike
+  - testingmaster
 pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens
