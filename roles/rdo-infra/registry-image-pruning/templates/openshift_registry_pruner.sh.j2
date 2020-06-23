@@ -5,10 +5,9 @@
 oc login -u system:admin --config=/etc/origin/master/admin.kubeconfig
 oc adm config use-context default/{{ openshift_master_cluster_hostname | replace('.','-') }}:8443/system:admin
 
-for release in {{ pruner_namespaces | join (' ') }}
-do
-    /usr/local/bin/openshift_tag_pruner --days {{ pruner_days }} --whitelist "$(/usr/local/bin/openshift_tag_whitelist)" $release --confirm
-done
+{% for ns in pruner_namespaces %}
+/usr/local/bin/openshift_tag_pruner --days {{ ns.pruner_days or pruner_days }} --whitelist "$(/usr/local/bin/openshift_tag_whitelist)" {{ ns.name }} --confirm
+{% endfor %}
 
 # Pruning is done with the rdo.pruner user
 oc login --token $(oc sa get-token rdo.pruner) {{ openshift_master_cluster_public_hostname | default('registry.rdoproject.org') }}:8443
