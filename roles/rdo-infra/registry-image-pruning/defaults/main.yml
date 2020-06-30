@@ -10,6 +10,7 @@ pruner_extended_whitelist:
 pruner_namespaces:
   - tripleomaster
   - tripleoussuri
+  - tripleou
   - tripleotrain
   - tripleotraincentos8
   - tripleostein
