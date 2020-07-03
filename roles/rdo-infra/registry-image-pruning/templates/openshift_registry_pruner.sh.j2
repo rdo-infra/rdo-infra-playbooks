@@ -10,5 +10,5 @@ oc adm config use-context default/{{ openshift_master_cluster_hostname | replace
 {% endfor %}
 
 # Pruning is done with the rdo.pruner user
-oc login --token $(oc sa get-token rdo.pruner) {{ openshift_master_cluster_public_hostname | default('registry.rdoproject.org') }}:8443
+oc login --token $(oc sa get-token rdo.pruner) {{ openshift_master_cluster_public_hostname | default('registry.rdoproject.org') }}:8443 {% if insecure_skip_tls_verify | default(false) %} --insecure-skip-tls-verify=true {% endif %}
 oc adm prune images --keep-younger-than=24h --keep-tag-revisions=2 --confirm

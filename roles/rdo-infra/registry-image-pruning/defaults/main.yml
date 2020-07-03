@@ -36,3 +36,7 @@ pruner_dlrn_endpoints:
   - api-rhel8-master
   - api-rhel8-train
 pruner_days: 3
+# FIXME(dpawlik): Temporary workaround for run registry pruner script.
+# This change should be removed when TLS registry workflow is changed.
+# More: TG-3617
+insecure_skip_tls_verify: true
