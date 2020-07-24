@@ -23,6 +23,8 @@ pruner_namespaces:
   - name: tripleopike
     pruner_days: 4
   - name: testingmaster
+  - name: testingussuri
+  - name: testingtrain
 pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens

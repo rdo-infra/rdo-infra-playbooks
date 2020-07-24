@@ -31,3 +31,5 @@ rdo_branches:
   - tripleou
   - tripleotraincentos8
   - testingmaster
+  - testingussuri
+  - testingtrain
