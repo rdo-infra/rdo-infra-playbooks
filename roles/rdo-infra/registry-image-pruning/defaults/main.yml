@@ -25,7 +25,6 @@ pruner_namespaces:
   - name: testingmaster
   - name: testingussuri
   - name: testingtrain
-  - name: testrepo
 pruner_dlrn_endpoints:
   - api-centos-pike
   - api-centos-queens
