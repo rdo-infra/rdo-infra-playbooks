@@ -26,6 +26,8 @@
   hosts: bastion
   become: true
   gather_facts: no
+  environment:
+    LANG: 'en_US.UTF-8'
   tasks:
 #    - name: Set up prepared repositories from cache
 #      include_role:
