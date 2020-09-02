@@ -23,6 +23,8 @@ pruner_namespaces:
   - name: testingmaster
   - name: testingussuri
   - name: testingtrain
+  - name: ceph
+    pruner_days: 365
 pruner_dlrn_endpoints:
   - api-centos-queens
   - api-centos-rocky
