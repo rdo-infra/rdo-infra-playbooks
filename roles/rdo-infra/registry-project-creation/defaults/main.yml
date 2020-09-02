@@ -33,3 +33,6 @@ rdo_branches:
   - testingmaster
   - testingussuri
   - testingtrain
+  - ceph
+  - prom
+  - grafana
