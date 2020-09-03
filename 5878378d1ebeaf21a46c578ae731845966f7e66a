@@ -1,0 +1,9 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Code-Review+2: Tristan de Cacqueray <tdecacqu@redhat.com>
+Workflow+1: Tristan de Cacqueray <tdecacqu@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Thu, 03 Sep 2020 13:22:12 +0000
+Reviewed-on: https://review.rdoproject.org/r/29136
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
