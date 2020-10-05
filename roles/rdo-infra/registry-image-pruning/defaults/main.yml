@@ -11,6 +11,7 @@ pruner_extended_whitelist:
 # script will take value from global pruner_days variable.
 pruner_namespaces:
   - name: tripleomaster
+  - name: tripleovictoria
   - name: tripleoussuri
   - name: tripleou
   - name: tripleotrain
