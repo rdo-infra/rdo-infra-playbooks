@@ -11,6 +11,7 @@ pruner_extended_whitelist:
 # script will take value from global pruner_days variable.
 pruner_namespaces:
   - name: tripleomaster
+  - name: tripleovictoria
   - name: tripleoussuri
   - name: tripleou
   - name: tripleotrain
@@ -31,6 +32,7 @@ pruner_dlrn_endpoints:
   - api-centos-stein
   - api-centos-train
   - api-centos8-master-uc
+  - api-centos8-victoria
   - api-centos8-ussuri
   - api-centos8-train
 pruner_days: 3
