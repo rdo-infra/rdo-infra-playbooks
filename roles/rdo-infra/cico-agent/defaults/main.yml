@@ -14,9 +14,20 @@
 #   under the License.
 #
 
-- name: Configure the cico Jenkins slave
-  hosts: cico
-  become: yes
-  become_user: root
-  roles:
-    - cico-slave
+cico_agent_packages:
+  - gcc
+  - python-devel
+  - libffi-devel
+  - openssl-devel
+  - redhat-rpm-config
+  - python-setuptools
+  - libselinux-python
+  - libxml2-devel
+  - libxslt-devel
+  - git
+  - java-1.8.0-openjdk
+
+cico_cloud_config: {}
+
+cico_jenkins_master_url: "https://ci.centos.org"
+cico_node_secret: "changeme"

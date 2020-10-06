@@ -62,9 +62,9 @@ Setup base RDO server requirements
 ==================================
 - Setup machine: ``ansible-playbook -i hosts.yml playbooks/base.yml``
 
-Setup Jenkins slave for ci.centos.org environment
+Setup Jenkins agent for ci.centos.org environment
 =================================================
-- Setup machine: ``ansible-playbook -i hosts.yml playbooks/cico-slave.yml``
+- Setup machine: ``ansible-playbook -i hosts.yml playbooks/cico-agent.yml``
 
 Setup RDO Registry
 ==================

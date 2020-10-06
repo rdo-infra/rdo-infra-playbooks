@@ -16,7 +16,7 @@
 
 - name: Install base packages
   package:
-    name: "{{ cico_slave_packages }}"
+    name: "{{ cico_agent_packages }}"
     state: installed
 
 - name: Install pip
@@ -44,6 +44,27 @@
     name: jenkins
     state: present
 
+- name: Create rdo-monitoring user
+  user:
+    name: rdo-monitoring
+    state: present
+
+- name: Set up authorized_keys for rdo-monitoring user
+  authorized_key:
+    user: rdo-monitoring
+    key: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHj3R7JGtLkSD9h+E6JNHGdZ+SStJx+wyQsE7DK41t+Au7mfTJb12zjxBO4OwzAJbVnudN86BPYI0aHuY7ZpZ8+yitcFOBxQdczcGNistIaOHNb7bp0aPpVTYkHEYo3IlsDgPYcMVsvwOpIIDfi8wSQo3p4FNTtOc9ulAeQ7UUl4uId7ILLGzpDhkRrb+hYetJw/e3Xkqz6BW/VFbw6Tb8DdgMGhNVflQNlPz1HB60zKxeoeRkrLg3lMO/LuFHr48MtWuQ4LR13fq/tw3XgzHIBU2LL107wTtZs3KqxdqEcs9+7gAaNtT9+rbMoQvF0E9viZn+vjHOAbfxgXUEsFt7 .ssh/id_rsa'
+
+- name: Setup passwordless sudo for rdo-monitoring user
+  lineinfile:
+    dest: "/etc/sudoers.d/91-rdo-monitoring"
+    create: "yes"
+    mode: "0440"
+    owner: "root"
+    group: "root"
+    regexp: "^rdo-monitoring"
+    line: "rdo-monitoring ALL=(ALL) NOPASSWD: ALL"
+    validate: "/usr/sbin/visudo -cf %s"
+
 - name: Set up OpenStack cloud configuration directory
   file:
     path: /home/jenkins/.config/openstack
@@ -60,10 +81,10 @@
     group: jenkins
     mode: 0640
 
-- name: Fetch slave.jar from Jenkins master
+- name: Fetch agent.jar from Jenkins server
   get_url:
-    url: "{{ cico_jenkins_master_url }}/jnlpJars/slave.jar"
-    dest: /home/jenkins/slave.jar
+    url: "{{ cico_jenkins_master_url }}/jnlpJars/agent.jar"
+    dest: /home/jenkins/agent.jar
     mode: 0640
     owner: jenkins
     group: jenkins
@@ -153,12 +174,12 @@
     group: jenkins
     mode: 0600
 
-- name: Create cron job to start slave on reboot
+- name: Create cron job to start agent on reboot
   cron:
-    name: "Start jenkins slave on reboot"
+    name: "Start jenkins agent on reboot"
     special_time: reboot
     user: jenkins
-    job: "(. ~/.bashrc; nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &)"
+    job: "(. ~/.bashrc; nohup java -jar agent.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-agent.log &)"
 
 - name: Create cron job to clean up old workspaces
   cron:
@@ -168,9 +189,9 @@
     hour: "0"
     job: 'find /home/jenkins/workspace/ -maxdepth 1 -type d -mtime +1 -exec rm -rf {} \;'
 
-- name: Create cron job to start slave when it fails
+- name: Create cron job to start agent when it fails
   cron:
-    name: "Start jenkins slave on fail"
+    name: "Start jenkins agent on fail"
     minute: '*/5'
     user: jenkins
-    job: "ps -fu jenkins |grep java | grep -v grep > /dev/null || (. ~/.bashrc; nohup java -jar slave.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-slave-agent.log &)"
+    job: "ps -fu jenkins |grep java | grep -v grep > /dev/null || (. ~/.bashrc; nohup java -jar agent.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-agent.log &)"
