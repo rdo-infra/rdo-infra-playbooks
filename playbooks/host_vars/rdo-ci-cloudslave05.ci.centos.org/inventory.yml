@@ -5,4 +5,4 @@ host_service: "Jenkins"
 host_automation:
   base: "https://github.com/rdo-infra/rdo-infra-playbooks"
   service:
-    - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/cico-slave.yml"
+    - "https://github.com/rdo-infra/rdo-infra-playbooks/blob/master/playbooks/cico-agent.yml"
