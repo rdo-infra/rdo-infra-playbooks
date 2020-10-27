@@ -1,0 +1,9 @@
+Code-Review+2: Javier Peña <jpena@redhat.com>
+Code-Review+1: David Moreau Simard <moi@dmsimard.com>
+Workflow+1: Javier Peña <jpena@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Tue, 27 Oct 2020 15:58:46 +0000
+Reviewed-on: https://review.rdoproject.org/r/30674
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
