@@ -19,6 +19,12 @@
     name: "{{ cico_agent_packages }}"
     state: installed
 
+- name: Install python3-virtualenv from epel
+  package:
+    name: python3-virtualenv
+    state: installed
+    enablerepo: epel
+
 - name: Install pip
   easy_install:
     name: pip
