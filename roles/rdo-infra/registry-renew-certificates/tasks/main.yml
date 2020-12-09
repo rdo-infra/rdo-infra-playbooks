@@ -35,3 +35,15 @@
 - name: Pause for router to settle
   pause:
     seconds: 5
+
+- name: Update the trunk.{{ registry_host }} route
+  oc_route:
+    name: docker-registry
+    namespace: default
+    service_name: docker-registry
+    tls_termination: 'reencrypt'
+    host: "trunk.{{ registry_host }}"
+    cert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/cert.pem"
+    cacert_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/chain.pem"
+    key_path: "/etc/letsencrypt/live/trunk.{{ registry_host }}/privkey.pem"
+    dest_cacert_path: '/etc/origin/master/ca.crt'
