@@ -45,6 +45,12 @@
         version: rdo-3.11-dns-mismatch
         dest: "{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible"
 
+    - name: Workaround cryptography > 3 issue in CentOS 7
+      pip:
+        name: cryptography
+        version: 2.9.2
+        virtualenv: /opt/openshift-ansible
+
     - name: Create a virtual environment with openshift-ansible requirements
       pip:
         requirements: "{{ ansible_user_dir }}/{{ zuul.project.src_dir }}/roles/openshift/openshift-ansible/requirements.txt"
