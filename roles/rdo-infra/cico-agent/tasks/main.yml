@@ -201,3 +201,12 @@
     minute: '*/5'
     user: jenkins
     job: "ps -fu jenkins |grep java | grep -v grep > /dev/null || (. ~/.bashrc; nohup java -jar agent.jar -jnlpUrl {{ cico_jenkins_master_url }}/computer/{{ cico_node_hostname }}/slave-agent.jnlp -secret {{ cico_node_secret }} >/home/jenkins/jenkins-agent.log &)"
+
+- name: Cleanup old tox env dir
+  become: true
+  become_user: jenkins
+  cron:
+    name: Remove old tox directories
+    hour: 3
+    minute: 0
+    job: "find /home/jenkins/ -type d -name '.tox' -mtime +1 -execdir rm -r '{}' + ;"
