@@ -208,4 +208,4 @@
     hour: 3
     minute: 0
     user: jenkins
-    job: "find /home/jenkins/ -type d -name '.tox' -mtime +1 -execdir rm -r '{}' + ;"
+    job: "find /home/jenkins/ -type d -name '.tox' -mmin +720 -execdir rm -r '{}' + ;"
