@@ -205,7 +205,7 @@
 - name: Cleanup old tox env dir
   cron:
     name: Remove old tox directories
-    hour: 3
+    hour: "*/8"
     minute: 0
     user: jenkins
     job: "find /home/jenkins/ -type d -name '.tox' -mmin +720 -execdir rm -r '{}' + ;"
