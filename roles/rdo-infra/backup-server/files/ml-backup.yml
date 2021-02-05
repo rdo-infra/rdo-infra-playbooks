@@ -1,10 +1,11 @@
 - hosts: localhost
   connection: local
   tasks:
-    - name: "Add {{ sf_host }} to the inventory"
+    - name: "Add {{ item }} to the inventory"
       add_host:
-        name: "{{ sf_host }}"
+        name: "{{ item }}"
         groups: "sf"
+      loop: "{{ sf_hosts }}"
     - name: "Create local backup directory {{ local_dir }}"
       file:
         path: "{{ local_dir }}"
@@ -36,14 +37,15 @@
   connection: local
   tasks:
     - name: "Rsync remote SF to localhost {{ local_dir }}"
-      command: "rsync --delete-delay -r {{ sf_host }}:{{ remote_dir }} {{ local_dir }}"
+      command: "rsync --delete-delay -r {{ item }}:{{ remote_dir }} {{ local_dir }}"
+      loop: "{{ sf_hosts }}"
     - name: "Bup index"
       command: "bup index {{ local_dir }}"
       environment:
         BUP_DIR: "{{ bup_dir }}"
         PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
     - name: "Bup save"
-      command: "bup save -n {{ sf_host }} {{ local_dir }}"
+      command: "bup save -n {{ sf_hosts[0] }} {{ local_dir }}"
       environment:
         BUP_DIR: "{{ bup_dir }}"
         PATH: "{{ ansible_env.PATH }}:/usr/local/bin"
