@@ -25,6 +25,9 @@
 - name: Deploy bup
   include_tasks: bup.yml
 
+- name: Configure SF rdo backup
+  include_tasks: rdo.yml
+
 - name: Configure SF koji backup
   include_tasks: sfkoji.yml
 
