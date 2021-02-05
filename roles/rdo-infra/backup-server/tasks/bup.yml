@@ -43,14 +43,6 @@
     version: "master"
     force: yes
 
-- name: Deploy sf-ops configuration
-  copy:
-    src: reviewrdo-all.yml
-    dest: /root/sf-ops/backup/ansible/group_vars/all.yml
-    owner: root
-    group: root
-    mode: 0644
-
 - name: Check for existing bup binary
   stat:
     path: "/usr/local/bin/bup"
@@ -78,20 +70,3 @@
       make install
     chdir: "{{ bup_path.path }}/bup-{{ bup_version }}"
   when: not bup_exists.stat.exists
-
-- name: Create crontab entry for rdo-ml-backup
-  cron:
-    name: "Run backup for lists.rdo"
-    user: root
-    minute: "1"
-    hour: "7"
-    job: 'ansible-playbook /root/rdo-ml-backup/backup/ansible/backup.yml'
-
-- name: Create crontab entry for review-rdo-backup
-  cron:
-    name: "Run backup for review.rdo"
-    user: root
-    minute: "0"
-    hour: "5"
-    day: "*/2"
-    job: 'ansible-playbook /root/sf-ops/backup/ansible/backup.yml'
