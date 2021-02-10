@@ -23,6 +23,7 @@
 
 - name: Renew certificates
   command: certbot renew
+  changed_when: false
 
 - name: Scale up router pod
   oc_scale:

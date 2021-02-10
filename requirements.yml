@@ -1,40 +1,42 @@
 ---
-- src: git+https://gitlab.com/osas/ansible-role-chrony.git
-  name: chrony
-- src: git+https://github.com/OSAS/ansible-role-web_builder.git
-  name: web_builder
-- src: git+https://gitlab.com/osas/ansible-role-msmtp.git
-  name: msmtp
-- src: git+https://gitlab.com/osas/ansible-role-ah-httpd.git
-  name: httpd
-- src: https://github.com/rdo-infra/ansible-role-rdo_dashboards.git
-  name: rdo-infra/dashboards
-- src: git+https://gitlab.com/osas/ansible-role-bind9.git
-  name: bind9
-- src: git+https://gitlab.com/osas/ansible-role-postfix.git
-  name: postfix
-- src: git+https://gitlab.com/osas/ansible-role-postgrey.git
-  name: postgrey
-- src: git+https://gitlab.com/osas/ansible-role-spamassassin.git
-  name: spamassassin
-- src: git+https://gitlab.com/osas/ansible-role-dovecot.git
-  name: dovecot
-- src: git+https://gitlab.com/osas/ansible-role-memcached.git
-  name: memcached
-- src: git+https://gitlab.com/osas/ansible-role-postgresql.git
-  name: postgresql
-- src: git+https://gitlab.com/osas/ansible-role-mailman2.git
-  name: mailman2
-- src: git+https://gitlab.com/osas/ansible-role-mailman3.git
-  name: mailman3
-- src: git+https://gitlab.com/osas/ansible-role-mailing-lists-server.git
-  name: mailing-lists-server
-- src: git+https://gitlab.com/osas/ansible-role-data_movebind.git
-  name: data_movebind
-- src: https://github.com/OSAS/ansible-role-swap_file
-  name: swap_file
-- src: git+https://gitlab.com/osas/ansible-role-httpd_wsgi.git
-  name: httpd_wsgi
-- src: git+https://gitlab.com/osas/ansible-role-unattended_updates.git
-  name: unattended_updates
+roles:
+    - src: git+https://gitlab.com/osas/ansible-role-chrony.git
+      name: chrony
+    - src: git+https://github.com/OSAS/ansible-role-web_builder.git
+      name: web_builder
+    - src: git+https://gitlab.com/osas/ansible-role-msmtp.git
+      name: msmtp
+    - src: git+https://gitlab.com/osas/ansible-role-ah-httpd.git
+      name: httpd
+    - src: https://github.com/rdo-infra/ansible-role-rdo_dashboards.git
+      name: rdo-infra/dashboards
+    - src: git+https://gitlab.com/osas/ansible-role-bind9.git
+      name: bind9
+    - src: git+https://gitlab.com/osas/ansible-role-postfix.git
+      name: postfix
+    - src: git+https://gitlab.com/osas/ansible-role-postgrey.git
+      name: postgrey
+    - src: git+https://gitlab.com/osas/ansible-role-spamassassin.git
+      name: spamassassin
+    - src: git+https://gitlab.com/osas/ansible-role-dovecot.git
+      name: dovecot
+    - src: git+https://gitlab.com/osas/ansible-role-memcached.git
+      name: memcached
+    - src: git+https://gitlab.com/osas/ansible-role-postgresql.git
+      name: postgresql
+    - src: git+https://gitlab.com/osas/ansible-role-mailman2.git
+      name: mailman2
+    - src: git+https://gitlab.com/osas/ansible-role-mailman3.git
+      name: mailman3
+    - src: git+https://gitlab.com/osas/ansible-role-mailing-lists-server.git
+      name: mailing-lists-server
+    - src: git+https://gitlab.com/osas/ansible-role-data_movebind.git
+      name: data_movebind
+    - src: https://github.com/OSAS/ansible-role-swap_file
+      name: swap_file
+    - src: git+https://gitlab.com/osas/ansible-role-httpd_wsgi.git
+      name: httpd_wsgi
+    - src: git+https://gitlab.com/osas/ansible-role-unattended_updates.git
+      name: unattended_updates
 
+collections: []

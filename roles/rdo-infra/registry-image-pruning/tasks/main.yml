@@ -16,6 +16,7 @@
 
 - name: Ensure EPEL is disabled by default
   command: yum-config-manager --disable epel
+  changed_when: false
 
 - name: Install jq from EPEL
   package:
