@@ -1,0 +1,7 @@
+skip_list:
+  - git-latest
+  - load-failure
+  - risky-file-permissions
+  - var-spacing
+  - role-name
+  - command-instead-of-module

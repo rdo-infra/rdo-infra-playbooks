@@ -17,7 +17,8 @@
 - name: Create rdo-inventory directory
   hosts: all
   tasks:
-    - file:
+    - name: Create /tmp/rdo-inventory directory
+      file:
         path: /tmp/rdo-inventory
         state: directory
         mode: 0755
@@ -48,12 +49,14 @@
 - name: Display basic server inventory
   hosts: all
   tasks:
-    - template:
+    - name: Deploy inventory template
+      template:
         src: inventory_report.html.j2
         dest: /tmp/inventory_report.html
         mode: 0640
 
-    - fetch:
+    - name: Fetch inventory report
+      fetch:
         src: /tmp/inventory_report.html
         dest: /tmp/rdo-inventory/inventory-{{ inventory_hostname }}.html
         flat: yes
