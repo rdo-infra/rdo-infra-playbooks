@@ -27,4 +27,4 @@ bup_version: 0.29.1
 vgbackup_disk: /dev/xvdf
 backup_review_rdo_size: 100g
 backup_koji_size: 40g
-backup_sfio_size: 200g
+backup_sfio_size: 250g
