@@ -12,6 +12,7 @@ pruner_extended_whitelist:
 pruner_namespaces:
   - name: tripleomaster
   - name: tripleovictoria
+  - name: tripleowallaby
   - name: tripleoussuri
   - name: tripleou
   - name: tripleotrain
@@ -32,6 +33,7 @@ pruner_dlrn_endpoints:
   - api-centos-stein
   - api-centos-train
   - api-centos8-master-uc
+  - api-centos8-wallaby
   - api-centos8-victoria
   - api-centos8-ussuri
   - api-centos8-train
