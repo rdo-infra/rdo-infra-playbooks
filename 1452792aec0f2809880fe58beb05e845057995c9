@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "4f6c57c4_6a7da72f",
+        "filename": "roles/rdo-infra/registry-image-pruning/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 113
+      },
+      "writtenOn": "2021-03-22T09:57:32Z",
+      "side": 1,
+      "message": "We should add the api-centos8-wallaby endpoint here, so its promoted hashes can be protected.",
+      "range": {
+        "startLine": 36,
+        "startChar": 1,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "1452792aec0f2809880fe58beb05e845057995c9",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    }
+  ]
+}
