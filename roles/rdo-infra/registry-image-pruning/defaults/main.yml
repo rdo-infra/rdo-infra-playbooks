@@ -12,6 +12,7 @@ pruner_extended_whitelist:
 pruner_namespaces:
   - name: tripleomaster
   - name: tripleovictoria
+  - name: tripleowallaby
   - name: tripleoussuri
   - name: tripleou
   - name: tripleotrain
