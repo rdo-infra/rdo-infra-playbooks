@@ -22,6 +22,30 @@
       "revId": "1452792aec0f2809880fe58beb05e845057995c9",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9e488ea8_12b0cc6d",
+        "filename": "roles/rdo-infra/registry-image-pruning/defaults/main.yml",
+        "patchSetId": 2
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 671
+      },
+      "writtenOn": "2021-03-22T10:04:23Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4f6c57c4_6a7da72f",
+      "range": {
+        "startLine": 36,
+        "startChar": 1,
+        "endLine": 36,
+        "endChar": 24
+      },
+      "revId": "1452792aec0f2809880fe58beb05e845057995c9",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": false
     }
   ]
 }
