@@ -18,5 +18,6 @@
   hosts: masters
   become: yes
   tasks:
-    - include_role:
+    - name: Create projects in the registry
+      include_role:
         name: rdo-infra/registry-project-creation
