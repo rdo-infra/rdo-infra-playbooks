@@ -1,8 +1,0 @@
-koji_host: "koji.softwarefactory-project.io"
-local_dir: "/var/lib/sfbackup/{{ koji_host }}/"
-bup_dir: "/var/lib/sfbackup/bup-koji/"
-www_dir: "/var/www/html/sfkoji/repos/"
-sf_releases:
-  - sf-master-el7
-  - sf-3.2-el7-release
-  - sf-3.1-el7-release

@@ -1,6 +1,0 @@
-sf_hosts:
-  - "softwarefactory-project.io"
-local_dir: "/var/lib/sfbackup/{{ sf_hosts[0] }}/"
-remote_dir: "/var/lib/software-factory/backup/"
-bup_dir: "/var/lib/sfbackup/bup/"
-run_sf_backup: true
