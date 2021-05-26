@@ -22,7 +22,7 @@ function log () {
 
 ROOT="/var/www/html/images"
 # Trailing slashes are on purpose, those can be symlinks.
-DIRS="centos8/master/rdo_trunk/ centos8/ussuri/rdo_trunk/ centos8/train/rdo_trunk/ master/rdo_trunk/ train/rdo_trunk/ stein/rdo_trunk/ rocky/rdo_trunk/ queens/rdo_trunk/ pike/rdo_trunk/ ocata/rdo_trunk/ newton/rdo_trunk/"
+DIRS="centos8/master/rdo_trunk/ centos8/wallaby/rdo_trunk/ centos8/victoria/rdo_trunk/ centos8/ussuri/rdo_trunk/ centos8/train/rdo_trunk/ train/rdo_trunk/ stein/rdo_trunk/ rocky/rdo_trunk/ queens/rdo_trunk/"
 RETENTION=10
 
 for imagedir in $DIRS
