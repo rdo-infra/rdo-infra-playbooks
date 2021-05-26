@@ -39,6 +39,7 @@
         user: root
         password: "{{ dlrndb.mariadb_root_pw }}"
       ignore_errors: yes
+      no_log: yes
 
     - name: Secure the root user for IPV6 localhost (::1)
       mysql_user:
@@ -47,6 +48,7 @@
         user: root
         password: "{{ dlrndb.mariadb_root_pw }}"
         host: "::1"
+      no_log: yes
 
     - name: Secure the root user for IPV4 localhost (127.0.0.1)
       mysql_user:
@@ -55,6 +57,7 @@
         user: root
         password: "{{ dlrndb.mariadb_root_pw }}"
         host: "127.0.0.1"
+      no_log: yes
 
     - name: Secure the root user for localhost domain
       mysql_user:
@@ -63,6 +66,7 @@
         user: root
         password: "{{ dlrndb.mariadb_root_pw }}"
         host: "localhost"
+      no_log: yes
 
     - name: Secure the root user for server_hostname domain
       mysql_user:
@@ -71,6 +75,7 @@
         user: root
         password: "{{ dlrndb.mariadb_root_pw }}"
         host: "{{ ansible_fqdn }}"
+      no_log: yes
 
     - name: Deletes anonymous server user
       mysql_user:
@@ -79,6 +84,7 @@
         user: ""
         host_all: yes
         state: absent
+      no_log: yes
 
     - name: Removes the test database
       mysql_db:
@@ -86,6 +92,7 @@
         login_password: "{{ dlrndb.mariadb_root_pw }}"
         db: test
         state: absent
+      no_log: yes
 
 - name: Create SSL configuration on master
   hosts: dlrndb_master
@@ -231,7 +238,7 @@
         password: "{{ dlrndb.replication_passwd }}"
         host: "%"
         priv: "*.*:REPLICATION SLAVE,REQUIRESSL"
-
+      no_log: yes
 
 - name: Enable replication on replica
   hosts: dlrndb_replica
@@ -262,9 +269,11 @@
         mode: changemaster
         login_user: root
         login_password: "{{ dlrndb.mariadb_root_pw }}"
+      no_log: yes
 
     - name: Start MySQL replica process
       mysql_replication:
         mode: startslave
         login_user: root
         login_password: "{{ dlrndb.mariadb_root_pw }}"
+      no_log: yes
