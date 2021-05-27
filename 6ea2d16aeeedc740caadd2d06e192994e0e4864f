@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "752362e5_dc2abe80",
+        "filename": "roles/rdo-infra/base/tasks/ssh.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 422
+      },
+      "writtenOn": "2021-05-27T10:24:16Z",
+      "side": 1,
+      "message": "I would suggest to make a loop because currently that\u0027s not easy to read.\n\nSomething like:\n- name: \"Secure SSH Options\"\n  lineinfile:\n    dest: \"/etc/ssh/sshd_config\"\n    regexp: \"^{{ item.field }} \"\n    line: \"{{ item.field }} {{ item.value }}\"\n  notify: \"Restart sshd\"\n  loop:\n    - {field: PermitRootLogin, value: no}\n    - {field: PasswordAuthentication, value: no}\n\nI also added a space at the end of the regex to ensure keys like HostKey/HostKeyAgent/HostKeyAlgorithms would not conflict.",
+      "revId": "6ea2d16aeeedc740caadd2d06e192994e0e4864f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a008abf0_72056dbe",
+        "filename": "roles/rdo-infra/base/tasks/ssh.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 422
+      },
+      "writtenOn": "2021-05-27T10:24:16Z",
+      "side": 1,
+      "message": "With GSSAPIAuthentication disabled this is not useful.",
+      "revId": "6ea2d16aeeedc740caadd2d06e192994e0e4864f",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7",
+      "unresolved": true
+    }
+  ]
+}
