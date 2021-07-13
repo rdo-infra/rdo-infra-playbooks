@@ -14,19 +14,19 @@
 #   under the License.
 #
 
-- name: Install required packages
-  package:
-    name: "{{ image_packages }}"
-    state: installed
+- name: Create /var/www/html/centos_compose
+  file:
+    path: /var/www/html/centos_compose
+    state: directory
+    mode: 0755
+    owner: uploader
+    group: uploader
+    setype: httpd_sys_content_t
 
-- name: Set up uploader user
-  include_tasks: uploader.yml
-
-- name: Set up images directory and vhost
-  include_tasks: images.yml
-
-- name: Set up rcm_share
-  include_tasks: rcm_share.yml
-
-- name: Set up centos compose directory
-  include_tasks: centos_compose.yml
+- name: Create symlink in images dir
+  file:
+    src: /var/www/html/centos_compose
+    dest: /var/www/html/images/centos_compose
+    state: link
+    owner: uploader
+    group: uploader
