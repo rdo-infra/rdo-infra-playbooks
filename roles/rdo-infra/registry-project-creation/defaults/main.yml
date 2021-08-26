@@ -22,6 +22,7 @@ registry_admins:
 rdo_branches:
   - rhel
   - tripleomaster
+  - tripleomastercentos9
   - tripleopike
   - tripleoqueens
   - tripleorocky
