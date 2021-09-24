@@ -94,6 +94,9 @@
     mode: 0640
     owner: jenkins
     group: jenkins
+    # FIXME(jpena): this is a temporary measure until the ci.centos.org
+    # cert is fixed
+    validate_certs: false
 
 - name: Add cico API key to /etc/profile
   lineinfile:
