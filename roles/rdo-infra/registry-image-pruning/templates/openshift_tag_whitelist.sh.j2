@@ -13,6 +13,9 @@ source /tmp/dlrnapi/bin/activate
 pip install setuptools --upgrade >/dev/null
 pip install dlrnapi_client >/dev/null
 
+# This is needed on CentOS 7 servers to avoid issues with LetsEncrypt certificates
+export SSL_CA_BUNDLE=/etc/pki/ca-trust/extracted/openssl/ca-bundle.trust.crt
+
 (for release in $releases
 do
   for name in $names

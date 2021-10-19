@@ -18,20 +18,12 @@ pruner_namespaces:
   - name: tripleou
   - name: tripleotrain
   - name: tripleotraincentos8
-  - name: tripleostein
-  - name: tripleorocky
-    pruner_days: 4
-  - name: tripleoqueens
-    pruner_days: 4
   - name: testingmaster
   - name: testingussuri
   - name: testingtrain
   - name: ceph
     pruner_days: 365
 pruner_dlrn_endpoints:
-  - api-centos-queens
-  - api-centos-rocky
-  - api-centos-stein
   - api-centos-train
   - api-centos8-master-uc
   - api-centos8-wallaby
