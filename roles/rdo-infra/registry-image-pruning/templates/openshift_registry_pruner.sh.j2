@@ -5,8 +5,14 @@
 oc login -u system:admin --config=/etc/origin/master/admin.kubeconfig
 oc adm config use-context default/{{ openshift_master_cluster_hostname | replace('.','-') }}:8443/system:admin
 
+keeplist=$(/usr/local/bin/openshift_tag_whitelist)
+if [ $? -ne 0 ]; then
+  echo "Failed to generate tag whitelist, stopping"
+  exit 1
+fi
+
 {% for ns in pruner_namespaces %}
-/usr/local/bin/openshift_tag_pruner --days {{ ns.pruner_days | default(pruner_days | default ('3')) }} --whitelist "$(/usr/local/bin/openshift_tag_whitelist)" {{ ns.name }} --confirm
+/usr/local/bin/openshift_tag_pruner --days {{ ns.pruner_days | default(pruner_days | default ('3')) }} --whitelist "${keeplist}" {{ ns.name }} --confirm
 {% endfor %}
 
 # Pruning is done with the rdo.pruner user
