@@ -30,4 +30,4 @@ pruner_dlrn_endpoints:
   - api-centos8-victoria
   - api-centos8-ussuri
   - api-centos8-train
-pruner_days: 3
+pruner_days: 5
