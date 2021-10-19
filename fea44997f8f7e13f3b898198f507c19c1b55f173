@@ -1,0 +1,11 @@
+Code-Review+2: Yatin Karel <ykarel@redhat.com>
+Code-Review+1: Chandan Kumar <chkumar@redhat.com>
+Code-Review+1: User pojadhav <pojadhav@redhat.com>
+Code-Review+2: Alfredo Moralejo <amoralej@redhat.com>
+Workflow+1: Alfredo Moralejo <amoralej@redhat.com>
+Verified+2: Zuul CI <zuul@review.rdoproject.org>
+Submitted-by: Zuul CI <zuul@review.rdoproject.org>
+Submitted-at: Tue, 19 Oct 2021 09:28:15 +0000
+Reviewed-on: https://review.rdoproject.org/r/c/rdo-infra/rdo-infra-playbooks/+/36326
+Project: rdo-infra/rdo-infra-playbooks
+Branch: refs/heads/master
