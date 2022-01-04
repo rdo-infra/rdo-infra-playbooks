@@ -14,6 +14,7 @@ pruner_namespaces:
   - name: tripleomastercentos9
   - name: tripleovictoria
   - name: tripleowallaby
+  - name: tripleowallabycentos9
   - name: tripleoussuri
   - name: tripleou
   - name: tripleotrain
