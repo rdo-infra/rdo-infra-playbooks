@@ -1,6 +1,8 @@
 rdo-infra-playbooks
 ===================
-Playbooks and roles to configure servers involved in the delivery of RDO.
+Playbooks and roles to configure servers involved in
+the delivery of
+RDO.
 
 Contributing
 ============
