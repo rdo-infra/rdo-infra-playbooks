@@ -22,22 +22,14 @@ function log () {
 
 ROOT="/var/www/html/images"
 # Trailing slashes are on purpose, those can be symlinks.
-DIRS="centos7/ocata/rdo_trunk/
- centos7/queens/rdo_trunk/
- centos7/rocky/rdo_trunk/
- centos7/stein/rdo_trunk/
- centos7/train/rdo_trunk/
+DIRS="centos7/train/rdo_trunk/
  centos8/master/rdo_trunk/
- centos8/train/rdo_trunk/
  centos8/ussuri/rdo_trunk/
+ centos8/train/rdo_trunk/
  centos8/victoria/rdo_trunk/
  centos8/wallaby/rdo_trunk/
- centos9/master/rdo_trunk/
  centos9/wallaby/rdo_trunk/
- train/rdo_trunk/
- stein/rdo_trunk/
- rocky/rdo_trunk/
- queens/rdo_trunk/"
+ centos9/master/rdo_trunk/"
 RETENTION=10
 
 for imagedir in $DIRS
@@ -62,7 +54,7 @@ do
         do
             # To be sure, that we want to remove the directory,
             # remove content inside the dir, then remove empty location.
-            find "${dir}" -type f -regextype egrep -regex ".*(artib-logs|delorean_hash|ironic-python-agent|overcloud-full|undercloud).(tar|tar.md5|tar.gz|tar.gz.md5|txt|qcow2|qcow2.md5)$" -mtime +${RETENTION} -delete
+            find "${dir}" -type f -regextype egrep -regex ".*(artib-logs|delorean_hash|ironic-python-agent|overcloud-full|overcloud-hardened-uefi-full|undercloud).(tar|tar.md5|tar.gz|tar.gz.md5|txt|qcow2|qcow2.md5)$" -mtime +${RETENTION} -delete
             find "${dir}" -type d -empty -delete
             echo "Deleted ${dir}" | log
         done
