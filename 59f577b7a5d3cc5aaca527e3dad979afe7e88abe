@@ -104,6 +104,29 @@
       },
       "revId": "59f577b7a5d3cc5aaca527e3dad979afe7e88abe",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "18a327cb_4467a408",
+        "filename": "roles/rdo-infra/image-server/files/prune_tripleo_images.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 73
+      },
+      "writtenOn": "2022-02-10T12:38:15Z",
+      "side": 1,
+      "message": "note that this regex doesn\u0027t cover all files/images. for example:\n\nls -la centos9/master/rdo_trunk/7da59bc23196755b0558d1505ef20edf\ntotal 939728\ndrwxrwxr-x.  2 uploader uploader        94 Jan 24 01:00 .\ndrwxrwxr-x. 69 uploader uploader      8192 Feb 10 08:36 ..\n-rw-r--r--.  1 uploader uploader 962265088 Jan 11 12:50 overcloud-hardened-uefi-full.qcow2\n-rw-rw-r--.  1 uploader uploader        69 Jan 11 12:50 overcloud-hardened-uefi-full.qcow2.md5",
+      "range": {
+        "startLine": 65,
+        "startChar": 34,
+        "endLine": 65,
+        "endChar": 187
+      },
+      "revId": "59f577b7a5d3cc5aaca527e3dad979afe7e88abe",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
