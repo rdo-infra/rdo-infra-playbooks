@@ -127,6 +127,30 @@
       },
       "revId": "59f577b7a5d3cc5aaca527e3dad979afe7e88abe",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad970b3b_8af20430",
+        "filename": "roles/rdo-infra/image-server/files/prune_tripleo_images.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 671
+      },
+      "writtenOn": "2022-02-10T12:43:35Z",
+      "side": 1,
+      "message": "Good point Matthieu, +1\n\nWe have started to build overcloud-hardened-uefi-full from wallaby onwards and this is indeed missing from here and should be added.",
+      "parentUuid": "18a327cb_4467a408",
+      "range": {
+        "startLine": 65,
+        "startChar": 34,
+        "endLine": 65,
+        "endChar": 187
+      },
+      "revId": "59f577b7a5d3cc5aaca527e3dad979afe7e88abe",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
