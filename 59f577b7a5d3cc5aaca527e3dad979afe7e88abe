@@ -108,6 +108,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8812b412_f9359321",
+        "filename": "roles/rdo-infra/image-server/files/prune_tripleo_images.sh",
+        "patchSetId": 1
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 111
+      },
+      "writtenOn": "2022-02-16T06:43:16Z",
+      "side": 1,
+      "message": "Please remove these also",
+      "range": {
+        "startLine": 30,
+        "startChar": 1,
+        "endLine": 32,
+        "endChar": 17
+      },
+      "revId": "59f577b7a5d3cc5aaca527e3dad979afe7e88abe",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "18a327cb_4467a408",
         "filename": "roles/rdo-infra/image-server/files/prune_tripleo_images.sh",
         "patchSetId": 1
