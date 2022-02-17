@@ -53,8 +53,10 @@
       command: dd if=/dev/zero of=/tmp/loopback bs=1M count=8192
       args:
         creates: /tmp/loopback
+
     - name: Set up loopback device
       command: 'losetup -f /tmp/loopback'
+      changed_when: false
 
 - name: Ensure the persistent volume path exists
   file:
