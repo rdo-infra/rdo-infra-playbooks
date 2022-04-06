@@ -31,4 +31,6 @@ pruner_dlrn_endpoints:
   - api-centos8-victoria
   - api-centos8-ussuri
   - api-centos8-train
+  - api-centos9-master-uc
+  - api-centos9-wallaby
 pruner_days: 5
