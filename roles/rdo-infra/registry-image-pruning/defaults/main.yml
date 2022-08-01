@@ -25,12 +25,10 @@ pruner_namespaces:
   - name: ceph
     pruner_days: 365
 pruner_dlrn_endpoints:
-  - api-centos-train
-  - api-centos8-master-uc
-  - api-centos8-wallaby
-  - api-centos8-victoria
-  - api-centos8-ussuri
-  - api-centos8-train
   - api-centos9-master-uc
+  - api-centos8-train
+  - api-centos-train
+  - api-centos8-wallaby
   - api-centos9-wallaby
+  - api-centos8-victoria
 pruner_days: 5
