@@ -66,18 +66,6 @@ Setup Jenkins agent for ci.centos.org environment
 =================================================
 - Setup machine: ``ansible-playbook -i hosts.yml playbooks/cico-agent.yml``
 
-Setup RDO Registry
-==================
-
-::
-
-    virtualenv ~/.venv
-    . ~/.venv/bin/activate
-    pip install -r roles/openshift/openshift-ansible/requirements.txt
-    ansible-playbook -b -i hosts.yaml playbooks/registry-host-preparation.yml
-    ansible-playbook -b -i hosts.yaml roles/openshift/openshift-ansible/playbooks/deploy_cluster.yml
-    ansible-playbook -b -i hosts.yaml playbooks/registry-project-creation.yml
-
 Setup Websites
 ==============
 
