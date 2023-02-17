@@ -24,6 +24,30 @@
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1aaba108_19e92107",
+        "filename": "README.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 207
+      },
+      "writtenOn": "2023-02-17T14:08:29Z",
+      "side": 0,
+      "message": "good question. I guess not.\nI remove some code in other PS. Here is a lot of legacy code.",
+      "parentUuid": "6059424d_e6e80d92",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 75
+      },
+      "revId": "39a092d5fd340e27876cd2f8058f2bde8b9c9a8c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "934ba834_b4c438c2",
@@ -37,6 +61,30 @@
       "writtenOn": "2023-02-17T13:57:40Z",
       "side": 0,
       "message": "should we add a script to remove leftovers as pruning won\u0027t occur anymore?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "39a092d5fd340e27876cd2f8058f2bde8b9c9a8c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7c0465c1_eba2f3f0",
+        "filename": "roles/rdo-infra/registry-image-pruning/defaults/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 207
+      },
+      "writtenOn": "2023-02-17T14:08:29Z",
+      "side": 0,
+      "message": "we are removing that server with volumes.",
+      "parentUuid": "934ba834_b4c438c2",
       "range": {
         "startLine": 12,
         "startChar": 0,
