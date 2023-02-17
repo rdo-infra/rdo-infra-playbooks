@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6059424d_e6e80d92",
+        "filename": "README.rst",
+        "patchSetId": 4
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 73
+      },
+      "writtenOn": "2023-02-17T13:57:40Z",
+      "side": 0,
+      "message": "Not related to this change but is this still relevant?",
+      "range": {
+        "startLine": 65,
+        "startChar": 0,
+        "endLine": 67,
+        "endChar": 75
+      },
+      "revId": "39a092d5fd340e27876cd2f8058f2bde8b9c9a8c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "934ba834_b4c438c2",
+        "filename": "roles/rdo-infra/registry-image-pruning/defaults/main.yml",
+        "patchSetId": 4
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 73
+      },
+      "writtenOn": "2023-02-17T13:57:40Z",
+      "side": 0,
+      "message": "should we add a script to remove leftovers as pruning won\u0027t occur anymore?",
+      "range": {
+        "startLine": 12,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 20
+      },
+      "revId": "39a092d5fd340e27876cd2f8058f2bde8b9c9a8c",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
