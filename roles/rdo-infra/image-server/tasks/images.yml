@@ -14,10 +14,9 @@
 #   under the License.
 #
 
-
 - name: Create /var/www/html/images
   file:
-    path:  /var/www/html/images
+    path: /var/www/html/images
     state: directory
     mode: 0755
     owner: uploader
@@ -28,6 +27,32 @@
   template:
     src: images.rdoproject.org.conf.j2
     dest: /etc/httpd/conf.d/images.rdoproject.org.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart httpd
+
+- name: Change mpm to prefork
+  lineinfile:
+    path: /etc/httpd/conf.modules.d/00-mpm.conf
+    regexp: '^#LoadModule mpm_prefork_module modules/mod_mpm_prefork.so'
+    line: "LoadModule mpm_prefork_module modules/mod_mpm_prefork.so"
+  notify:
+    - Restart httpd
+
+- name: Comment mpm event module
+  lineinfile:
+    path: /etc/httpd/conf.modules.d/00-mpm.conf
+    regexp: '^LoadModule mpm_event_module modules/mod_mpm_event.so'
+    line: "#LoadModule mpm_event_module modules/mod_mpm_event.so"
+  notify:
+    - Restart httpd
+
+- name: Set connection tuning configuration
+  file:
+    src: connection-tuning.conf
+    dest: /etc/httpd/conf.d/connection-tuning.conf
     owner: root
     group: root
     mode: 0644
