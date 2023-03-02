@@ -50,7 +50,7 @@
     - Restart httpd
 
 - name: Set connection tuning configuration
-  file:
+  copy:
     src: connection-tuning.conf
     dest: /etc/httpd/conf.d/connection-tuning.conf
     owner: root
