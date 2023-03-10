@@ -29,5 +29,8 @@ standard_user:
   namespace: dev-admin
   role: admin
 
+create_metallb: true
+metallb_version: v0.13.7
+
 delete_openshift_storage: true
 overwrite_container_policy: false
