@@ -9,3 +9,7 @@
 - name: Delete openshift storage namespace
   command: oc delete namespace openshift-storage
   when: _openshift_storage_ns.rc == 0
+
+- name: Delete topolvm-provisioner storageclass
+  command: oc delete storageclass topolvm-provisioner
+  when: _openshift_storage_ns.rc == 0
