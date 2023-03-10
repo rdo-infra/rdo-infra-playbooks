@@ -1,0 +1,59 @@
+---
+# https://github.com/openshift/microshift/blob/main/docs/howto_load_balancer.md
+- name: Check if metallb-system namespace exists
+  command: oc get namespace metallb-system
+  register: _metallb_ns
+  failed_when: _metallb_ns.rc not in [0, 1]
+
+- name: Create metallb-system namespace
+  command: oc create namespace metallb-system
+  when: _metallb_ns.rc == 1
+
+- name: Set privileged permissions
+  command: oc adm policy add-scc-to-user privileged -z default -n metallb-system
+
+- name: Apply metallb
+  command: oc apply -f https://raw.githubusercontent.com/metallb/metallb/v0.13.7/config/manifests/metallb-native.yaml
+
+- name: Set policy to controller serviceaccount
+  command: oc adm policy add-scc-to-user privileged -z controller -n metallb-system
+
+- name: Set policy to speaker serviceaccount
+  command: oc adm policy add-scc-to-user privileged -z speaker -n metallb-system
+
+- name: Create IPAddressPool
+  copy:
+    content: |
+      apiVersion: metallb.io/v1beta1
+      kind: IPAddressPool
+      metadata:
+        name: default
+        namespace: metallb-system
+      spec:
+        addresses:
+        - 192.168.1.240-192.168.1.250
+    dest: "~{{ ansible_user }}/ipaddresspool.yaml"
+
+- name: Apply IPAddressPool manifest
+  command: "oc apply -f ~{{ ansible_user }}/ipaddresspool.yaml"
+
+- name: Create load balancer service
+  copy:
+    content: |
+      apiVersion: v1
+      kind: Service
+      metadata:
+        name: nginx
+        annotations:
+          metallb.universe.tf/address-pool: default
+      spec:
+        ports:
+        - port: 80
+          targetPort: 80
+        selector:
+          app: nginx
+        type: LoadBalancer
+    dest: "~{{ ansible_user }}/loadbalancer.yaml"
+
+- name: Apply load balancer service manifest
+  command: "oc apply -f ~{{ ansible_user }}/loadbalancer.yaml"

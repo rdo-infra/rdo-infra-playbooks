@@ -50,3 +50,7 @@
 - name: Delete openshift storage
   include_tasks: openshift-storage.yaml
   when: delete_openshift_storage
+
+- name: Create MetalLB
+  include_tasks: metallb.yaml
+  when: create_metallb
