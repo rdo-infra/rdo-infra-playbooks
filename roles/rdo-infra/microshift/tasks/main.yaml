@@ -47,5 +47,9 @@
   include_tasks: standard-user.yaml
   when: standard_user
 
+- name: Delete openshift storage
+  include_tasks: openshift-storage.yaml
+  when: delete_openshift_storage
+
 - name: Post jobs
   include_tasks: post.yaml
