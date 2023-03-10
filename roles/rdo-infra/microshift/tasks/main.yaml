@@ -54,3 +54,7 @@
 - name: Create MetalLB
   include_tasks: metallb.yaml
   when: create_metallb
+
+- name: Create Multus
+  include_tasks: multus.yaml
+  when: create_multus

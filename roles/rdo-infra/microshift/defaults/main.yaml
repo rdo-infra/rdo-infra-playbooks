@@ -31,6 +31,8 @@ standard_user:
 
 create_metallb: true
 metallb_version: v0.13.7
+create_multus: true
+multus_version: v3.9.3
 
 delete_openshift_storage: true
 overwrite_container_policy: false
