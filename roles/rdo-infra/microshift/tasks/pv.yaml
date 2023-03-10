@@ -55,4 +55,4 @@
     loop_var: zj_pv_number
 
 - name: Run PV manifest
-  command: /usr/local/bin/oc apply -f ~{{ ansible_user }}/storage.yaml
+  command: oc apply -f ~{{ ansible_user }}/storage.yaml
