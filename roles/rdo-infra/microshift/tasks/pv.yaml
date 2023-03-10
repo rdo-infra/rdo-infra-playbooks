@@ -31,6 +31,7 @@
     loop_var: zj_pv_number
 
 # FROM: https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage
+# It also base on https://github.com/openstack-k8s-operators/install_yamls/blob/master/scripts/gen-crc-pv-kustomize.sh
 - name: Add PV
   shell: |
     cat <<EOF >> ~{{ ansible_user }}/storage.yaml
@@ -47,8 +48,13 @@
         storage: 10Gi
       accessModes:
         - ReadWriteOnce
-      hostPath:
+        - ReadWriteMany
+        - ReadOnlyMany
+      persistentVolumeReclaimPolicy: Delete
+      local:
         path: "{{ pv_host_path }}/pv00{{ zj_pv_number }}"
+        type: DirectoryOrCreate
+      volumeMode: Filesystem
     EOF
   with_sequence: "{{ pv_count }}"
   loop_control:
