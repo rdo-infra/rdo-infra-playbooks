@@ -47,8 +47,10 @@
   command: oc apply -f "~{{ ansible_user }}/storage-class.yaml"
 
 - name: Get worker nodes
-  command: |
+  shell: |
     oc get node -o name -l node-role.kubernetes.io/worker | sed -e 's|node/||' | head -c-1 | tr '\n' ','
+  tags:
+    - skip_ansible_lint
   register: _worker_nodes
 
 - name: Add PV
