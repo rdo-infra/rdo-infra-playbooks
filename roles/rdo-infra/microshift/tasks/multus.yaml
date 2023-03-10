@@ -1,0 +1,4 @@
+---
+# https://github.com/k8snetworkplumbingwg/multus-cni/blob/master/deployments/multus-daemonset-crio.yml
+- name: Apply Multus manifest
+  command: oc apply -f https://github.com/k8snetworkplumbingwg/multus-cni/blob/{{ multus_version }}/deployments/multus-daemonset-crio.yml
