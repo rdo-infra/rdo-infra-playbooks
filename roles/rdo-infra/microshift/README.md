@@ -52,7 +52,7 @@ cat << EOF > deploy-microshift.yaml
     fqdn: microshift.dev
     use_copr_microshift: false
   roles:
-    - extra/microshift
+    - rdo-infra/microshift
 EOF
 ```
 
