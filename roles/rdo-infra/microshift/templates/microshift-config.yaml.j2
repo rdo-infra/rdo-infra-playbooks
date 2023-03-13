@@ -1,0 +1,15 @@
+---
+dns:
+  # Base domain of the cluster. All managed DNS records will be sub-domains of this base.
+  baseDomain: {{ fqdn }}
+
+node:
+  # If non-empty, use this string to identify the node instead of the hostname
+  hostnameOverride: controller.{{ fqdn }}
+  # IP address of the node, passed to the kubelet.
+  # If not specified, kubelet will use the node's default IP address.
+  nodeIP: {{ ansible_default_ipv4.address }}
+
+debugging:
+  # Log verbosity ('Normal', 'Debug', 'Trace', 'TraceAll'):
+  logLevel: 'Normal'
