@@ -34,3 +34,7 @@ standard_user:
 
 delete_openshift_storage: true
 overwrite_container_policy: false
+
+# NOTE: Example feature that can be disabled in Micrsohift is:
+# - "route.openshift.io/RouteHostAssignment"
+disable_admission_plugins: []

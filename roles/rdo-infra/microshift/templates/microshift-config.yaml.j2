@@ -1,0 +1,15 @@
+---
+# NOTE: Curretly the Microshift role uses mostly default parameters, that
+# can be found in /etc/microshift/config.yaml.sample.
+
+{% if disable_admission_plugins %}
+apiServer:
+  disable-admission-plugins:
+{% for plugin in disable_admission_plugins %}
+    - "{{ plugin }}"
+{% endfor %}
+{% endif %}
+
+debugging:
+  # Log verbosity ('Normal', 'Debug', 'Trace', 'TraceAll'):
+  logLevel: 'Normal'
