@@ -1,0 +1,16 @@
+---
+dns:
+  # Base domain of the cluster. All managed DNS records will be sub-domains of this base.
+  baseDomain: {{ fqdn }}
+
+{% if disable_admission_plugins %}
+apiServer:
+  disable-admission-plugins:
+{% for plugin in disable_admission_plugins %}
+    - "{{ plugin }}"
+{% endfor %}
+{% endif %}
+
+debugging:
+  # Log verbosity ('Normal', 'Debug', 'Trace', 'TraceAll'):
+  logLevel: 'Normal'

@@ -34,3 +34,6 @@ standard_user:
 
 delete_openshift_storage: true
 overwrite_container_policy: false
+
+disable_admission_plugins:
+  - "route.openshift.io/RouteHostAssignment"
