@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1324a0e3_8a33d7b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 207
+      },
+      "writtenOn": "2023-03-14T13:37:18Z",
+      "side": 1,
+      "message": "It is probably last PS done for rdo-infra-playbooks for microshift role.\nThe role content with this patch set has been ported to: https://github.com/openstack-k8s-operators/ansible-microshift-role/. To review: https://github.com/openstack-k8s-operators/ansible-microshift-role/pull/1 ",
+      "revId": "6e0fb304ab9abf35a442bd984622ff3fc0a70bfd",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
