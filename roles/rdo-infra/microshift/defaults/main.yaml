@@ -11,6 +11,7 @@ disable_swap: true
 
 use_copr_microshift: false
 microshift_version: 4.12
+microshift_subversion: 5
 
 setup_olm: false
 repo_dir: "~{{ ansible_user }}/repos"
