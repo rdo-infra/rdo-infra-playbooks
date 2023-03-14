@@ -1,16 +1,20 @@
 Deploy Microshift service
 =========================
 
+This role deploys Microshift service on RHEL 8/9.
+
 Example deployment
 ------------------
 
 * Install Ansible:
 
 ```sh
-sudo dnf install -y ansible-core
+sudo dnf install -y ansible-core git
 ansible-galaxy collection install community.general
 ansible-galaxy collection install community.crypto
+ansible-galaxy collection install ansible.posix
 ```
+
 
 * Create ansible config:
 
@@ -18,13 +22,17 @@ ansible-galaxy collection install community.crypto
 cat << EOF > ansible.cfg
 [defaults]
 roles_path = roles/
-command_warnings = True
 force_handlers = True
 
 [ssh_connection]
 pipelining = True
 EOF
 ```
+
+* Generate `pull-secret.txt` credentials
+
+To deploy Microshift > 4.8, it requires to provide pull-secret.txt content.
+It can be generated [here](https://cloud.redhat.com/openshift/create/local).
 
 * Create inventory:
 
@@ -59,5 +67,5 @@ EOF
 * Deploy Microshift:
 
 ```sh
-ansible-playbook -i inventory.yaml deploy-microshift.yml
+ansible-playbook -i inventory.yaml deploy-microshift.yaml
 ```

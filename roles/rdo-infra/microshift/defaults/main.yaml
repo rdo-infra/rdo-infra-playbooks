@@ -5,9 +5,10 @@ fqdn: microshift.dev
 openshift_pull_secret: ""
 registry_secret_path: /etc/crio/openshift-pull-secret
 disable_selinux: false
-hide_sensitive_logs: false
+hide_sensitive_logs: true
 setup_tools: true
 disable_swap: true
+firewalld_rules_permament: true
 
 use_copr_microshift: false
 microshift_version: 4.12
@@ -18,9 +19,11 @@ operator_sdk_version: "v1.21.0"
 operator_sdk_url: "https://github.com/operator-framework/operator-sdk"
 
 create_pv: true
-pv_storageclass: standard
+pv_storageclass: local-storage
 pv_host_path: "/mnt/data"
-pv_count: start=1 end=10
+pv_count:
+  start: 1
+  end: 15
 
 # This defines a Subject (by creating a client cert), a Namespace and a RoleBinding using role.
 certs_dir: "~{{ ansible_user }}/.certs"

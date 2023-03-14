@@ -1,52 +1,52 @@
 ---
 - name: Check if pull-secret is provided when copr version is disabled
-  fail:
+  ansible.builtin.fail:
     msg: "You need to provide pull-secret.txt content into the var!"
   when: not openshift_pull_secret and not use_copr_microshift
 
 - name: Disable selinux
-  include_tasks: selinux.yaml
+  ansible.builtin.include_tasks: selinux.yaml
   when: disable_selinux
 
 - name: Setup Microshift repository
-  include_tasks: repo.yaml
+  ansible.builtin.include_tasks: repo.yaml
 
 - name: Prepare host
-  include_tasks: pre.yaml
+  ansible.builtin.include_tasks: pre.yaml
 
 - name: Disable swap
-  include_tasks: swap.yaml
+  ansible.builtin.include_tasks: swap.yaml
   when: disable_swap
 
 - name: Setup tools
-  include_tasks: tools.yaml
+  ansible.builtin.include_tasks: tools.yaml
   when: setup_tools
 
 - name: Prepare cri-o
-  include_tasks: crio.yaml
+  ansible.builtin.include_tasks: crio.yaml
 
 - name: Prepare firewall
-  include_tasks: firewall.yaml
+  ansible.builtin.include_tasks: firewall.yaml
 
 - name: Setup Microshift
-  include_tasks: microshift.yaml
+  ansible.builtin.include_tasks: microshift.yaml
 
 - name: Provide credentials for restricted regitries
-  include_tasks: registry_login.yaml
+  ansible.builtin.include_tasks: registry_login.yaml
   when: not use_copr_microshift
 
 - name: Setup OLM
-  include_tasks: olm.yaml
+  ansible.builtin.include_tasks: olm.yaml
   when: setup_olm
 
 - name: Create persistent volume
-  include_tasks: pv.yaml
+  ansible.builtin.include_tasks: pv.yaml
   when: create_pv
 
 - name: Create standard-user and playground namespace
-  include_tasks: standard-user.yaml
+  ansible.builtin.include_tasks: standard-user.yaml
   when: standard_user
 
 - name: Delete openshift storage
-  include_tasks: openshift-storage.yaml
+  ansible.builtin.include_tasks: openshift-storage.yaml
   when: delete_openshift_storage

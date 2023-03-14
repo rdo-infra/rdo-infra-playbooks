@@ -9,30 +9,30 @@
   when: namespace_exists.rc != 0
 
 - name: Create the {{ certs_dir }} directory
-  file:
+  ansible.builtin.file:
     path: "{{ certs_dir }}"
     state: directory
 
 - name: Check for user cert
-  stat:
+  ansible.builtin.stat:
     path: "{{ certs_dir }}/{{ standard_user.name }}.crt"
   register: user_cert
 
 - name: Create user certs if not exists
   block:
     - name: Gen user private key
-      openssl_privatekey:
+      community.crypto.openssl_privatekey:
         path: "{{ certs_dir }}/{{ standard_user.name }}.key"
 
     - name: Create user cert requests
-      openssl_csr:
+      community.crypto.openssl_csr:
         path: "{{ certs_dir }}/{{ standard_user.name }}.csr"
         privatekey_path: "{{ certs_dir }}/{{ standard_user.name }}.key"
         common_name: "{{ standard_user.name }}"
 
     - name: Create user cert and sign with admin-kubeconfig-signer CA
       become: true
-      openssl_certificate:
+      community.crypto.x509_certificate:
         path: "{{ certs_dir }}/{{ standard_user.name }}.crt"
         csr_path: "{{ certs_dir }}/{{ standard_user.name }}.csr"
         ownca_path: /var/lib/microshift/certs/admin-kubeconfig-signer/ca.crt
@@ -41,7 +41,7 @@
 
     - name: Change owner for cert directory
       become: true
-      file:
+      ansible.builtin.file:
         path: "{{ certs_dir }}/{{ standard_user.name }}.crt"
         state: file
         owner: "{{ ansible_user }}"
@@ -66,7 +66,7 @@
 
     # https://kubernetes.io/docs/reference/access-authn-authz/rbac/#user-facing-roles
     - name: Add new RoleBinding for standard-user into playground namespace
-      copy:
+      ansible.builtin.copy:
         content: |
           ---
           apiVersion: rbac.authorization.k8s.io/v1

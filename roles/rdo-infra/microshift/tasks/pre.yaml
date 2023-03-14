@@ -1,12 +1,12 @@
 ---
 - name: Set hostname
   become: true
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ fqdn }}"
 
 - name: Install required system packages
   become: true
-  yum:
+  ansible.builtin.yum:
     name:
       - iproute-tc
       - git
@@ -16,35 +16,44 @@
 
 - name: Add host to the hosts file
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: ".*{{ fqdn }}$"
     line: "{{ ansible_default_ipv4.address }} {{ fqdn }}"
     state: present
 
 # From Kubernetes setup - https://kubernetes.io/docs/setup/production-environment/container-runtimes/
-- name: Add modules to be loaded
+- name: Enable kernel modules
   become: true
-  copy:
-    content: |
-      overlay
-      br_netfilter
-    dest: /etc/modules-load.d/k8s.conf
-
-- name: Enable module
-  become: true
-  shell: |
-    modprobe br_netfilter
-    modprobe overlay
+  community.general.modprobe:
+    name: "{{ zj_modprobe }}"
+    state: present
+    persistent: present
+  loop:
+    - br_netfilter
+    - overlay
+  loop_control:
+    loop_var: zj_modprobe
 
 - name: Update sysctl
   become: true
-  copy:
-    content: |
-      net.bridge.bridge-nf-call-ip6tables = 1
-      net.bridge.bridge-nf-call-iptables  = 1
-      net.ipv4.ip_forward                 = 1
-      net.ipv6.conf.all.disable_ipv6      = 1
-      net.ipv6.conf.default.disable_ipv6  = 1
-    dest: /etc/sysctl.d/10-k8s.conf
-  notify: Restart sysctl service
+  ansible.posix.sysctl:
+    name: "{{ zj_sysctl.name }}"
+    value: "{{ zj_sysctl.value }}"
+    sysctl_file: /etc/sysctl.d/10-k8s.conf
+    sysctl_set: true
+    state: present
+    reload: true
+  loop_control:
+    loop_var: zj_sysctl
+  loop:
+    - name: net.bridge.bridge-nf-call-ip6tables
+      value: 1
+    - name: net.bridge.bridge-nf-call-iptables
+      value: 1
+    - name: net.ipv4.ip_forward
+      value: 1
+    - name: net.ipv6.conf.all.disable_ipv6
+      value: 1
+    - name: net.ipv6.conf.default.disable_ipv6
+      value: 1
