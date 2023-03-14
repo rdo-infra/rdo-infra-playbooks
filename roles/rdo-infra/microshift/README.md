@@ -10,6 +10,7 @@ Example deployment
 sudo dnf install -y ansible-core
 ansible-galaxy collection install community.general
 ansible-galaxy collection install community.crypto
+ansible-galaxy collection install ansible.posix
 ```
 
 * Create ansible config:
@@ -59,5 +60,5 @@ EOF
 * Deploy Microshift:
 
 ```sh
-ansible-playbook -i inventory.yaml deploy-microshift.yml
+ansible-playbook -i inventory.yaml deploy-microshift.yaml
 ```
