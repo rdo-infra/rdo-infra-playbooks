@@ -59,5 +59,5 @@ EOF
 * Deploy Microshift:
 
 ```sh
-ansible-playbook -i inventory.yaml deploy-microshift.yml
+ansible-playbook -i inventory.yaml deploy-microshift.yaml
 ```

@@ -5,7 +5,7 @@ fqdn: microshift.dev
 openshift_pull_secret: ""
 registry_secret_path: /etc/crio/openshift-pull-secret
 disable_selinux: false
-hide_sensitive_logs: false
+hide_sensitive_logs: true
 setup_tools: true
 disable_swap: true
 
