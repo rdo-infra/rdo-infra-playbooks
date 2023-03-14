@@ -4,19 +4,19 @@
   block:
     - name: Enable copr repository
       become: true
-      shell: |
+      ansible.builtin.shell: |
         dnf copr enable -y @redhat-et/microshift
 
     - name: Install microshift package
       become: true
-      yum:
+      ansible.builtin.yum:
         name: microshift
         state: present
       notify: Restart Microshift
 
 - name: Install microshift package
   become: true
-  yum:
+  ansible.builtin.yum:
     name: microshift
     state: present
     enablerepo: microshift-rpms,microshift-deps-rpms
@@ -28,20 +28,20 @@
 
 - name: Wait for kubeconfig file after deploying Microshift
   become: true
-  wait_for:
+  ansible.builtin.wait_for:
     path: /var/lib/microshift/resources/kubeadmin/kubeconfig
     search_regex: microshift
     delay: 5
     timeout: 300
 
 - name: Create kube config directory
-  file:
+  ansible.builtin.file:
     path: ~/.kube
     state: directory
 
 - name: Copy kubeconfig
   become: true
-  copy:
+  ansible.builtin.copy:
     src: /var/lib/microshift/resources/kubeadmin/kubeconfig
     dest: "~{{ ansible_user }}/.kube/config"
     remote_src: true

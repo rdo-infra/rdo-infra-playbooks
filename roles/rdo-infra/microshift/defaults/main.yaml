@@ -5,12 +5,13 @@ fqdn: microshift.dev
 openshift_pull_secret: ""
 registry_secret_path: /etc/crio/openshift-pull-secret
 disable_selinux: false
-hide_sensitive_logs: false
+hide_sensitive_logs: true
 setup_tools: true
 disable_swap: true
 
 use_copr_microshift: false
 microshift_version: 4.12
+microshift_subversion: 5
 
 setup_olm: false
 repo_dir: "~{{ ansible_user }}/repos"

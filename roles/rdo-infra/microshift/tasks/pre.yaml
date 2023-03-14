@@ -1,12 +1,12 @@
 ---
 - name: Set hostname
   become: true
-  hostname:
+  ansible.builtin.hostname:
     name: "{{ fqdn }}"
 
 - name: Install required system packages
   become: true
-  yum:
+  ansible.builtin.yum:
     name:
       - iproute-tc
       - git
@@ -16,7 +16,7 @@
 
 - name: Add host to the hosts file
   become: true
-  lineinfile:
+  ansible.builtin.lineinfile:
     dest: /etc/hosts
     regexp: ".*{{ fqdn }}$"
     line: "{{ ansible_default_ipv4.address }} {{ fqdn }}"
@@ -25,7 +25,7 @@
 # From Kubernetes setup - https://kubernetes.io/docs/setup/production-environment/container-runtimes/
 - name: Add modules to be loaded
   become: true
-  copy:
+  ansible.builtin.copy:
     content: |
       overlay
       br_netfilter
@@ -33,13 +33,13 @@
 
 - name: Enable module
   become: true
-  shell: |
+  ansible.builtin.shell: |
     modprobe br_netfilter
     modprobe overlay
 
 - name: Update sysctl
   become: true
-  copy:
+  ansible.builtin.copy:
     content: |
       net.bridge.bridge-nf-call-ip6tables = 1
       net.bridge.bridge-nf-call-iptables  = 1
