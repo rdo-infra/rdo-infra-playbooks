@@ -1,18 +1,17 @@
 ---
 - name: Clone OLM operator-sdk
-  git:
+  ansible.builtin.git:
     repo: "{{ operator_sdk_url }}"
     dest: "{{ repo_dir }}/operator-sdk"
     version: "{{ operator_sdk_version }}"
 
 - name: Build Operator SDK
-  shell: |
-    make build
-  args:
+  community.general.make:
+    target: build
     chdir: "{{ repo_dir }}/operator-sdk"
 
 - name: Check if OLM is installed
-  shell: |
+  ansible.builtin.shell: |
     build/operator-sdk olm status
   register: olm_status
   args:
@@ -20,7 +19,7 @@
   failed_when: olm_status.rc not in [0, 1]
 
 - name: Install OLM with SDK
-  shell: |
+  ansible.builtin.shell: |
     build/operator-sdk olm install
   args:
     chdir: "{{ repo_dir }}/operator-sdk"

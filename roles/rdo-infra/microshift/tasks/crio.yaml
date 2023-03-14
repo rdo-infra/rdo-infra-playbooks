@@ -1,7 +1,7 @@
 ---
 - name: Install required system packages
   become: true
-  yum:
+  ansible.builtin.yum:
     name:
       - cri-o
       - cri-tools
@@ -10,7 +10,7 @@
   notify: Restart crio
 
 - name: Get cri-o version
-  shell: |
+  ansible.builtin.shell: |
     rpm -qa --qf '%{VERSION}' cri-o
   tags:
     - skip_ansible_lint
@@ -18,7 +18,7 @@
 
 - name: Use only ipv4
   become: true
-  get_url:
+  ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/cri-o/cri-o/v{{ _crio_version.stdout }}/contrib/cni/11-crio-ipv4-bridge.conf
     dest: /etc/cni/net.d/100-crio-bridge.conf
     mode: "0644"
@@ -26,7 +26,7 @@
 
 - name: Apply container policy from crc
   become: true
-  copy:
+  ansible.builtin.copy:
     src: policy.json
     dest: /etc/containers/policy.json
   notify: Restart crio
