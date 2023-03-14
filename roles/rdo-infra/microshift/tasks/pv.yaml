@@ -1,13 +1,13 @@
 ---
 - name: Remove storage config if present
   become: true
-  file:
+  ansible.builtin.file:
     path: ~{{ ansible_user }}/storage.yaml
     state: absent
 
 - name: Ensure that main PV path directory exists
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ pv_host_path }}"
     state: directory
     recurse: true
@@ -18,7 +18,7 @@
 
 - name: Create PV directories
   become: true
-  file:
+  ansible.builtin.file:
     path: "{{ pv_host_path }}/pv00{{ zj_pv_number }}"
     state: directory
     mode: "0777"
@@ -26,14 +26,14 @@
     group: "{{ ansible_user }}"
     setype: container_file_t
     selevel: s0
-  with_sequence: "{{ pv_count }}"
+  with_sequence: start="{{ pv_count.start }}" end="{{ pv_count.end }}"
   loop_control:
     loop_var: zj_pv_number
 
 # FROM: https://kubernetes.io/docs/tasks/configure-pod-container/configure-persistent-volume-storage
 # It also base on https://github.com/openstack-k8s-operators/install_yamls/blob/master/scripts/gen-crc-pv-kustomize.sh
 - name: Create local-storage storage class manifest
-  copy:
+  ansible.builtin.copy:
     content: |
       apiVersion: storage.k8s.io/v1
       kind: StorageClass
@@ -44,49 +44,20 @@
     dest: "~{{ ansible_user }}/storage-class.yaml"
 
 - name: Apply storage class manifest
-  command: oc apply -f "~{{ ansible_user }}/storage-class.yaml"
+  ansible.builtin.command: oc apply -f "~{{ ansible_user }}/storage-class.yaml"
 
 - name: Get worker nodes
-  shell: |
+  ansible.builtin.shell: |
     oc get node -o name -l node-role.kubernetes.io/worker | sed -e 's|node/||' | head -c-1 | tr '\n' ','
   tags:
     - skip_ansible_lint
   register: _worker_nodes
 
 - name: Add PV
-  shell: |
-    cat <<EOF >> ~{{ ansible_user }}/storage.yaml
-    ---
-    apiVersion: v1
-    kind: PersistentVolume
-    metadata:
-      name: "{{ pv_storageclass }}00{{ zj_pv_number }}"
-      labels:
-        type: local
-    spec:
-      storageClassName: "{{ pv_storageclass }}"
-      capacity:
-        storage: 10Gi
-      accessModes:
-        - ReadWriteOnce
-        - ReadWriteMany
-        - ReadOnlyMany
-      persistentVolumeReclaimPolicy: Delete
-      local:
-        path: "{{ pv_host_path }}/pv00{{ zj_pv_number }}"
-        type: DirectoryOrCreate
-      volumeMode: Filesystem
-      nodeAffinity:
-        required:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: kubernetes.io/hostname
-              operator: In
-              values: {{ _worker_nodes.stdout | split }}
-    EOF
-  with_sequence: "{{ pv_count }}"
-  loop_control:
-    loop_var: zj_pv_number
+  ansible.builtin.template:
+    src: pv.yaml
+    dest: "~{{ ansible_user }}/storage.yaml"
+    mode: "0644"
 
 - name: Run PV manifest
-  command: oc apply -f ~{{ ansible_user }}/storage.yaml
+  ansible.builtin.command: oc apply -f ~{{ ansible_user }}/storage.yaml
