@@ -1,0 +1,44 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8c2ee4a2_a5b7c163",
+        "filename": "roles/rdo-infra/microshift/defaults/main.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 600
+      },
+      "writtenOn": "2023-03-15T11:47:40Z",
+      "side": 1,
+      "message": "so this does not actully work\n\ni know i had it in the microshift config i showed you but microshfit still enabeld it so i would drop this for now.\n\nthat might be a microshift bug",
+      "revId": "bccee0bb0eafeeba8c5a9ec87db518e100504589",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8a93afde_b09070cc",
+        "filename": "roles/rdo-infra/microshift/templates/microshift-config.yaml.j2",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 600
+      },
+      "writtenOn": "2023-03-15T11:47:40Z",
+      "side": 1,
+      "message": "you can also remvoe this as a result since the disable-admission-plugins key is not actully used",
+      "range": {
+        "startLine": 6,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 11
+      },
+      "revId": "bccee0bb0eafeeba8c5a9ec87db518e100504589",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
