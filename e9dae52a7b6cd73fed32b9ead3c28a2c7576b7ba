@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5cc1d3ef_84ac33c4",
+        "filename": "roles/rdo-infra/microshift/tasks/multus.yaml",
+        "patchSetId": 2
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 600
+      },
+      "writtenOn": "2023-03-15T12:14:18Z",
+      "side": 1,
+      "message": "They now recommend you use the think plugin \n\nhttps://github.com/k8snetworkplumbingwg/multus-cni#thin-plugin-vs-thick-plugin\n\nhttps://github.com/k8snetworkplumbingwg/multus-cni/blob/master/deployments/multus-daemonset-thick.yml",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 102
+      },
+      "revId": "e9dae52a7b6cd73fed32b9ead3c28a2c7576b7ba",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
