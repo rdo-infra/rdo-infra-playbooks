@@ -16,6 +16,46 @@
       "message": "I removed feature like: standard user or OLM deployment, because it is additional features. c",
       "revId": "b949523930ae200ee1ccf71e7abf0df12dabaf11",
       "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d694cb3_59ba60e4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 111
+      },
+      "writtenOn": "2023-03-15T10:26:43Z",
+      "side": 1,
+      "message": "looks good, left one comment(but not a blocker)",
+      "revId": "b949523930ae200ee1ccf71e7abf0df12dabaf11",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c904fe28_82329daf",
+        "filename": "roles/rdo-infra/microshift/tasks/crio.yaml",
+        "patchSetId": 8
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 111
+      },
+      "writtenOn": "2023-03-15T10:26:43Z",
+      "side": 1,
+      "message": "it\u0027s a single command. I would replace it with \nansible.builtin.command: rpm -qa --qf \u0027%{VERSION}\u0027 cri-o",
+      "range": {
+        "startLine": 13,
+        "startChar": 2,
+        "endLine": 13,
+        "endChar": 26
+      },
+      "revId": "b949523930ae200ee1ccf71e7abf0df12dabaf11",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
     }
   ]
 }
