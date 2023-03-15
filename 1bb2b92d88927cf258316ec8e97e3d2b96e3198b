@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "df7b2c55_37306469",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 207
+      },
+      "writtenOn": "2023-03-15T12:26:44Z",
+      "side": 1,
+      "message": "So in that case, that PS does not need to be merged. We can work with default values as it is now, right?",
+      "revId": "1bb2b92d88927cf258316ec8e97e3d2b96e3198b",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
