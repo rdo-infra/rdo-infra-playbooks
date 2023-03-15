@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "87489f78_a822059b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 600
+      },
+      "writtenOn": "2023-03-15T12:15:01Z",
+      "side": 1,
+      "message": "there is an install yamls target for metallb that we might be able to reuse",
+      "revId": "cb1f62f29c7f8e75f0f28be1e4e910ac9cf243e6",
+      "serverId": "270e2033-b340-4cff-9539-693957ebf0e7"
+    }
+  ]
+}
